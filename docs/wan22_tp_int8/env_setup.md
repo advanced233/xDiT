@@ -7,7 +7,7 @@
 ## 0. 共享服务器规则（全程遵守）
 
 **写入范围**
-- 所有文件只写到自己账号名下的工作根目录 `$XDIT_WORK`，默认是 `$HOME/xdit-work`。
+- 所有文件只写到自己账号名下的工作根目录 `$XDIT_WORK`，默认是 `$HOME/xdit-work`。工具在 `$HOME` 下自动生成的少量配置文件（例如 `~/.conda/`）也属于自己账号，可以接受，不需要为此额外加沙箱。
 - 如果 `$HOME` 配额不够，只能改用已经存在、且属主是自己的大盘目录（用 `stat -c %U <目录>` 确认）。不要自己在公共盘上新建目录。
 
 **禁止的操作**
@@ -26,7 +26,8 @@
 **使用 GPU**
 - 每次运行前先用 `nvidia-smi` 查看占用情况，用 `CUDA_VISIBLE_DEVICES` 只选空闲的卡。
 - 不要 kill 别人的进程，不改 GPU 时钟、persistence mode、MIG 或 ECC。
-- 如果服务器有 Slurm 之类的调度器，就通过调度器申请 GPU，不要直接在登录节点上跑。
+- 如果服务器有**正在运行**的 Slurm 之类的调度器（`sinfo` 能列出分区），就通过调度器申请 GPU，不要直接在登录节点上跑。只装了客户端、没有配置文件也没有服务进程，不算有调度器，按上面两条直接使用空闲的卡。
+- 如果用沙箱（例如 bwrap）包装命令，GPU 相关的步骤必须把 `/dev/nvidia*`（含 `nvidiactl`、`nvidia-uvm`、`nvidia-uvm-tools`）透传进去，否则 CUDA 不可见。多进程运行时所有 rank 要在同一个沙箱里，以便共享 `/dev/shm`（NCCL 在无 P2P 时依赖它）。
 
 **避免和他人冲突**
 - torchrun / `xdit` 默认端口是 29500，容易和别人撞车，每次显式传一个随机高位端口（`--master_port`）。
@@ -40,7 +41,7 @@
 |---|---|
 | 某一步需要 root | 跳过该项，记录原因，继续其余步骤 |
 | 空间或配额不够放 A14B 权重 | 只下载 1.3B，记录缺口大小 |
-| 驱动支持的 CUDA 低于 12.6 | 选 PyTorch 提供的、不高于该版本的最新 wheel，并在回报中注明 |
+| 驱动版本低于 525.60.13 | 选 PyTorch 提供的、CUDA 版本不高于驱动支持版本的最新 wheel，并在回报中注明（驱动 ≥ 525.60.13 时见步骤 4，不属于阻塞） |
 | GPU 全被占用 | 每 10 分钟重新检查一次，最多等 1 小时；仍然没有空闲卡就跳过 GPU 相关的自检，记录原因 |
 | 某个源访问不了 | 尝试 `env.sh` 里注释掉的镜像选项；仍然失败就跳过依赖它的项 |
 | 需要写入自己目录以外的位置 | 不写，跳过该项并记录 |
@@ -53,9 +54,9 @@
 |---|---|---|---|
 | 1 | 工作根目录 | `$XDIT_WORK`，属主是自己；可用空间 ≥ 250 GB（环境约 20 GB，加两套模型，再加输出和 profile） | `df -h $XDIT_WORK` |
 | 2 | `env.sh` | 所有缓存、`TMPDIR`、`HF_HOME` 都指向 `$XDIT_WORK` | `source` 后 `env` 可见 |
-| 3 | 驱动 / CUDA | 驱动支持的 CUDA ≥ 12.6（`nvidia-smi` 右上角显示）；不需要系统装 nvcc | `nvidia-smi` |
+| 3 | 驱动 / CUDA | 驱动 ≥ 525.60.13 即可使用 CUDA 12.x 的 wheel（次版本兼容，见步骤 4）；不需要系统装 nvcc | `nvidia-smi` |
 | 4 | Python 环境 | 自己目录下的 Miniforge，环境用 `-p` 建在 `$XDIT_WORK/envs/xdit`，Python 3.10（与 CI 一致） | `which python` 指向该目录 |
-| 5 | PyTorch | CUDA 版 wheel，CUDA 版本 ≤ 驱动支持的版本 | `torch.cuda.is_available()`，`torch.version.hip is None` |
+| 5 | PyTorch | cu126 或 cu128 的 CUDA 版 wheel | `torch.cuda.is_available()`，`torch.version.hip is None`，`torch.compile` 能在 GPU 上跑 |
 | 6 | nvcc（编译用） | 装进 env，与 `torch.version.cuda` 的 major.minor 一致 | `$CONDA_PREFIX/bin/nvcc --version` |
 | 7 | xDiT | 克隆到 `$XDIT_WORK/src/xDiT`，分支 `claude/keen-bardeen-ntp7zr`，执行 `pip install -e ".[test,torchao]"` | `import xfuser` |
 | 8 | diffusers | ≥ 0.35.2（Wan runner 的最低要求） | 版本号 |
@@ -63,7 +64,7 @@
 | 10 | flash-attn | ≥ 2.7.0，优先用预编译 wheel | `import flash_attn` |
 | 11 | yunchang | ≥ 0.6.0（作为依赖自动安装） | `import yunchang` |
 | 12 | SageAttention | 优先源码编译 SageAttention2（sm_80/86 走 INT8 QK + FP16 PV）；退路是 PyPI 上的 `sageattention==1.0.6` | `sageattn` 在 GPU 上能跑 |
-| 13 | Nsight Systems | 优先用系统已有的 `nsys`；没有就报告，不要自己用 root 安装 | `nsys --version` |
+| 13 | Nsight Systems | 优先用系统已有的 `nsys`；没有就报告，不要自己用 root 安装。`/proc/sys/kernel/perf_event_paranoid` ≥ 2 时 CPU 采样不可用，用 `nsys profile -t cuda,nvtx --sample=none --cpuctxsw=none`，GPU 时间线不受影响 | `nsys --version` |
 | 14 | 画质评测 | 主环境装 `lpips`；VBench 单独建环境 `$XDIT_WORK/envs/vbench`（它的依赖版本会冲突），阶段 1 前完成即可 | `import lpips` |
 | 15 | 模型权重 | `Wan-AI/Wan2.1-T2V-1.3B-Diffusers`（开发用）和 `Wan-AI/Wan2.2-T2V-A14B-Diffusers`，都下载到 `$HF_HOME` | 设置 `HF_HUB_OFFLINE=1` 后可以加载 |
 | 16 | 拓扑与带宽 | `nvidia-smi topo -m`、P2P 状态，以及 NCCL all_reduce / all_to_all 实测带宽 | 写进回报 |
@@ -161,12 +162,21 @@ which python pip             # 两者都必须指向 $XDIT_WORK/envs/xdit/bin
 
 ### 步骤 4：PyTorch
 
-按 `nvidia-smi` 显示的 CUDA Version 选 wheel：≥ 12.8 用 `cu128`，≥ 12.6 用 `cu126`。低于 12.6 时，选 PyTorch 提供的、不高于该版本的最新 wheel，并在回报中注明。不要尝试升级驱动。
+`nvidia-smi` 右上角的 CUDA Version 是驱动原生支持的最高版本，并不是 wheel 的硬上限。CUDA 12 有次版本兼容（minor version compatibility）：驱动 ≥ 525.60.13，就能运行任何用 CUDA 12.x 编译的程序。PyTorch wheel 自带 sm_80 / sm_86 的 SASS，不依赖驱动 JIT。
+
+所以只要驱动 ≥ 525.60.13，就选仍然提供 cu126 或 cu128 wheel 的最新稳定版 PyTorch（例如 2.8 / 2.9），不要因为驱动显示 12.4 就退回 torch 2.6 + cu124。那样会连带把 torchao 和 diffusers 都卡在旧版本。不要尝试升级驱动。
 
 ```bash
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 python -c "import torch; print(torch.__version__, torch.version.cuda, torch.version.hip, torch.cuda.is_available(), torch.cuda.device_count())"
+# 在 GPU 上验证 Triton 编译链路
+python -c "import torch; f = torch.compile(lambda x: (x * 2).sin()); print(f(torch.randn(1024, device='cuda')).sum())"
 ```
+
+如果 `torch.compile` 或 Triton 报 PTX / toolchain 相关的错误：
+1. 在 env 里装一个与驱动 CUDA 版本一致的 ptxas，例如 `conda install -y -c nvidia cuda-nvcc=12.4`，装到单独的 prefix 也可以。
+2. 设置 `TRITON_PTXAS_PATH=<该 ptxas 的路径>` 后重试。
+3. 仍然失败，就回退到 cu124 的版本组合，并在回报中注明。
 
 ### 步骤 5：仓库与 Python 依赖
 
@@ -192,6 +202,9 @@ nvcc --version   # 应指向 $CONDA_PREFIX/bin/nvcc
 
 # flash-attn：安装时会先尝试下载匹配的预编译 wheel，找不到才在本地编译（受 MAX_JOBS 限制）
 pip install "flash-attn>=2.7.0" --no-build-isolation
+# 预编译 wheel 要求的 GLIBC 比系统新时（导入报 GLIBC_2.xx not found），从源码编译。
+# 只编 sm_80 即可：A100 原生支持，A6000（sm_86）也能直接运行 sm_80 的 SASS。可以放到后台跑。
+# FLASH_ATTENTION_FORCE_BUILD=TRUE FLASH_ATTN_CUDA_ARCHS=80 MAX_JOBS=4 pip install "flash-attn>=2.7.0" --no-build-isolation --no-binary flash-attn
 
 # SageAttention2：必须在能看到 GPU 的节点上编译
 git clone https://github.com/thu-ml/SageAttention.git "$XDIT_WORK/src/SageAttention"
