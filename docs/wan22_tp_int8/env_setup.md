@@ -34,7 +34,18 @@
 
 **不修改 `~/.bashrc`**：环境变量写进 `$XDIT_WORK/env.sh`，需要时手动 `source`。
 
-**遇到以下情况先停下问用户**：需要 root；磁盘或配额不够；驱动太旧；GPU 全被占用；网络不通；需要写入自己目录以外的位置；发现公共只读模型副本，想读取它。
+**无人值守执行**：用户不在场，整个流程不需要等确认，从头跑到尾。遇到阻塞时按下表处理，绝不为了绕过阻塞而越过上面的规则：
+
+| 情况 | 处理 |
+|---|---|
+| 某一步需要 root | 跳过该项，记录原因，继续其余步骤 |
+| 空间或配额不够放 A14B 权重 | 只下载 1.3B，记录缺口大小 |
+| 驱动支持的 CUDA 低于 12.6 | 选 PyTorch 提供的、不高于该版本的最新 wheel，并在回报中注明 |
+| GPU 全被占用 | 每 10 分钟重新检查一次，最多等 1 小时；仍然没有空闲卡就跳过 GPU 相关的自检，记录原因 |
+| 某个源访问不了 | 尝试 `env.sh` 里注释掉的镜像选项；仍然失败就跳过依赖它的项 |
+| 需要写入自己目录以外的位置 | 不写，跳过该项并记录 |
+| 发现公共的模型副本 | 不使用，照常下载自己的副本，并在回报中提一句 |
+| 某个包编译失败 | 按对应步骤里的退路处理；退路也失败就记录完整报错，继续后面的步骤 |
 
 ## 1. 清单
 
@@ -61,7 +72,7 @@
 
 ## 2. 执行步骤
 
-### 步骤 1：只读探查（完成后先向用户汇报，确认再继续）
+### 步骤 1：只读探查（结果写进回报，不用等确认，直接继续）
 
 ```bash
 whoami; echo "$HOME"; hostname
@@ -82,8 +93,13 @@ curl -sI https://huggingface.co | head -1; curl -sI https://pypi.org/simple/ | h
 curl -sI https://download.pytorch.org/whl/ | head -1; curl -sI https://github.com | head -1
 ```
 
-需要汇报的内容：
-- 准备使用的 `$XDIT_WORK` 及其可用空间。
+`$XDIT_WORK` 按以下规则自动决定：
+- `$HOME` 所在盘的可用空间（并且配额允许）≥ 250 GB 时，用 `$HOME/xdit-work`。
+- 否则，如果上面找到了属主是自己、空间足够的大盘目录，就用其下的 `xdit-work`。
+- 两者都不满足时，仍用 `$HOME/xdit-work`，步骤 7 只下载 1.3B。
+
+记入回报的内容：
+- 最终使用的 `$XDIT_WORK`、选择它的理由，以及可用空间。
 - 驱动版本和支持的 CUDA 版本。
 - GPU 型号、当前占用、拓扑（是否有 NVLink，P2P 是否可用）。
 - 是否有调度器。
@@ -145,7 +161,7 @@ which python pip             # 两者都必须指向 $XDIT_WORK/envs/xdit/bin
 
 ### 步骤 4：PyTorch
 
-按 `nvidia-smi` 显示的 CUDA Version 选 wheel：≥ 12.8 用 `cu128`，≥ 12.6 用 `cu126`；低于 12.6 就停下来汇报，不要尝试升级驱动。
+按 `nvidia-smi` 显示的 CUDA Version 选 wheel：≥ 12.8 用 `cu128`，≥ 12.6 用 `cu126`。低于 12.6 时，选 PyTorch 提供的、不高于该版本的最新 wheel，并在回报中注明。不要尝试升级驱动。
 
 ```bash
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
@@ -202,6 +218,8 @@ hf download Wan-AI/Wan2.1-T2V-1.3B-Diffusers          # 旧版 CLI 用 huggingfa
 hf download Wan-AI/Wan2.2-T2V-A14B-Diffusers
 ```
 
+下载 A14B 前，确认剩余空间 ≥ 查询到的大小再加 50 GB 余量；不够就只保留 1.3B，并记录缺口大小。
+
 下载完成后，运行时一律设置 `export HF_HUB_OFFLINE=1`。
 
 ### 步骤 8：自检
@@ -209,9 +227,12 @@ hf download Wan-AI/Wan2.2-T2V-A14B-Diffusers
 先选空闲的卡，再生成随机端口：
 
 ```bash
-export CUDA_VISIBLE_DEVICES=0,1   # 按步骤 1 的占用情况选择
+nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv   # 重新确认占用
+export CUDA_VISIBLE_DEVICES=0,1   # 只选当前空闲的卡；没有空闲卡时按第 0 节的规则等待或跳过
 PORT=$((20000 + RANDOM % 20000))
 ```
+
+8.4 中的 A14B 冒烟只在步骤 7 下载了 A14B 时才执行。
 
 **8.1 版本与关键算子**
 
@@ -284,7 +305,7 @@ CUDA_VISIBLE_DEVICES=0 python -m pytest -m "accelerator and not rocm and not mul
 python -m pytest -m "accelerator and multi_gpu and not rocm"   # 需要 2 张空闲卡
 ```
 
-记录每条命令的 passed / failed / skipped / deselected 数。如果有失败，只记录现象并汇报，不要修改代码。
+记录每条命令的 passed / failed / skipped / deselected 数。如果有失败，只把现象记进回报，不要修改代码。
 
 **8.4 端到端冒烟**
 
@@ -306,7 +327,7 @@ xdit --model Wan2.2-T2V --prompt "a cat walking on grass" \
 
 ### 步骤 9：回报
 
-把下面的内容写到 `$XDIT_WORK/env_report.md`，并展示给用户。主机名、用户名和路径不要提交到仓库；如果用户同意，可以只把版本、拓扑和带宽这几项整理进 `plan.md`。
+把下面的内容写到 `$XDIT_WORK/env_report.md`，用户回来后展示给他们看。主机名、用户名和路径不要提交到仓库；如果用户同意，可以只把版本、拓扑和带宽这几项整理进 `plan.md`。
 
 ```text
 机器：GPU 型号 × 数量 | 驱动 / 支持的 CUDA | 拓扑（NVLink/PCIe，P2P 是否可用）| 是否有调度器
@@ -316,4 +337,5 @@ NCCL：all_reduce 与 all_to_all 在 64/256/1024 MiB 下的 busbw
 测试：4 条 selector 各自的 passed / failed / skipped / deselected 数（附失败用例名）
 冒烟：3 条命令的结果、耗时、输出文件路径
 未完成项和原因（例如 nsys 缺失、SageAttention2 编译失败而改用 v1）
+按第 0 节规则自行做的决定（例如 $XDIT_WORK 的选择、跳过的项、等待 GPU 的情况）
 ```
