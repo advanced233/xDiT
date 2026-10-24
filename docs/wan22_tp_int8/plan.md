@@ -309,7 +309,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 - **固定参数**：
   - 采样：40 步、guidance 4.0 / 3.0、flow_shift 12、Wan 默认 scheduler。
   - seed：固定一组 seed。
-  - 注意力：基线用 `FLASH`。
+  - 注意力：在 Ampere 上，xDiT 没指定后端时默认用 `CUDNN`（`xfuser/core/distributed/runtime_state.py:96-103`）。M0 先在 Wan 的形状上（B=1、H=40 或 TP2 下的 20、D=128、L=14040 / 32760、bf16）对比 `CUDNN`、`SDPA_FLASH`，以及装了 flash-attn 时的 `FLASH`，选最快的 dense 后端作为基线，此后所有实验固定使用。注意力越快，Linear 的时间占比越高，INT8 的加速比也会越大，所以报告里必须写明基线用的是哪个后端。
 - **Prompt**：
   - 速度测试固定 1～3 条。
   - 画质测试用 N ≥ 50 条，在 480p / 33 帧下进行。A100 BF16 单条约 3～4 分钟，BF16 + INT8 两组约 6～7 小时。

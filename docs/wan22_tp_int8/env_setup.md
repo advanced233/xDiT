@@ -61,7 +61,7 @@
 | 7 | xDiT | 克隆到 `$XDIT_WORK/src/xDiT`，分支 `claude/keen-bardeen-ntp7zr`，执行 `pip install -e ".[test,torchao]"` | `import xfuser` |
 | 8 | diffusers | ≥ 0.35.2（Wan runner 的最低要求） | 版本号 |
 | 9 | torchao | 与 torch 版本匹配（见 torchao README 中的兼容性表） | `import torchao` 无 C++ 扩展告警；`torch._int_mm` 在 GPU 上能跑 |
-| 10 | flash-attn | ≥ 2.7.0，优先用预编译 wheel | `import flash_attn` |
+| 10 | flash-attn（可选） | ≥ 2.7.0，只用预编译 wheel；装不上就跳过（Wan 走 SDPA / cuDNN 后端，不依赖它） | `import flash_attn` 或回报中注明跳过 |
 | 11 | yunchang | ≥ 0.6.0（作为依赖自动安装） | `import yunchang` |
 | 12 | SageAttention | 优先源码编译 SageAttention2（sm_80/86 走 INT8 QK + FP16 PV）；退路是 PyPI 上的 `sageattention==1.0.6` | `sageattn` 在 GPU 上能跑 |
 | 13 | Nsight Systems | 优先用系统已有的 `nsys`；没有就报告，不要自己用 root 安装。`/proc/sys/kernel/perf_event_paranoid` ≥ 2 时 CPU 采样不可用，用 `nsys profile -t cuda,nvtx --sample=none --cpuctxsw=none`，GPU 时间线不受影响 | `nsys --version` |
@@ -192,19 +192,25 @@ pip install pre-commit && pre-commit install                 # 可选；hook 只
 
 安装 torchao 后要核对版本是否匹配：查 torchao README 的兼容性表，确认它和当前 torch 版本对应；不对应就安装匹配的版本。
 
-### 步骤 6：需要编译的扩展（flash-attn、SageAttention）
+### 步骤 6：需要编译的扩展（SageAttention，flash-attn 可选）
+
+flash-attn 不是必需的：
+- 在 Ampere 上，xDiT 没指定后端时默认用 PyTorch SDPA 的 `CUDNN` 后端。
+- `SDPA_FLASH`（PyTorch 内置的 FlashAttention-2 kernel）、`SDPA_EFFICIENT`、`CUDNN` 都支持 Ring（见 `xfuser/core/attention/backends/sdpa/spec.py`），所以 Wan 的 Ulysses / Ring 都不依赖 flash-attn 包。
+- flash-attn 只在显式指定 `--attention_backend FLASH`，或者走 yunchang 旧路径的其他模型时才需要。
+
+所以：能直接装上预编译 wheel 就装，装不上不必从源码编译，在回报中注明即可。
 
 ```bash
 # nvcc 装进 env，版本与 torch 的 CUDA 一致
 CUDA_MM=$(python -c "import torch; print(torch.version.cuda)")
-conda install -y -c nvidia "cuda-toolkit=${CUDA_MM}"
+conda install -y -c nvidia "cuda-nvcc=${CUDA_MM}" "cuda-cudart-dev=${CUDA_MM}" "cuda-cccl=${CUDA_MM}"
 nvcc --version   # 应指向 $CONDA_PREFIX/bin/nvcc
 
-# flash-attn：安装时会先尝试下载匹配的预编译 wheel，找不到才在本地编译（受 MAX_JOBS 限制）
-pip install "flash-attn>=2.7.0" --no-build-isolation
-# 预编译 wheel 要求的 GLIBC 比系统新时（导入报 GLIBC_2.xx not found），从源码编译。
-# 只编 sm_80 即可：A100 原生支持，A6000（sm_86）也能直接运行 sm_80 的 SASS。可以放到后台跑。
-# FLASH_ATTENTION_FORCE_BUILD=TRUE FLASH_ATTN_CUDA_ARCHS=80 MAX_JOBS=4 pip install "flash-attn>=2.7.0" --no-build-isolation --no-binary flash-attn
+# flash-attn（可选）：只尝试预编译 wheel。找不到匹配的 wheel 时 pip 会转入本地编译，用 timeout 截断；
+# 超时，或者导入时报 GLIBC_2.xx not found，就卸载并跳过，不要从源码编译
+timeout 900 pip install "flash-attn>=2.7.0" --no-build-isolation || echo "flash-attn skipped"
+# 编译 SageAttention2 时如果缺 CUDA 头文件，再补装：conda install -y -c nvidia "cuda-libraries-dev=${CUDA_MM}"
 
 # SageAttention2：必须在能看到 GPU 的节点上编译
 git clone https://github.com/thu-ml/SageAttention.git "$XDIT_WORK/src/SageAttention"
