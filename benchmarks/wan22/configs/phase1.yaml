@@ -1,0 +1,41 @@
+# Phase 1 on one A100-80G: BF16 vs INT8 quality, speed and memory, one process per load configuration.
+#   480p_33f   full 40-step videos for the 10 prompts; also gives 33-frame per-expert step times
+#   480p_81f   10 steps on one prompt for the 81-frame step times; every step does the same work
+# No warmup: the first 33-frame run absorbs the cold start and step times are medians over many
+# steps, and the 81-frame case runs after it in the same, already warm, process.
+#   BF16 and INT8 (both experts):  bench.py --config this --output-dir DIR [--runner-arg gemm_quantization=int8]
+#   one expert in INT8:            add --case 480p_33f --runner-arg int8_gemm_modules=transformer.blocks
+#                                  (or transformer_2.blocks); its speed is composed from the per-expert times
+# The 10 prompts are drawn from VBench's prompts/all_dimension.txt (946 lines, sha256 f9b50654...d80d8c3):
+# random.Random(0).shuffle of the non-empty lines, first 10.
+runner_args:
+  model: Wan2.2-T2V
+  attention_backend: CUDNN
+  # guidance 4.0 / 3.0 and flow_shift 12 are the Wan2.2-T2V defaults; spelled out so results state them.
+  guidance_scale: 4.0
+  guidance_scale_2: 3.0
+  flow_shift: 12
+prompts:
+  - an orange on the top of a carrot, front view
+  - An astronaut flying in space, pan right
+  - A cute happy Corgi playing in park, sunset, featuring a steady and smooth perspective
+  - an orange and a clock
+  - A person is cutting nails
+  - An animated painting of fluffy white clouds moving in sky.
+  - a truck and a bicycle
+  - Close up of grapes on a rotating table.
+  - a remote
+  - a bear climbing a tree
+seeds: [42]
+repeats: 1
+warmup: 0
+cases:
+  - {name: 480p_33f, height: 480, width: 832, num_frames: 33, num_inference_steps: 40, save_videos: first_repeat}
+  - name: 480p_81f
+    height: 480
+    width: 832
+    num_frames: 81
+    num_inference_steps: 10
+    save_videos: none
+    prompts:
+      - A cute happy Corgi playing in park, sunset, featuring a steady and smooth perspective

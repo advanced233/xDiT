@@ -110,7 +110,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 - **计时**：runner 已有 `--warmup_steps`、`--warmup_calls`、`--num_iterations`、`--profile*`（`xfuser/config/args.py:481,1082-1135`）。需要补充：
   - 用 CUDA event 按专家分别统计单步 DiT 时间。
   - 专家切换耗时单独记录。
-  - 报告预热后若干步的中位数。
+  - 报告多步的中位数（不跑预热，冷启动由中位数消化）。
 - **NVTX**：给 GEMM、注意力、通信、逐元素算子、量化算子分别打 range，供 M9 用 nsys 拆分耗时。
 - **显存**：记录每个 rank 的 `torch.cuda.max_memory_allocated`，分"权重常驻"和"去噪阶段峰值"两种口径。
 - **环境记录**：
@@ -136,15 +136,15 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 - 修正 Wan2.2 T2V 的默认值：`guidance_scale=4.0`、`guidance_scale_2=3.0`。（已随 M2 完成。）
 - 显存：BF16 下每卡需要放双专家（57 GB），必须配合 FSDP2（`--fully_shard_degree 2`）、模型级 offload，或 M2 的 INT8。
 - 验收：
-  - 同 seed 下 CFG2 与单卡输出在 BF16 舍入误差内一致，因为两者只差一次 all_gather。
-  - DiT 加速接近 2×。
+  - 数值一致性由下面的 Gloo 测试保证（CFG2 与单进程只差一次 all_gather），不另外在 GPU 上跑对照。
+  - 速度取 M8 表里 FSDP2 + CFG2 那一行，预期 DiT 加速接近 2×。
 - 测试：在 `tests/integration/cpu/` 用随机初始化的小 Wan 配置跑 Gloo 2 进程，验证 CFG2 与单进程的噪声预测一致、专家切换的步数一致。
 
 ### M2 单卡 INT8 接入与专家敏感度（A100）
 
 - 为 `xFuserWan22T2VModel` 声明 `use_int8_gemms=True`，并设置 `int8_gemm_module_list=["transformer.blocks", "transformer_2.blocks"]`。
 - 支持按专家选择量化范围：none / high-only / low-only / both。
-- 速度：480p 下 33 帧和 81 帧两个长度，各跑 10 步，用实测值对照第 3.2 节的预测。只跑 BF16 和 INT8 两个专家这两组；"只量化一个专家"的速度用各专家的单步时间拼出来。
+- 速度：33 帧的单步时间直接取自画质运行（完整 40 步）；81 帧在同一进程里另跑 10 步。只有 BF16 和 INT8 两个专家这两组带 81 帧；"只量化一个专家"的速度用各专家的单步时间拼出来。用实测值对照第 3.2 节的预测。
 - 按需：只有 INT8 加速明显低于预期时，才对比 eager 与 `--use_torch_compile`，看 epilogue 有没有被融合。
 - 敏感度实验：
   - 高噪声专家约跑 26/40 步，所以只量化它就能拿到约 65% 的加速收益。
@@ -156,7 +156,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 > - Wan2.1 T2V（14B / 1.3B）和 Wan2.2 T2V 都声明了 INT8；Wan2.2 的两个专家都是 INT8 目标。
 > - 新参数 `--int8_gemm_modules` 可以只选其中一个专家。它要求 `--gemm_quantization int8`，模块名必须和声明的目标完全一致，否则直接报错。实现在 `loading/quantization_plan.py` 的 `apply_int8_module_selection`。
 > - 测试在 `tests/unit/model_executor/loading/test_int8_plan.py` 和 `tests/unit/config/test_gemm.py`。
-> - 实验按精简方案执行，见 [`phase1_runbook.md`](phase1_runbook.md)：速度 2 组、画质 4 组 × 10 个 prompt，约 5 小时。
+> - 实验按精简方案执行，见 [`phase1_runbook.md`](phase1_runbook.md)：4 个进程（BF16、INT8 两个专家、只高噪声、只低噪声），不做冒烟和预热，约 3.5 小时。
 
 ### M3 Wan2.2 双专家 TP
 
@@ -199,14 +199,14 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 
 验收：
 
-- TP2 与单卡比较首步 DiT 输出：fp32 下相对误差约 1e-5；bf16 下设定明确的容差，例如相对 L2 < 1e-2。最终视频用 LPIPS / PSNR 对照。
+- TP2 与单卡比较首步 DiT 输出：fp32 下相对误差约 1e-5；bf16 下设定明确的容差，例如相对 L2 < 1e-2。数值对齐了，视频就不再单独对比。
 - 2×A6000 BF16 下双专家常驻，记录每卡峰值显存。
 
 测试：
 
 - `tests/integration/cpu/`：用随机初始化的小 Wan 配置（例如 2 层、4 heads）跑 Gloo 2 进程，fp32 下对比 TP2 与单进程的前向输出。覆盖 self-attention、cross-attention、FFN、QK-norm 归约和 Row bias。
 - `tests/integration/accelerator/`：BF16 版本，标记 `nvidia`、`multi_gpu`。
-- `tests/e2e/`：在 2×A6000 上用 480p / 33 帧完整跑一次，记录命令和结果。
+- 不单独做完整模型的冒烟：M8 表里 TP2 那一行就是第一次完整运行，命令和结果记在那里。
 
 ### M4 TP 通信优化
 
@@ -214,7 +214,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 - **计算与通信重叠**：Row 并行层按序列分成 2～4 块，前一块的 AllReduce 异步发出，同时计算下一块的 GEMM。输出投影和 FFN 第二层是主要目标。
 - 可选：Megatron 式序列并行（reduce-scatter + all-gather 代替 AllReduce），让 norm 和调制按序列切分。通信量不变，但能降低激活显存和重复计算。
 - 验收：
-  - nsys 显示暴露在关键路径上的通信时间下降。
+  - 用 M8 的 TP2 配置，优化开关前后各跑一次，比较单步 DiT 时间。
   - 输出与 M3 一致：合并归约应逐元素一致；分块重叠后误差在 BF16 舍入范围内。
 - 测试：在 M3 的 Gloo 测试上增加优化开关，断言开关前后输出一致。
 
@@ -226,8 +226,8 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
   - Row 并行：per-token scale 在本地那一段输入维上计算，粒度比单卡 INT8 更细，所以数值与单卡 INT8 不同。各 rank 先在本地反量化，再做 BF16 AllReduce。
 - 验收：
   - TP2 + INT8 能运行，每卡显存约 15 GB 加激活。
-  - 画质与单卡 INT8、BF16 分别做对照。
-  - 用 nsys 测出 INT8 在 TP2 上的额外加速，与第 3.5 节的约 1.28× 对照。
+  - 画质不另外测：TP 的数值一致性由测试保证，TP2 + INT8 的画质等同于阶段 1 的单卡 INT8。
+  - 速度取 M8 表里 TP2 + INT8 那一行，与 TP2 BF16 之比对照第 3.5 节的约 1.28×；nsys 留到 M9 统一做一次。
 - 测试：在 Gloo 测试中加入 INT8 路径。如果 CPU 上 torchao int8 不可用，就放进 accelerator 测试。
 
 ### M6 融合 INT8 kernel（Triton）
@@ -285,7 +285,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 ```text
 阶段 0  M0 测量基建                  任意 GPU
    │
-阶段 1  M2 单卡 INT8 + 专家敏感度     A100        ← 无分布式复杂度，最快出数据（约 5 小时）
+阶段 1  M2 单卡 INT8 + 专家敏感度     A100        ← 无分布式复杂度，最快出数据（约 3.5 小时）
         （M7 按需）
    │
 阶段 2  M1 Wan2.2 T2V CFG 并行        2×A6000     ← 改动小，解锁 FSDP2+CFG2 / INT8+CFG2
@@ -318,8 +318,9 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
   - 采样：40 步、guidance 4.0 / 3.0、flow_shift 12、Wan 默认 scheduler。
   - seed：固定一组 seed。
   - 注意力：在 Ampere 上，xDiT 没指定后端时默认用 `CUDNN`（`xfuser/core/distributed/runtime_state.py:96-103`）。M0 先在 Wan 的形状上（B=1、H=40 或 TP2 下的 20、D=128、L=14040 / 32760、bf16）对比 `CUDNN`、`SDPA_FLASH`，以及装了 flash-attn 时的 `FLASH`，选最快的 dense 后端作为基线，此后所有实验固定使用。注意力越快，Linear 的时间占比越高，INT8 的加速比也会越大，所以报告里必须写明基线用的是哪个后端。
-- **速度**：1 条 prompt，10 步，1 次预热加 1 次计时；报告按专家分开的单步 DiT 时间中位数。40 步的端到端时间由单步时间推算：非 DiT 部分 + 26 × 高噪声单步 + 14 × 低噪声单步。生成流水线时间不包含模型加载和视频编码落盘。同卡出现其他进程的运行（工具会标记）作废重跑。
-- **画质**：10 条 prompt（取自 VBench 的 prompt 集，写在 `quality_480p33.yaml` 里），480p / 33 帧，完整 40 步，每条 1 个 seed。A100 上 BF16 单条约 3.4 分钟。
+- **冒烟与预热**：不单独做。环境配好后只做一次小模型冒烟（`env_setup.md` 第 8.4 节）；之后每个阶段的第一组正式运行就是冒烟。计时取多步的中位数，冷启动的影响由此消化，不跑预热。
+- **速度**：报告按专家分开的单步 DiT 时间中位数。只测速的 case 用 1 条 prompt、10 步、跑 1 次。40 步的端到端时间优先直接取完整运行的结果，没有时再推算：非 DiT 部分 + 高噪声步数 × 高噪声单步时间 + 低噪声步数 × 低噪声单步时间（40 步时约 26 / 14 步）。生成流水线时间不包含模型加载和视频编码落盘。同卡出现其他进程的运行（工具会标记）作废重跑。
+- **画质**：10 条 prompt（取自 VBench 的 prompt 集，写在 `benchmarks/wan22/configs/phase1.yaml` 里），480p / 33 帧，完整 40 步，每条 1 个 seed。A100 上 BF16 单条约 3.4 分钟。
   - 偏离度：同 seed 下相对 BF16 的 LPIPS / PSNR / SSIM。
   - 画质：VBench 6 个维度的均值，写明"10 个 prompt × 6 个维度"。
   - 两类指标不能混用：同 seed 偏离大不等于画质差。

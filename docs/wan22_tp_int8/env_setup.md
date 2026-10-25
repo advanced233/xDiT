@@ -69,7 +69,7 @@
 | 15 | 模型权重 | `Wan-AI/Wan2.1-T2V-1.3B-Diffusers`（开发用）和 `Wan-AI/Wan2.2-T2V-A14B-Diffusers`，都下载到 `$HF_HOME` | 设置 `HF_HUB_OFFLINE=1` 后可以加载 |
 | 16 | 拓扑与带宽 | `nvidia-smi topo -m`、P2P 状态，以及 NCCL all_reduce / all_to_all 实测带宽 | 写进回报 |
 | 17 | 仓库测试 | CPU 测试与 GPU 测试的各个 selector 都跑一遍（见步骤 8） | 记录 passed / failed / skipped 数 |
-| 18 | 端到端冒烟 | 1.3B 单卡和 Ulysses2 各跑一次；A14B 用短配置跑一次 | 生成出视频文件 |
+| 18 | 端到端冒烟 | 只跑一次 1.3B：有两张空闲卡就用 Ulysses2，否则单卡；A14B 不单独冒烟，由第一组正式实验验证 | 生成出视频文件 |
 
 ## 2. 执行步骤
 
@@ -251,8 +251,6 @@ export CUDA_VISIBLE_DEVICES=0,1   # 只选当前空闲的卡；没有空闲卡�
 PORT=$((20000 + RANDOM % 20000))
 ```
 
-8.4 中的 A14B 冒烟只在步骤 7 下载了 A14B 时才执行。
-
 **8.1 版本与关键算子**
 
 ```bash
@@ -326,22 +324,16 @@ python -m pytest -m "accelerator and multi_gpu and not rocm"   # 需要 2 张空
 
 记录每条命令的 passed / failed / skipped / deselected 数。如果有失败，只把现象记进回报，不要修改代码。
 
-**8.4 端到端冒烟**
+**8.4 端到端冒烟（只跑一次）**
+
+用 1.3B 小模型跑一条短视频，同时覆盖模型加载、推理和视频输出。有两张空闲卡时加 `--ulysses_degree 2`，顺带验证多卡通信。A14B 不单独冒烟：它的加载就要 10～20 分钟，第一组正式实验会顺带验证它。
 
 ```bash
 export HF_HUB_OFFLINE=1
-OUT="$XDIT_WORK/outputs/smoke"
-CUDA_VISIBLE_DEVICES=0 xdit --model Wan2.1-T2V-1.3B --prompt "a cat walking on grass" \
-  --height 480 --width 832 --num_frames 17 --num_inference_steps 4 \
-  --master_port "$PORT" --output_directory "$OUT"
 xdit --model Wan2.1-T2V-1.3B --prompt "a cat walking on grass" \
   --height 480 --width 832 --num_frames 17 --num_inference_steps 4 \
-  --ulysses_degree 2 --master_port "$PORT" --output_directory "$OUT"
-# Wan2.2-A14B：2×A6000 上用 FSDP2 + Ulysses2，让 BF16 双专家放得下
-xdit --model Wan2.2-T2V --prompt "a cat walking on grass" \
-  --height 480 --width 832 --num_frames 17 --num_inference_steps 4 \
-  --fully_shard_degree 2 --ulysses_degree 2 --master_port "$PORT" --output_directory "$OUT"
-# A100 单卡：直接跑；OOM 时加 --enable_model_cpu_offload
+  --ulysses_degree 2 --master_port "$PORT" --output_directory "$XDIT_WORK/outputs/smoke"
+# 只有一张空闲卡时：去掉 --ulysses_degree 2，并设置 CUDA_VISIBLE_DEVICES 为那张卡
 ```
 
 ### 步骤 9：回报
@@ -354,7 +346,7 @@ xdit --model Wan2.2-T2V --prompt "a cat walking on grass" \
 版本：python / torch(cuda) / diffusers / transformers / torchao / flash-attn / yunchang / sageattention / nsys
 NCCL：all_reduce 与 all_to_all 在 64/256/1024 MiB 下的 busbw
 测试：4 条 selector 各自的 passed / failed / skipped / deselected 数（附失败用例名）
-冒烟：3 条命令的结果、耗时、输出文件路径
+冒烟：那 1 条命令的结果、耗时、输出文件路径
 未完成项和原因（例如 nsys 缺失、SageAttention2 编译失败而改用 v1）
 按第 0 节规则自行做的决定（例如 $XDIT_WORK 的选择、跳过的项、等待 GPU 的情况）
 ```

@@ -1,9 +1,9 @@
 """Compare candidate videos with same-seed reference videos: LPIPS, PSNR, SSIM.
 
     python benchmarks/wan22/compare_videos.py \
-        --reference $XDIT_WORK/results/bf16/videos/480x832x33 \
-        --candidate $XDIT_WORK/results/int8/videos/480x832x33 \
-        --json $XDIT_WORK/results/int8_vs_bf16.json
+        --reference $XDIT_WORK/results/phase1/bf16/videos/480p_33f \
+        --candidate $XDIT_WORK/results/phase1/int8_both/videos/480p_33f \
+        --json $XDIT_WORK/results/phase1/int8_vs_bf16.json
 
 Files are matched by name, which ``bench.py`` derives from prompt index and seed.
 These metrics measure how far a run drifts from the reference, not how good it

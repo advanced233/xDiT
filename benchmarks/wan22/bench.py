@@ -1,14 +1,15 @@
 """Load a Wan runner once and time many generation cases with it.
 
-    python benchmarks/wan22/bench.py --config benchmarks/wan22/configs/speed_sweep.yaml \
+    python benchmarks/wan22/bench.py --config benchmarks/wan22/configs/phase1.yaml \
         --output-dir $XDIT_WORK/results/bf16
 
-    python benchmarks/wan22/bench.py --config benchmarks/wan22/configs/speed_sweep.yaml \
+    python benchmarks/wan22/bench.py --config benchmarks/wan22/configs/phase1.yaml --case 480p_33f \
         --runner-arg gemm_quantization=int8 --runner-arg int8_gemm_modules=transformer.blocks \
         --output-dir $XDIT_WORK/results/int8_high
 
 Loading Wan 2.2 A14B takes minutes, so one process loads it once and runs every
-case, prompt, seed and repeat of a config. A change to how the model is loaded
+case, prompt, seed and repeat of a config; a case can carry its own prompts,
+repeats, warmup and save_videos. A change to how the model is loaded
 (GEMM quantization, attention backend, compile, parallel degrees) is a separate
 invocation. Multi-GPU runs go through torchrun the same way; only the last rank,
 the one xDiT takes the output from, writes files.
@@ -80,19 +81,16 @@ def _case_name(case):
 
 
 def _load_config(path, overrides, prompts_file=None, only_cases=(), repeats=None):
+    """Read the YAML config, apply CLI overrides, and resolve every case's run settings.
+
+    ``prompts``, ``repeats``, ``warmup`` and ``save_videos`` are top-level defaults that a
+    case may override, so one process can run a many-prompt quality case and a one-prompt
+    speed case without loading the model twice.
+    """
     config = yaml.safe_load(Path(path).read_text())
     if prompts_file:
         config["prompts"] = []
         config["prompts_file"] = prompts_file
-    if repeats is not None:
-        config["repeats"] = repeats
-    cases = [{**case, "name": _case_name(case)} for case in config.get("cases") or []]
-    if only_cases:
-        unknown = sorted(set(only_cases) - {case["name"] for case in cases})
-        if unknown:
-            raise SystemExit(f"--case names not in the config: {unknown}")
-        cases = [case for case in cases if case["name"] in only_cases]
-    config["cases"] = cases
     runner_args = dict(config.get("runner_args") or {})
     for item in overrides:
         key, sep, value = item.partition("=")
@@ -100,21 +98,38 @@ def _load_config(path, overrides, prompts_file=None, only_cases=(), repeats=None
             raise SystemExit(f"--runner-arg expects KEY=VALUE, got {item!r}")
         runner_args[key.strip()] = yaml.safe_load(value)
     config["runner_args"] = runner_args
-    if not config.get("cases"):
-        raise SystemExit("config needs a non-empty 'cases' list")
+
     prompts = list(config.get("prompts") or [])
     if config.get("prompts_file"):
         lines = Path(config["prompts_file"]).read_text().splitlines()
         prompts += [line.strip() for line in lines if line.strip() and not line.lstrip().startswith("#")]
-    if not prompts:
-        raise SystemExit("config needs 'prompts' or 'prompts_file'")
     config["prompts"] = prompts
     config.setdefault("seeds", [42])
-    config.setdefault("repeats", 3)
-    config.setdefault("warmup", 1)
-    config.setdefault("save_videos", "first_repeat")
-    if config["save_videos"] not in {"none", "first_repeat", "all"}:
-        raise SystemExit("save_videos must be none, first_repeat or all")
+    defaults = {"repeats": 1, "warmup": 0, "save_videos": "first_repeat"}
+    for key, value in defaults.items():
+        config.setdefault(key, value)
+
+    cases = []
+    for raw in config.get("cases") or []:
+        case = {**raw, "name": _case_name(raw)}
+        case["prompts"] = list(raw.get("prompts") or prompts)
+        for key in defaults:
+            case[key] = raw.get(key, config[key])
+        if repeats is not None:
+            case["repeats"] = repeats
+        if not case["prompts"]:
+            raise SystemExit(f"case {case['name']} has no prompts; set 'prompts' or 'prompts_file'")
+        if case["save_videos"] not in {"none", "first_repeat", "all"}:
+            raise SystemExit("save_videos must be none, first_repeat or all")
+        cases.append(case)
+    if only_cases:
+        unknown = sorted(set(only_cases) - {case["name"] for case in cases})
+        if unknown:
+            raise SystemExit(f"--case names not in the config: {unknown}")
+        cases = [case for case in cases if case["name"] in only_cases]
+    if not cases:
+        raise SystemExit("config needs a non-empty 'cases' list")
+    config["cases"] = cases
     return config
 
 
@@ -283,7 +298,7 @@ def main():
     runner = xFuserModelRunner(namespace)
     first_case = config["cases"][0]
     runner.initialize(
-        runner.preprocess_args(_case_args(namespace, first_case, config["prompts"][0], config["seeds"][0]))
+        runner.preprocess_args(_case_args(namespace, first_case, first_case["prompts"][0], config["seeds"][0]))
     )
     model = runner.model
     torch.cuda.synchronize()
@@ -302,15 +317,15 @@ def main():
     for case in config["cases"]:
         name = case["name"]
         timer.enabled = False
-        warmup_args = runner.preprocess_args(_case_args(namespace, case, config["prompts"][0], config["seeds"][0]))
-        for _ in range(int(config["warmup"])):
+        warmup_args = runner.preprocess_args(_case_args(namespace, case, case["prompts"][0], config["seeds"][0]))
+        for _ in range(int(case["warmup"])):
             runner.run(warmup_args)
         timer.enabled = True
 
-        for prompt_index, prompt in enumerate(config["prompts"]):
+        for prompt_index, prompt in enumerate(case["prompts"]):
             for seed in config["seeds"]:
                 input_args = runner.preprocess_args(_case_args(namespace, case, prompt, seed))
-                for repeat in range(int(config["repeats"])):
+                for repeat in range(int(case["repeats"])):
                     before = gpu_snapshot(uuids=[uuid], own_pids=[os.getpid()])
                     timer.reset()
                     torch.cuda.reset_peak_memory_stats()
@@ -345,10 +360,10 @@ def main():
                         "foreign_processes": foreign,
                         "video": None,
                     }
-                    save = config["save_videos"] == "all" or (config["save_videos"] == "first_repeat" and repeat == 0)
+                    save = case["save_videos"] == "all" or (case["save_videos"] == "first_repeat" and repeat == 0)
                     if writer and save:
                         video = output_dir / "videos" / name / f"p{prompt_index:03d}_s{seed}.mp4"
-                        if config["save_videos"] == "all":
+                        if case["save_videos"] == "all":
                             video = video.with_name(f"p{prompt_index:03d}_s{seed}_r{repeat}.mp4")
                         record["video"] = _save_video(model, output, video)
                     records.append(record)
