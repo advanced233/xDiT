@@ -80,6 +80,28 @@ def test_args_reject_int8_combined_with_fp8_or_fp4(runtime, flags):
         config._validate_gemm_quantization_flags()
 
 
+@pytest.mark.parametrize("profile", [None, "fp8"])
+def test_int8_module_selection_requires_the_int8_profile(runtime, profile):
+    config = _args(runtime, gemm_quantization=profile, int8_gemm_modules="transformer.blocks")
+
+    with pytest.raises(ValueError, match="--int8_gemm_modules requires --gemm_quantization int8"):
+        config._validate_gemm_quantization_flags()
+
+
+def test_runner_parser_accepts_int8_module_selection(runtime):
+    from xfuser.config.args import FlexibleArgumentParser
+
+    parser = runtime.args_cls.add_runner_args(FlexibleArgumentParser())
+    parsed = parser.parse_args(
+        ["--model", "Wan2.2-T2V", "--gemm_quantization", "int8", "--int8_gemm_modules", "transformer_2.blocks"]
+    )
+    config = runtime.args_cls.from_runner_args(vars(parsed))
+
+    config._validate_gemm_quantization_flags()
+    assert config.use_int8_gemms
+    assert config.int8_gemm_modules == "transformer_2.blocks"
+
+
 @pytest.mark.parametrize(
     "use_fp8_gemms",
     [False, True],

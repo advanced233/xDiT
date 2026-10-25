@@ -66,6 +66,25 @@ def apply_fp8_override_cli_to_settings(config, settings) -> None:
         settings.fp8_precision_override_suffixes = _parse_csv_patterns(config.fp8_precision_override_suffix_patterns)
 
 
+def apply_int8_module_selection(config, settings) -> None:
+    """Narrow the declared INT8 targets to the ones named by --int8_gemm_modules.
+
+    Names must match declared targets exactly, the same contract as the FP4 high-precision
+    module patterns, so a typo fails here instead of silently leaving every target in INT8.
+    """
+    raw = getattr(config, "int8_gemm_modules", None)
+    if raw is None:
+        return
+    requested = tuple(dict.fromkeys(name.strip() for name in raw.split(",") if name.strip()))
+    if not requested:
+        raise ValueError("--int8_gemm_modules requires at least one module")
+    declared = list(settings.int8_gemm_module_list or ())
+    unknown = sorted(set(requested) - set(declared))
+    if unknown:
+        raise ValueError(f"--int8_gemm_modules must name declared INT8 targets {declared}; unknown: {unknown}")
+    settings.int8_gemm_module_list = [name for name in declared if name in requested]
+
+
 class QuantizationPlan:
     """Resolve declared FP8, FP4, FP6, and INT8 targets from one runner."""
 

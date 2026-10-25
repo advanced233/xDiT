@@ -155,6 +155,16 @@ def _add_gemm_profile_args(parser) -> None:
         default=None,
         help="Optional YAML file with advanced GEMM target or schedule settings.",
     )
+    parser.add_argument(
+        "--int8_gemm_modules",
+        type=nullable_str,
+        default=None,
+        help=(
+            "Comma-separated subset of the model's declared INT8 targets to quantize, for example "
+            "transformer_2.blocks to keep only Wan 2.2's low-noise expert in INT8. Requires "
+            "--gemm_quantization int8. Default: every declared target."
+        ),
+    )
 
 
 @dataclass
@@ -239,6 +249,7 @@ class xFuserArgs:
     cross_attention_backend: Optional[str] = None
     gemm_quantization: Union[GemmQuantizationSpec, str, None] = None
     gemm_config: Optional[str] = None
+    int8_gemm_modules: Optional[str] = None
     use_int8_gemms: bool = False
     use_fp8_gemms: bool = False
     use_fp8_text_encoder: bool = False
@@ -1465,6 +1476,8 @@ class xFuserArgs:
                 "--use_int8_gemms cannot be combined with --use_fp8_gemms or "
                 "--use_fp4_gemms, including explicit hybrid FP8/FP4 mode."
             )
+        if self.int8_gemm_modules is not None and not self.use_int8_gemms:
+            raise ValueError("--int8_gemm_modules requires --gemm_quantization int8.")
         if self.use_fp8_gemms and self.use_fp4_gemms and not self.use_hybrid_gemm_schedule:
             raise ValueError(
                 "--use_fp8_gemms and --use_fp4_gemms cannot both be enabled unless "

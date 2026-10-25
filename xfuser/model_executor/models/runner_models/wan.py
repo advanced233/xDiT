@@ -644,6 +644,7 @@ class xFuserWan21T2VModel(xFuserWanModel):
         use_fp4_gemms=True,
         use_fp6_gemms=True,
         use_a6w4_gemms=True,
+        use_int8_gemms=True,
         use_hybrid_attn_schedule=True,
         use_parallel_vae=True,
         cross_attention_backend=True,
@@ -661,6 +662,7 @@ class xFuserWan21T2VModel(xFuserWanModel):
         fp8_gemm_module_list=["transformer.blocks"],
         fp8_text_encoder_module_list=["text_encoder.encoder.block"],
         fp4_gemm_module_list=["transformer.blocks"],
+        int8_gemm_module_list=["transformer.blocks"],
         fp8_precision_overrides=(
             "0.",
             "1.",
@@ -784,6 +786,14 @@ class xFuserWan22T2VModel(xFuserWan21T2VModel):
     # See xFuserWan22I2VModel: "fbcache" == DBCache first-block (Fn_compute_blocks=1).
     capabilities = replace(xFuserWan21T2VModel.capabilities, use_fp8_comms=True)
 
+    # The T2V-A14B release samples its high-noise expert (transformer) at guidance 4.0 and
+    # its low-noise expert (transformer_2) at 3.0.
+    default_input_values = replace(
+        xFuserWan21T2VModel.default_input_values,
+        guidance_scale=4.0,
+        guidance_scale_2=3.0,
+    )
+
     def _customize_settings(self, config: xFuserArgs) -> None:
         super()._customize_settings(config)
         self.settings.model_name = "Wan-AI/Wan2.2-T2V-A14B-Diffusers"
@@ -793,6 +803,9 @@ class xFuserWan22T2VModel(xFuserWan21T2VModel):
             "dtype": torch.bfloat16,
         }
         self.settings.fp8_gemm_module_list = ["transformer.blocks", "transformer_2.blocks"]
+        # transformer is the high-noise expert, transformer_2 the low-noise one; select either
+        # alone with --int8_gemm_modules.
+        self.settings.int8_gemm_module_list = ["transformer.blocks", "transformer_2.blocks"]
         self.settings.fp8_text_encoder_module_list = ["text_encoder.encoder.block"]
         self.settings.fp8_precision_overrides = None
         self.settings.transformer_attr_names = ["transformer", "transformer_2"]

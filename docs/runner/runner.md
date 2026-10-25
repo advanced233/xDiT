@@ -183,6 +183,7 @@ For startup adapter fusion on FLUX.1-dev, see [LoRA support and limitations](lor
 | `--use_torch_compile` | Enable torch.compile acceleration | False |
 | `--gemm_quantization` | Transformer GEMM profile: `fp8`, `fp4`, `fp6`, `a6w4`, `int8`, or a supported `low=fp4,high=<format>` pair | none |
 | `--gemm_config` | Optional YAML file for advanced high-precision targets or an explicit FP8/FP4 schedule | None |
+| `--int8_gemm_modules` | Comma-separated subset of the runner's declared INT8 targets to quantize, e.g. `transformer_2.blocks` for only Wan 2.2's low-noise expert; names must match the targets below exactly. Requires `--gemm_quantization int8` | All declared targets |
 | `--use_fp8_gemms`, `--use_fp4_gemms`, `--use_int8_gemms` | Deprecated format selectors retained for compatibility | False |
 | `--use_fp8_text_encoder` | Extend FP8 quantization to the text encoder as well; requires a profile containing FP8 | False |
 | `--use_hybrid_gemm_schedule` | Use the profile's high format at the endpoints and FP4 in the middle | False |
@@ -315,7 +316,9 @@ A listed target is only half the answer: the format still has to survive the har
 | Model family | FP4 targets | INT8 targets |
 |--------------|-------------|--------------|
 | FLUX.2 | `transformer.transformer_blocks` and `transformer.single_transformer_blocks` | No |
-| Wan 2.1/2.2 I2V and T2V, Wan 2.2 TI2V | `transformer.blocks`; on dual-transformer Wan 2.2 that covers `transformer` while all of `transformer_2` stays FP8 | No |
+| Wan 2.1 T2V (14B and 1.3B) | `transformer.blocks` | `transformer.blocks` |
+| Wan 2.2 T2V | `transformer.blocks`; that covers `transformer` while all of `transformer_2` stays FP8 | `transformer.blocks` (high-noise expert) and `transformer_2.blocks` (low-noise expert); `--int8_gemm_modules` selects one |
+| Wan 2.1/2.2 I2V, Wan 2.2 TI2V | `transformer.blocks`; on dual-transformer Wan 2.2 that covers `transformer` while all of `transformer_2` stays FP8 | No |
 | Wan 2.2 Distilled I2V | The same split, inherited from Wan 2.2 I2V and applied post-load | No |
 | Krea2-Raw and Krea2-Turbo | `transformer.transformer_blocks` | No |
 | Ideogram 4 | `transformer.layers` and `unconditional_transformer.layers` | No |
