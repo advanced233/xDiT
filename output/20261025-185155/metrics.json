@@ -1,0 +1,36 @@
+{
+  "bf16": {
+    "resident_gib": 64.3152847290039,
+    "480p_33f": {
+      "pipeline_s_median": 334.12471875,
+      "dit_ms_median": 331852.9080810547,
+      "transformer_step_ms_median": 8317.963256835938,
+      "transformer_2_step_ms_median": 8253.064697265625,
+      "run_peak_gib_max": 68.6228199005127
+    },
+    "480p_81f": {
+      "pipeline_s_median": 279.36359375,
+      "dit_ms_median": 274293.2001953125,
+      "transformer_step_ms_median": 27537.0185546875,
+      "transformer_2_step_ms_median": 27249.568359375,
+      "run_peak_gib_max": 68.76130104064941
+    }
+  },
+  "int8_both": {
+    "resident_gib": 38.01560974121094,
+    "480p_33f": {
+      "pipeline_s_median": 783.9788125,
+      "dit_ms_median": 781728.5483398438,
+      "transformer_step_ms_median": 19545.83837890625,
+      "transformer_2_step_ms_median": 19516.365966796875,
+      "run_peak_gib_max": 42.333415031433105
+    },
+    "480p_81f": {
+      "pipeline_s_median": 530.573,
+      "dit_ms_median": 525401.9140625,
+      "transformer_step_ms_median": 52439.470703125,
+      "transformer_2_step_ms_median": 52616.8671875,
+      "run_peak_gib_max": 43.58786916732788
+    }
+  }
+}
