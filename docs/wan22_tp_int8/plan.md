@@ -4,6 +4,8 @@
 
 文中性能数字均为按 FLOPs / 字节数的粗估，只用于定预期、排优先级，实测后逐项替换。
 
+**项目原则**：这是写进简历的项目，不是论文，也不是工业生产项目。每条简历结论只用能支撑它的最小实验：一个代表性配置，每个配置跑一次；只有结果出现意外时才补实验。不追求论文级的统计显著性，也不追求生产级的覆盖面。下文各模块的实验规模都按这个原则来定。
+
 - 基线代码：本仓库 `main`，commit `16c34e7`
 - 参考项目：[liuzhitu/xDiT_WAN2.1_TP](https://github.com/liuzhitu/xDiT_WAN2.1_TP)：Wan2.1 T2V 的 TP 与 TP×SP 适配，4×RTX 4090，只实测了 1.3B
 - 硬件：
@@ -142,8 +144,8 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 
 - 为 `xFuserWan22T2VModel` 声明 `use_int8_gemms=True`，并设置 `int8_gemm_module_list=["transformer.blocks", "transformer_2.blocks"]`。
 - 支持按专家选择量化范围：none / high-only / low-only / both。
-- 对比 eager 与 `--use_torch_compile` 两种模式，区分 epilogue 是否被融合。
-- 序列长度扫描：480p 下 33 / 49 / 81 帧，再加 720p 81 帧一组，用实测值对照第 3.2 节的预测。
+- 速度：480p 下 33 帧和 81 帧两个长度，各跑 10 步，用实测值对照第 3.2 节的预测。只跑 BF16 和 INT8 两个专家这两组；"只量化一个专家"的速度用各专家的单步时间拼出来。
+- 按需：只有 INT8 加速明显低于预期时，才对比 eager 与 `--use_torch_compile`，看 epilogue 有没有被融合。
 - 敏感度实验：
   - 高噪声专家约跑 26/40 步，所以只量化它就能拿到约 65% 的加速收益。
   - 预期高噪声专家决定构图和运动，量化后同 seed 的 LPIPS 可能明显升高，但 VBench 不一定下降；低噪声专家主要影响纹理细节。两类指标需要一起解读。
@@ -154,7 +156,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 > - Wan2.1 T2V（14B / 1.3B）和 Wan2.2 T2V 都声明了 INT8；Wan2.2 的两个专家都是 INT8 目标。
 > - 新参数 `--int8_gemm_modules` 可以只选其中一个专家。它要求 `--gemm_quantization int8`，模块名必须和声明的目标完全一致，否则直接报错。实现在 `loading/quantization_plan.py` 的 `apply_int8_module_selection`。
 > - 测试在 `tests/unit/model_executor/loading/test_int8_plan.py` 和 `tests/unit/config/test_gemm.py`。
-> - 720p 81 帧那一组放在 33 / 49 / 81 帧的结果出来之后再定。
+> - 实验按精简方案执行，见 [`phase1_runbook.md`](phase1_runbook.md)：速度 2 组、画质 4 组 × 10 个 prompt，约 5 小时。
 
 ### M3 Wan2.2 双专家 TP
 
@@ -247,27 +249,22 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 
 - 使用 `--attention_backend SAGE`。验证它在 TP 本地 heads 和 Ulysses2 下都能正常工作。
 - 确认 sm_86 上走的是 INT8 QK + FP16 PV 路径（FP8 PV 需要 sm_89 以上），实测 kernel 层面的加速，替换第 3.2 节中假设的 1.7×。
-- 做 2×2 消融（W8A8 开 / 关 × Sage 开 / 关），分别测速度和画质。
+- 按需：如果要写"W8A8 + SageAttention"，在 480p / 33 帧下补一组 W8A8 + SAGE 的速度和画质（复用 M2 的 10 个 prompt），不做完整的 2×2 消融。
 
 ### M8 2 卡并行策略对比（2×A6000）
 
-| 配置 | BF16 | INT8 |
-|---|---|---|
-| 单卡 + 模型级 offload | 基线 | 无需 offload |
-| FSDP2 + Ulysses2 | ✓ | ✓（如果 xDiT 的 FSDP 量化路径支持） |
-| FSDP2 + CFG2（依赖 M1） | ✓ | ✓（同上） |
-| TP2（M3/M4） | ✓ | ✓（M5） |
-| Ulysses2 | 每卡单专家 + 切换 | 双专家常驻 |
-| Ring2 | 每卡单专家 + 切换 | 双专家常驻 |
-| CFG2（M1） | 每卡单专家 + 切换 | 双专家常驻 |
+主表只放简历要用的几行，每行在 480p / 33 帧、10 步下跑一次：
 
-- 指标：
-  - 按专家分别统计的单步 DiT 时间。
-  - 端到端时间。
-  - 每卡峰值显存。
-  - 通信量。
-  - 专家切换耗时。
-- 配置：480p / 33 帧为主表，另做 480p / 81 帧，720p / 81 帧只跑一组作为 headline。
+| 配置 | 用途 |
+|---|---|
+| 单卡 + 模型级 offload（BF16） | 基线；顺带记录专家切换耗时 |
+| TP2（BF16，M3/M4） | 本项目的主体 |
+| FSDP2 + CFG2（BF16，依赖 M1） | TP 最强的对手 |
+| Ulysses2（INT8，双专家常驻） | 体现 INT8 带来的"双专家常驻" |
+| TP2 + INT8（M5） | TP 与 INT8 叠加 |
+
+- 指标：按专家分别统计的单步 DiT 时间、每卡峰值显存。通信量用第 3.3 节的估算，需要实测时再用 nsys。
+- 按需：Ring2、81 帧、720p 等，只有在要解释某个结果时才补。
 - 报告中写明硬件拓扑（NVLink 或 PCIe，P2P 是否可用）。
 - 预期结论要如实写，即使 TP2 不是最快的配置。TP 的适用场景包括：去掉 CFG 的蒸馏模型（例如 `Wan2.2-Distilled-I2V` 声明了 `use_cfg_parallel=False`，见 `runner_models/wan.py:458`），以及 4 卡以上需要和 CFG / SP 组合的情况。
 
@@ -288,11 +285,11 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 ```text
 阶段 0  M0 测量基建                  任意 GPU
    │
-阶段 1  M2 单卡 INT8 + 专家敏感度     A100        ← 无分布式复杂度，最快出数据
-        M7 Sage 快速消融（单卡）       A100
+阶段 1  M2 单卡 INT8 + 专家敏感度     A100        ← 无分布式复杂度，最快出数据（约 5 小时）
+        （M7 按需）
    │
 阶段 2  M1 Wan2.2 T2V CFG 并行        2×A6000     ← 改动小，解锁 FSDP2+CFG2 / INT8+CFG2
-        M8 基线部分：单卡 offload、FSDP2+Ulysses2、FSDP2+CFG2、Ulysses2、Ring2、CFG2
+        M8 基线部分：单卡 offload、FSDP2+CFG2
    │
 阶段 3  M3 双专家 TP                  2×A6000     ← 工作量最大
         M4 TP 通信优化
@@ -321,16 +318,13 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
   - 采样：40 步、guidance 4.0 / 3.0、flow_shift 12、Wan 默认 scheduler。
   - seed：固定一组 seed。
   - 注意力：在 Ampere 上，xDiT 没指定后端时默认用 `CUDNN`（`xfuser/core/distributed/runtime_state.py:96-103`）。M0 先在 Wan 的形状上（B=1、H=40 或 TP2 下的 20、D=128、L=14040 / 32760、bf16）对比 `CUDNN`、`SDPA_FLASH`，以及装了 flash-attn 时的 `FLASH`，选最快的 dense 后端作为基线，此后所有实验固定使用。注意力越快，Linear 的时间占比越高，INT8 的加速比也会越大，所以报告里必须写明基线用的是哪个后端。
-- **Prompt**：
-  - 速度测试固定 1～3 条。
-  - 画质测试用 N ≥ 50 条，在 480p / 33 帧下进行。A100 BF16 单条约 3～4 分钟，BF16 + INT8 两组约 6～7 小时。
-- **计时**：先预热一次完整生成；正式计时报告单步 DiT 时间的中位数（按专家分开）和端到端时间。生成流水线时间不包含模型加载和视频编码落盘。
-- **显存**：分"权重常驻"和"去噪峰值"两个口径，每个 rank 分别报告。
-- **画质**：
+- **速度**：1 条 prompt，10 步，1 次预热加 1 次计时；报告按专家分开的单步 DiT 时间中位数。40 步的端到端时间由单步时间推算：非 DiT 部分 + 26 × 高噪声单步 + 14 × 低噪声单步。生成流水线时间不包含模型加载和视频编码落盘。同卡出现其他进程的运行（工具会标记）作废重跑。
+- **画质**：10 条 prompt（取自 VBench 的 prompt 集，写在 `quality_480p33.yaml` 里），480p / 33 帧，完整 40 步，每条 1 个 seed。A100 上 BF16 单条约 3.4 分钟。
   - 偏离度：同 seed 下相对 BF16 的 LPIPS / PSNR / SSIM。
-  - 画质：VBench 子集各维度的均值与置信区间，写明"N 个 prompt × M 个维度"。
+  - 画质：VBench 6 个维度的均值，写明"10 个 prompt × 6 个维度"。
   - 两类指标不能混用：同 seed 偏离大不等于画质差。
-- **记录**：每组结果都附带环境、命令、拓扑和样本数。
+- **显存**：分"权重常驻"和"去噪峰值"两个口径，每个 rank 分别报告。
+- **记录**：每组结果都附带环境、命令和样本数（`bench.py` 自动写进 `env.json`）。
 
 ## 7. 风险与应对
 

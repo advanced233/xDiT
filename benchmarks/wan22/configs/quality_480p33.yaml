@@ -1,6 +1,6 @@
-# Phase 1 quality runs: one video per prompt and seed at 480p / 33 frames, for compare_videos.py and VBench.
-# The eight prompts below (people, animals, scenery, fast motion, camera movement) are for trying the
-# flow; for reported numbers pass --prompts-file with a larger list (docs/wan22_tp_int8/phase1_runbook.md).
+# Phase 1 quality: one full 40-step video per prompt at 480p / 33 frames, for compare_videos.py and VBench.
+# The prompts are 10 drawn from VBench's prompts/all_dimension.txt (946 lines, sha256 f9b50654...d80d8c3):
+# random.Random(0).shuffle of the non-empty lines, first 10.
 runner_args:
   model: Wan2.2-T2V
   attention_backend: CUDNN
@@ -10,14 +10,16 @@ runner_args:
 cases:
   - {name: 480p_33f, height: 480, width: 832, num_frames: 33, num_inference_steps: 40}
 prompts:
-  - A golden retriever running across a sunlit meadow, slow motion, shallow depth of field.
-  - A woman in a red coat walking through a busy city street at night, neon reflections on wet pavement.
-  - Ocean waves crashing against black volcanic rocks at sunset, aerial drone shot slowly moving forward.
-  - A chef tossing vegetables in a flaming wok in a restaurant kitchen, close-up.
-  - A red sports car drifting around a mountain curve, the camera tracking alongside.
-  - Two cats playing with a ball of yarn on a wooden floor, soft morning light through a window.
-  - A time-lapse of clouds rolling over snowy mountain peaks, wide shot.
-  - An astronaut floating inside a space station, Earth visible through the window behind.
+  - an orange on the top of a carrot, front view
+  - An astronaut flying in space, pan right
+  - A cute happy Corgi playing in park, sunset, featuring a steady and smooth perspective
+  - an orange and a clock
+  - A person is cutting nails
+  - An animated painting of fluffy white clouds moving in sky.
+  - a truck and a bicycle
+  - Close up of grapes on a rotating table.
+  - a remote
+  - a bear climbing a tree
 seeds: [42]
 repeats: 1
 warmup: 1
