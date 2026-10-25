@@ -31,6 +31,17 @@ repeats: 1
 warmup: 0
 cases:
   - {name: 480p_33f, height: 480, width: 832, num_frames: 33, num_inference_steps: 40, save_videos: first_repeat}
+  # Speed only, for runs that do not need the 40-step videos (the torch.compile pairs). Selected with
+  # --case and without 480p_33f, it is the first case, so the compile warmup that replays the first
+  # case runs 10 steps rather than 40.
+  - name: 480p_33f_speed
+    height: 480
+    width: 832
+    num_frames: 33
+    num_inference_steps: 10
+    save_videos: none
+    prompts:
+      - A cute happy Corgi playing in park, sunset, featuring a steady and smooth perspective
   - name: 480p_81f
     height: 480
     width: 832

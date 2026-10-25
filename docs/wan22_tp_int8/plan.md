@@ -145,7 +145,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 - 为 `xFuserWan22T2VModel` 声明 `use_int8_gemms=True`，并设置 `int8_gemm_module_list=["transformer.blocks", "transformer_2.blocks"]`。
 - 支持按专家选择量化范围：none / high-only / low-only / both。
 - 速度：33 帧的单步时间直接取自画质运行（完整 40 步）；81 帧在同一进程里另跑 10 步。只有 BF16 和 INT8 两个专家这两组带 81 帧；"只量化一个专家"的速度用各专家的单步时间拼出来。用实测值对照第 3.2 节的预测。
-- 按需：只有 INT8 加速明显低于预期时，才对比 eager 与 `--use_torch_compile`，看 epilogue 有没有被融合。
+- 按需：只有 INT8 加速明显低于预期时，才对比 eager 与 `--use_torch_compile`，看 epilogue 有没有被融合。（已触发，见下方状态。）
 - 敏感度实验：
   - 高噪声专家约跑 26/40 步，所以只量化它就能拿到约 65% 的加速收益。
   - 预期高噪声专家决定构图和运动，量化后同 seed 的 LPIPS 可能明显升高，但 VBench 不一定下降；低噪声专家主要影响纹理细节。两类指标需要一起解读。
@@ -157,6 +157,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 > - 新参数 `--int8_gemm_modules` 可以只选其中一个专家。它要求 `--gemm_quantization int8`，模块名必须和声明的目标完全一致，否则直接报错。实现在 `loading/quantization_plan.py` 的 `apply_int8_module_selection`。
 > - 测试在 `tests/unit/model_executor/loading/test_int8_plan.py` 和 `tests/unit/config/test_gemm.py`。
 > - 实验按精简方案执行，见 [`phase1_runbook.md`](phase1_runbook.md)：4 个进程（BF16、INT8 两个专家、只高噪声、只低噪声），不做冒烟和预热，约 3.5 小时。
+> - 首轮实测（2026-10-25）：eager 模式下 INT8 比 BF16 慢 2.35×（33 帧）/ 1.9×（81 帧），显存从 64.3 GB 降到 38.0 GB。原因是 torchao 的 eager 路径：量化和反量化不融合、每次调用都会 `__repr__`、GEMM 用了 NN 布局。所以 INT8 的速度一律在 `--use_torch_compile` 下、与 BF16 + compile 对比。诊断和补测见 runbook 第 5 节；`int8_linear_bench.py` 同时也是 M6 的基准。
 
 ### M3 Wan2.2 双专家 TP
 
