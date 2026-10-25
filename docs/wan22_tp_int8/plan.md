@@ -119,6 +119,11 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
   - VBench 自定义 prompt 模式的子集：subject_consistency、background_consistency、motion_smoothness、dynamic_degree、aesthetic_quality、imaging_quality，衡量画质。
 - **产出**：`benchmarks/wan22/` 下的脚本和结果表模板。
 
+> **状态：阶段 1 需要的部分已实现**，用法见 [`phase1_runbook.md`](phase1_runbook.md)。
+> - `benchmarks/wan22/bench.py`：加载一次跑多组配置；按专家、按步统计 DiT 时间（`xfuser/core/utils/measurement.py` 的 `ComponentCallTimer`）；记录三种口径的显存和前后两次 `nvidia-smi` 快照（同卡有其他进程的运行会被标记）；输出 `env.json`、`runs.jsonl`、`summary.csv`；`--nsys-capture` 只采集计时的运行。
+> - `attention_bench.py`：注意力后端微基准。`compare_videos.py`：LPIPS / PSNR / SSIM。
+> - 尚未覆盖：NVTX 目前只到"每个专家的每次调用"这一级，GEMM、注意力、通信的拆分先靠 nsys 的 kernel 名归类（M9 再补）；专家切换耗时只在 offload 基线中才有意义，留到 M8；拓扑由 `env_setup.md` 的自检记录。
+
 ### M1 Wan2.2 T2V CFG 并行
 
 - 仿照 `pipelines/pipeline_wan_i2v.py` 新增 T2V 管线，继承 diffusers 的 `WanPipeline`：
@@ -126,7 +131,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
   - 按 `boundary_ratio × num_train_timesteps` 切换 `transformer` / `transformer_2`，以及各自的 guidance scale。
   - 每个 rank 只编码自己需要的那条 prompt（正向或 negative），编码完即可释放 T5。
 - `xFuserWan22T2VModel` 声明 `use_cfg_parallel=True` 并改用新管线。`_calculate_hybrid_attention_step_multiplier` 已经处理了 CFG 并行的情况（`runner_models/wan.py:602-606`）。
-- 修正 Wan2.2 T2V 的默认值：`guidance_scale=4.0`、`guidance_scale_2=3.0`。
+- 修正 Wan2.2 T2V 的默认值：`guidance_scale=4.0`、`guidance_scale_2=3.0`。（已随 M2 完成。）
 - 显存：BF16 下每卡需要放双专家（57 GB），必须配合 FSDP2（`--fully_shard_degree 2`）、模型级 offload，或 M2 的 INT8。
 - 验收：
   - 同 seed 下 CFG2 与单卡输出在 BF16 舍入误差内一致，因为两者只差一次 all_gather。
@@ -144,6 +149,12 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
   - 预期高噪声专家决定构图和运动，量化后同 seed 的 LPIPS 可能明显升高，但 VBench 不一定下降；低噪声专家主要影响纹理细节。两类指标需要一起解读。
 - 可选：逐 block 敏感度分析，得出混合精度策略。可以参考 `runner_models/wan.py:664` 中 FP4 量化时保留首尾 10 个 block 用更高精度的做法。
 - 产出：显存、DiT 加速、画质三张表，以及专家敏感度结论。这里得到的是 torchao 基线，供 M6 对比。
+
+> **状态：代码已实现，等 A100 实测。**
+> - Wan2.1 T2V（14B / 1.3B）和 Wan2.2 T2V 都声明了 INT8；Wan2.2 的两个专家都是 INT8 目标。
+> - 新参数 `--int8_gemm_modules` 可以只选其中一个专家。它要求 `--gemm_quantization int8`，模块名必须和声明的目标完全一致，否则直接报错。实现在 `loading/quantization_plan.py` 的 `apply_int8_module_selection`。
+> - 测试在 `tests/unit/model_executor/loading/test_int8_plan.py` 和 `tests/unit/config/test_gemm.py`。
+> - 720p 81 帧那一组放在 33 / 49 / 81 帧的结果出来之后再定。
 
 ### M3 Wan2.2 双专家 TP
 
