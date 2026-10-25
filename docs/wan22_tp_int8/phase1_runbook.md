@@ -64,7 +64,7 @@ python benchmarks/wan22/bench.py --config $CFG --output-dir $R/speed_bf16_compil
 
 ### 3.1 准备 prompt 列表
 
-`prompts/dev.txt` 只有 8 条，只用来试跑流程。正式数据用 VBench 的 prompt 集：
+`configs/quality_480p33.yaml` 里只内置了 8 条 prompt，只用来试跑流程。正式数据用 VBench 的 prompt 集：
 
 ```bash
 git clone https://github.com/Vchitect/VBench.git $XDIT_WORK/src/VBench   # 已有就跳过

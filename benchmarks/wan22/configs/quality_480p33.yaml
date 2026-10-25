@@ -1,6 +1,6 @@
 # Phase 1 quality runs: one video per prompt and seed at 480p / 33 frames, for compare_videos.py and VBench.
-# dev.txt is for trying the flow; for reported numbers pass --prompts-file with a larger list
-# (docs/wan22_tp_int8/phase1_runbook.md).
+# The eight prompts below (people, animals, scenery, fast motion, camera movement) are for trying the
+# flow; for reported numbers pass --prompts-file with a larger list (docs/wan22_tp_int8/phase1_runbook.md).
 runner_args:
   model: Wan2.2-T2V
   attention_backend: CUDNN
@@ -9,7 +9,15 @@ runner_args:
   flow_shift: 12
 cases:
   - {name: 480p_33f, height: 480, width: 832, num_frames: 33, num_inference_steps: 40}
-prompts_file: benchmarks/wan22/prompts/dev.txt
+prompts:
+  - A golden retriever running across a sunlit meadow, slow motion, shallow depth of field.
+  - A woman in a red coat walking through a busy city street at night, neon reflections on wet pavement.
+  - Ocean waves crashing against black volcanic rocks at sunset, aerial drone shot slowly moving forward.
+  - A chef tossing vegetables in a flaming wok in a restaurant kitchen, close-up.
+  - A red sports car drifting around a mountain curve, the camera tracking alongside.
+  - Two cats playing with a ball of yarn on a wooden floor, soft morning light through a window.
+  - A time-lapse of clouds rolling over snowy mountain peaks, wide shot.
+  - An astronaut floating inside a space station, Earth visible through the window behind.
 seeds: [42]
 repeats: 1
 warmup: 1
