@@ -1,0 +1,135 @@
+COMMAND ["torchrun", "--master_port", "40036", "--nproc_per_node=1", "benchmarks/wan22/bench.py", "--config", "benchmarks/wan22/configs/phase1.yaml", "--output-dir", "$XDIT_WORK/results/phase1/int8_compile", "--case", "480p_33f_speed", "--case", "480p_81f", "--runner-arg", "use_torch_compile=true", "--runner-arg", "gemm_quantization=int8"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=40036
+W1025 19:34:35.836000 1916164 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1025 19:34:35.952000 1916164 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DEBUG 10-25 19:34:41 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+WARNING 10-25 19:34:41 [args.py:1494] Distributed environment is not initialized. Initializing...
+DEBUG 10-25 19:34:41 [parallel_state.py:247] world_size=-1 rank=-1 local_rank=-1 distributed_init_method=env:// backend=nccl
+INFO 10-25 19:34:43 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-25 19:34:43 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 19:34:43 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 19:34:43 [runner_utils.py:30] Initializing model: Wan2.2-T2V
+INFO 10-25 19:34:43 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-25 19:34:43 [runner_utils.py:30] Loading model pipeline...
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+INFO 10-25 19:34:43 [runner_utils.py:30] transformer quantization: requested=int8, backend=torchao, storage=torchao_w8a8_dynamic_per_row_symmetric, materialization=streaming, parameters=torchao_int8_tensor_subclass, auxiliary=backend_managed, trainability=inference_only, serialization=torchao_version_dependent
+
+Loading checkpoint shards:   0%|          | 0/12 [00:00<?, ?it/s]
+Loading checkpoint shards:   8%|▊         | 1/12 [00:08<01:31,  8.34s/it]
+Loading checkpoint shards:  17%|█▋        | 2/12 [00:22<01:55, 11.53s/it]
+Loading checkpoint shards:  25%|██▌       | 3/12 [00:36<01:55, 12.81s/it]
+Loading checkpoint shards:  33%|███▎      | 4/12 [00:52<01:51, 13.93s/it]
+Loading checkpoint shards:  42%|████▏     | 5/12 [01:09<01:46, 15.28s/it]
+Loading checkpoint shards:  50%|█████     | 6/12 [01:17<01:15, 12.62s/it]
+Loading checkpoint shards:  58%|█████▊    | 7/12 [01:20<00:47,  9.58s/it]
+Loading checkpoint shards:  67%|██████▋   | 8/12 [01:23<00:29,  7.42s/it]
+Loading checkpoint shards:  75%|███████▌  | 9/12 [01:26<00:18,  6.07s/it]
+Loading checkpoint shards:  83%|████████▎ | 10/12 [01:29<00:10,  5.10s/it]
+Loading checkpoint shards:  92%|█████████▏| 11/12 [01:31<00:04,  4.30s/it]
+Loading checkpoint shards: 100%|██████████| 12/12 [01:33<00:00,  3.64s/it]
+Loading checkpoint shards: 100%|██████████| 12/12 [01:33<00:00,  7.83s/it]
+INFO 10-25 19:36:17 [runner_utils.py:30] transformer_2 quantization: requested=int8, backend=torchao, storage=torchao_w8a8_dynamic_per_row_symmetric, materialization=streaming, parameters=torchao_int8_tensor_subclass, auxiliary=backend_managed, trainability=inference_only, serialization=torchao_version_dependent
+
+Loading checkpoint shards:   0%|          | 0/12 [00:00<?, ?it/s]
+Loading checkpoint shards:   8%|▊         | 1/12 [00:08<01:32,  8.37s/it]
+Loading checkpoint shards:  17%|█▋        | 2/12 [00:19<01:41, 10.14s/it]
+Loading checkpoint shards:  25%|██▌       | 3/12 [00:21<00:54,  6.11s/it]
+Loading checkpoint shards:  33%|███▎      | 4/12 [00:22<00:35,  4.38s/it]
+Loading checkpoint shards:  42%|████▏     | 5/12 [00:24<00:23,  3.32s/it]
+Loading checkpoint shards:  50%|█████     | 6/12 [00:26<00:17,  2.97s/it]
+Loading checkpoint shards:  58%|█████▊    | 7/12 [00:28<00:13,  2.78s/it]
+Loading checkpoint shards:  67%|██████▋   | 8/12 [00:31<00:10,  2.57s/it]
+Loading checkpoint shards:  75%|███████▌  | 9/12 [00:33<00:07,  2.62s/it]
+Loading checkpoint shards:  83%|████████▎ | 10/12 [00:35<00:04,  2.38s/it]
+Loading checkpoint shards:  92%|█████████▏| 11/12 [00:37<00:02,  2.17s/it]
+Loading checkpoint shards: 100%|██████████| 12/12 [00:39<00:00,  2.08s/it]
+Loading checkpoint shards: 100%|██████████| 12/12 [00:39<00:00,  3.27s/it]
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.2-T2V-A14B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.2-T2V-A14B-Diffusers'.
+Couldn't connect to the Hub: Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.2-T2V-A14B-Diffusers/revision/main: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable..
+Will try to load from local cache.
+
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+
+Loading weights:   0%|          | 0/242 [00:00<?, ?it/s][A
+Loading weights: 100%|██████████| 242/242 [00:00<00:00, 11116.82it/s]
+
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 11.39it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 17.36it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.55it/s]
+INFO 10-25 19:36:58 [runner_utils.py:30] Initializing runtime state...
+WARNING 10-25 19:36:58 [logger.py:126] Model parallel is not initialized, initializing...
+WARNING 10-25 19:36:59 [logger.py:126] Using CUDNN as attention backend.
+INFO 10-25 19:36:59 [runner_utils.py:30] GEMM quantization: transformer.blocks -> INT8
+INFO 10-25 19:36:59 [runner_utils.py:30] GEMM quantization: transformer_2.blocks -> INT8
+INFO 10-25 19:37:04 [runner_utils.py:30] Torch.compile enabled. Warming up torch compiler ...
+
+  0%|          | 0/10 [00:00<?, ?it/s]$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/autograd_cache.py:707: UserWarning: Int8Tensor does not implement _stable_hash_for_caching. For PT2-compatible tensor subclasses, it is recommended to implement _stable_hash_for_caching(self) -> str for stable AOT autograd caching.
+  warn_once(
+
+ 10%|█         | 1/10 [02:56<26:29, 176.66s/it]
+ 20%|██        | 2/10 [03:01<10:02, 75.35s/it] 
+ 30%|███       | 3/10 [03:06<05:04, 43.44s/it]
+ 40%|████      | 4/10 [03:11<02:48, 28.05s/it]
+ 50%|█████     | 5/10 [03:15<01:37, 19.55s/it]
+ 60%|██████    | 6/10 [03:20<00:57, 14.48s/it]
+ 70%|███████   | 7/10 [03:24<00:33, 11.26s/it]
+ 80%|████████  | 8/10 [03:29<00:18,  9.11s/it]
+ 90%|█████████ | 9/10 [03:33<00:07,  7.67s/it]
+100%|██████████| 10/10 [03:38<00:00,  6.69s/it]
+100%|██████████| 10/10 [03:38<00:00, 21.83s/it]
+INFO 10-25 19:40:45 [runner_utils.py:30] Model initialization complete.
+INFO 10-25 19:40:46 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 19:40:46 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 19:40:46 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 19:40:46 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 19:40:46 [runner_utils.py:30] Running model...
+INFO 10-25 19:40:46 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/10 [00:00<?, ?it/s]
+ 10%|█         | 1/10 [00:04<00:40,  4.53s/it]
+ 20%|██        | 2/10 [00:09<00:36,  4.58s/it]
+ 30%|███       | 3/10 [00:13<00:32,  4.64s/it]
+ 40%|████      | 4/10 [00:18<00:27,  4.66s/it]
+ 50%|█████     | 5/10 [00:23<00:23,  4.67s/it]
+ 60%|██████    | 6/10 [00:27<00:18,  4.67s/it]
+ 70%|███████   | 7/10 [00:32<00:13,  4.67s/it]
+ 80%|████████  | 8/10 [00:37<00:09,  4.66s/it]
+ 90%|█████████ | 9/10 [00:41<00:04,  4.68s/it]
+100%|██████████| 10/10 [00:46<00:00,  4.66s/it]
+100%|██████████| 10/10 [00:46<00:00,  4.65s/it]
+INFO 10-25 19:41:35 [runner_utils.py:30] Iteration 1 completed in 48.47s
+INFO 10-25 19:41:35 [runner_utils.py:30] Average time over 1 runs: 48.47s
+INFO 10-25 19:41:35 [runner_utils.py:30] Total time spent: 48.47s
+[bench] 480p_33f_speed p0 s42 r0: pipeline 48.47s, DiT 45.76s
+INFO 10-25 19:41:35 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 19:41:35 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 19:41:35 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 19:41:35 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 19:41:35 [runner_utils.py:30] Running model...
+INFO 10-25 19:41:35 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/10 [00:00<?, ?it/s]
+ 10%|█         | 1/10 [05:21<48:13, 321.55s/it]
+ 20%|██        | 2/10 [05:37<18:55, 141.93s/it]
+ 30%|███       | 3/10 [05:54<09:52, 84.58s/it] 
+ 40%|████      | 4/10 [06:10<05:46, 57.70s/it]
+ 50%|█████     | 5/10 [06:27<03:34, 42.88s/it]
+ 60%|██████    | 6/10 [06:43<02:15, 33.98s/it]
+ 70%|███████   | 7/10 [07:01<01:26, 28.67s/it]
+ 80%|████████  | 8/10 [07:21<00:51, 25.84s/it]
+ 90%|█████████ | 9/10 [07:42<00:24, 24.35s/it]
+100%|██████████| 10/10 [08:04<00:00, 23.56s/it]
+100%|██████████| 10/10 [08:04<00:00, 48.43s/it]
+INFO 10-25 19:50:25 [runner_utils.py:30] Iteration 1 completed in 529.54s
+INFO 10-25 19:50:25 [runner_utils.py:30] Average time over 1 runs: 529.54s
+INFO 10-25 19:50:25 [runner_utils.py:30] Total time spent: 529.54s
+[bench] 480p_81f p0 s42 r0: pipeline 529.54s, DiT 483.97s
+[bench] results in $XDIT_WORK/results/phase1/int8_compile
+INFO 10-25 19:50:35 [runner_utils.py:30] Cleaned up resources.

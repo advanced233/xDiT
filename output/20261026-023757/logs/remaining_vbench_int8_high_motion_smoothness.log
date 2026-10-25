@@ -1,0 +1,62 @@
+COMMAND ["bash", "$XDIT_WORK/scripts/run-vbench-remaining.sh", "27797", "$XDIT_WORK/results/phase1/int8_high/videos/480p_33f", "motion_smoothness", "$XDIT_WORK/results/phase1/vbench_int8_high/motion_smoothness"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=27797
+args: Namespace(output_path='$XDIT_WORK/results/phase1/vbench_int8_high/motion_smoothness', full_json_dir='$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/launch/../VBench_full_info.json', videos_path='$XDIT_WORK/results/phase1/int8_high/videos/480p_33f', dimension=['motion_smoothness'], load_ckpt_from_local=True, read_frame=None, mode='custom_input', prompt='None', prompt_file=None, category=None, imaging_quality_preprocessing_mode='longer')
+start evaluation
+2026-10-26 02:35:01,755 - vbench.utils - INFO - [32m[Local Mode][0m Working in local mode, please make sure that the pre-trained model has been fully downloaded.
+[rank0]:[W1026 02:35:01.134895195 ProcessGroupNCCL.cpp:4561] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. Specify device_ids in barrier() to force use of a particular device, or call init_process_group() with a device_id.
+Evaluation meta data saved to $XDIT_WORK/results/phase1/vbench_int8_high/motion_smoothness/results_2026-10-26-02:35:01_full_info.json
+cur_full_info_path: $XDIT_WORK/results/phase1/vbench_int8_high/motion_smoothness/results_2026-10-26-02:35:01_full_info.json
+Loading [networks.AMT-S.Model] from [$XDIT_WORK/cache/vbench/amt_model/amt-s.pth]...
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/launch/evaluate.py", line 153, in <module>
+[rank0]:     main()
+[rank0]:   File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/launch/evaluate.py", line 139, in main
+[rank0]:     my_VBench.evaluate(
+[rank0]:   File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/__init__.py", line 153, in evaluate
+[rank0]:     results = evaluate_func(cur_full_info_path, self.device, submodules_list, **kwargs)
+[rank0]:   File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/motion_smoothness.py", line 185, in compute_motion_smoothness
+[rank0]:     motion = MotionSmoothness(config, ckpt, device)
+[rank0]:   File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/motion_smoothness.py", line 77, in __init__
+[rank0]:     self.load_model()
+[rank0]:   File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/motion_smoothness.py", line 87, in load_model
+[rank0]:     ckpt = torch.load(ckpt_path, map_location="cpu")
+[rank0]:   File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/torch/serialization.py", line 1470, in load
+[rank0]:     raise pickle.UnpicklingError(_get_wo_message(str(e))) from None
+[rank0]: _pickle.UnpicklingError: Weights only load failed. This file can still be loaded, to do so you have two options, [1mdo those steps only if you trust the source of the checkpoint[0m. 
+[rank0]: 	(1) In PyTorch 2.6, we changed the default value of the `weights_only` argument in `torch.load` from `False` to `True`. Re-running `torch.load` with `weights_only` set to `False` will likely succeed, but it can result in arbitrary code execution. Do it only if you got the file from a trusted source.
+[rank0]: 	(2) Alternatively, to load with `weights_only=True` please check the recommended steps in the following error message.
+[rank0]: 	WeightsUnpickler error: Unsupported global: GLOBAL typing.OrderedDict was not an allowed global by default. Please use `torch.serialization.add_safe_globals([OrderedDict])` or the `torch.serialization.safe_globals([OrderedDict])` context manager to allowlist this global if you trust this class/function.
+
+[rank0]: Check the documentation of torch.load to learn more about types accepted by default with weights_only https://pytorch.org/docs/stable/generated/torch.load.html.
+[rank0]:[W1026 02:35:02.818876049 ProcessGroupNCCL.cpp:1496] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+E1026 02:35:05.392000 2326619 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 0 (pid: 2326645) of binary: $XDIT_WORK/envs/vbench/bin/python
+Traceback (most recent call last):
+  File "$XDIT_WORK/envs/vbench/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/torch/distributed/run.py", line 918, in main
+    run(args)
+  File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/launch/evaluate.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-26_02:35:05
+  host      : <HOST>
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 2326645)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

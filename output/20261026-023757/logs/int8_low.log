@@ -1,0 +1,584 @@
+COMMAND ["torchrun", "--master_port", "41121", "--nproc_per_node=1", "benchmarks/wan22/bench.py", "--config", "benchmarks/wan22/configs/phase1.yaml", "--output-dir", "$XDIT_WORK/results/phase1/int8_low", "--case", "480p_33f", "--runner-arg", "gemm_quantization=int8", "--runner-arg", "int8_gemm_modules=transformer_2.blocks"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=41121
+W1025 21:36:10.822000 1989726 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1025 21:36:10.849000 1989726 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DEBUG 10-25 21:36:13 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+WARNING 10-25 21:36:13 [args.py:1494] Distributed environment is not initialized. Initializing...
+DEBUG 10-25 21:36:13 [parallel_state.py:247] world_size=-1 rank=-1 local_rank=-1 distributed_init_method=env:// backend=nccl
+INFO 10-25 21:36:14 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-25 21:36:14 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 21:36:14 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 21:36:14 [runner_utils.py:30] Initializing model: Wan2.2-T2V
+INFO 10-25 21:36:14 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-25 21:36:14 [runner_utils.py:30] Loading model pipeline...
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+
+Loading checkpoint shards:   0%|          | 0/12 [00:00<?, ?it/s]
+Loading checkpoint shards:   8%|▊         | 1/12 [00:00<00:03,  3.14it/s]
+Loading checkpoint shards:  17%|█▋        | 2/12 [00:00<00:03,  3.08it/s]
+Loading checkpoint shards:  25%|██▌       | 3/12 [00:00<00:02,  3.05it/s]
+Loading checkpoint shards:  33%|███▎      | 4/12 [00:01<00:02,  2.97it/s]
+Loading checkpoint shards:  42%|████▏     | 5/12 [00:01<00:02,  2.92it/s]
+Loading checkpoint shards:  50%|█████     | 6/12 [00:02<00:02,  2.89it/s]
+Loading checkpoint shards:  58%|█████▊    | 7/12 [00:02<00:01,  2.86it/s]
+Loading checkpoint shards:  67%|██████▋   | 8/12 [00:02<00:01,  2.82it/s]
+Loading checkpoint shards:  75%|███████▌  | 9/12 [00:03<00:01,  2.81it/s]
+Loading checkpoint shards:  83%|████████▎ | 10/12 [00:03<00:00,  2.81it/s]
+Loading checkpoint shards:  92%|█████████▏| 11/12 [00:03<00:00,  2.80it/s]
+Loading checkpoint shards: 100%|██████████| 12/12 [00:04<00:00,  3.14it/s]
+Loading checkpoint shards: 100%|██████████| 12/12 [00:04<00:00,  2.95it/s]
+INFO 10-25 21:36:18 [runner_utils.py:30] transformer_2 quantization: requested=int8, backend=torchao, storage=torchao_w8a8_dynamic_per_row_symmetric, materialization=streaming, parameters=torchao_int8_tensor_subclass, auxiliary=backend_managed, trainability=inference_only, serialization=torchao_version_dependent
+
+Loading checkpoint shards:   0%|          | 0/12 [00:00<?, ?it/s]
+Loading checkpoint shards:   8%|▊         | 1/12 [00:01<00:21,  1.94s/it]
+Loading checkpoint shards:  17%|█▋        | 2/12 [00:03<00:17,  1.73s/it]
+Loading checkpoint shards:  25%|██▌       | 3/12 [00:05<00:14,  1.66s/it]
+Loading checkpoint shards:  33%|███▎      | 4/12 [00:07<00:14,  1.80s/it]
+Loading checkpoint shards:  42%|████▏     | 5/12 [00:09<00:13,  1.89s/it]
+Loading checkpoint shards:  50%|█████     | 6/12 [00:11<00:13,  2.18s/it]
+Loading checkpoint shards:  58%|█████▊    | 7/12 [00:13<00:10,  2.09s/it]
+Loading checkpoint shards:  67%|██████▋   | 8/12 [00:15<00:08,  2.08s/it]
+Loading checkpoint shards:  75%|███████▌  | 9/12 [00:17<00:06,  2.03s/it]
+Loading checkpoint shards:  83%|████████▎ | 10/12 [00:20<00:04,  2.12s/it]
+Loading checkpoint shards:  92%|█████████▏| 11/12 [00:22<00:02,  2.21s/it]
+Loading checkpoint shards: 100%|██████████| 12/12 [00:24<00:00,  2.00s/it]
+Loading checkpoint shards: 100%|██████████| 12/12 [00:24<00:00,  2.01s/it]
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.2-T2V-A14B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.2-T2V-A14B-Diffusers'.
+Couldn't connect to the Hub: Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.2-T2V-A14B-Diffusers/revision/main: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable..
+Will try to load from local cache.
+
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:01<00:08,  1.64s/it]
+
+Loading weights:   0%|          | 0/242 [00:00<?, ?it/s][A
+Loading weights: 100%|██████████| 242/242 [00:00<00:00, 11512.49it/s]
+
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.81it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.43it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.12it/s]
+INFO 10-25 21:36:45 [runner_utils.py:30] Initializing runtime state...
+WARNING 10-25 21:36:45 [logger.py:126] Model parallel is not initialized, initializing...
+WARNING 10-25 21:36:45 [logger.py:126] Using CUDNN as attention backend.
+INFO 10-25 21:36:45 [runner_utils.py:30] GEMM quantization: transformer_2.blocks -> INT8
+INFO 10-25 21:37:09 [runner_utils.py:30] Model initialization complete.
+INFO 10-25 21:37:09 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 21:37:09 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 21:37:09 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 21:37:09 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 21:37:10 [runner_utils.py:30] Running model...
+INFO 10-25 21:37:10 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:08<05:16,  8.11s/it]
+  5%|▌         | 2/40 [00:14<04:23,  6.94s/it]
+  8%|▊         | 3/40 [00:20<04:13,  6.86s/it]
+ 10%|█         | 4/40 [00:27<03:56,  6.58s/it]
+ 12%|█▎        | 5/40 [00:33<03:45,  6.44s/it]
+ 15%|█▌        | 6/40 [00:39<03:36,  6.36s/it]
+ 18%|█▊        | 7/40 [00:45<03:28,  6.31s/it]
+ 20%|██        | 8/40 [00:52<03:21,  6.31s/it]
+ 22%|██▎       | 9/40 [00:58<03:17,  6.38s/it]
+ 25%|██▌       | 10/40 [01:05<03:14,  6.50s/it]
+ 28%|██▊       | 11/40 [01:12<03:16,  6.78s/it]
+ 30%|███       | 12/40 [01:20<03:16,  7.01s/it]
+ 32%|███▎      | 13/40 [01:27<03:13,  7.18s/it]
+ 35%|███▌      | 14/40 [01:35<03:12,  7.41s/it]
+ 38%|███▊      | 15/40 [01:43<03:10,  7.61s/it]
+ 40%|████      | 16/40 [01:51<03:05,  7.75s/it]
+ 42%|████▎     | 17/40 [02:00<03:00,  7.84s/it]
+ 45%|████▌     | 18/40 [02:08<02:53,  7.90s/it]
+ 48%|████▊     | 19/40 [02:16<02:47,  7.96s/it]
+ 50%|█████     | 20/40 [02:24<02:39,  8.00s/it]
+ 52%|█████▎    | 21/40 [02:32<02:32,  8.02s/it]
+ 55%|█████▌    | 22/40 [02:40<02:24,  8.04s/it]
+ 57%|█████▊    | 23/40 [02:48<02:16,  8.05s/it]
+ 60%|██████    | 24/40 [02:57<02:11,  8.20s/it]
+ 62%|██████▎   | 25/40 [03:05<02:03,  8.26s/it]
+ 65%|██████▌   | 26/40 [03:13<01:56,  8.29s/it]
+ 68%|██████▊   | 27/40 [03:33<02:33, 11.83s/it]
+ 70%|███████   | 28/40 [03:53<02:48, 14.08s/it]
+ 72%|███████▎  | 29/40 [04:12<02:52, 15.66s/it]
+ 75%|███████▌  | 30/40 [04:31<02:47, 16.76s/it]
+ 78%|███████▊  | 31/40 [04:51<02:37, 17.54s/it]
+ 80%|████████  | 32/40 [05:10<02:25, 18.19s/it]
+ 82%|████████▎ | 33/40 [05:30<02:09, 18.49s/it]
+ 85%|████████▌ | 34/40 [05:49<01:52, 18.75s/it]
+ 88%|████████▊ | 35/40 [06:08<01:34, 18.95s/it]
+ 90%|█████████ | 36/40 [06:28<01:16, 19.09s/it]
+ 92%|█████████▎| 37/40 [06:48<00:57, 19.28s/it]
+ 95%|█████████▌| 38/40 [07:07<00:38, 19.29s/it]
+ 98%|█████████▊| 39/40 [07:26<00:19, 19.30s/it]
+100%|██████████| 40/40 [07:46<00:00, 19.32s/it]
+100%|██████████| 40/40 [07:46<00:00, 11.65s/it]
+INFO 10-25 21:44:59 [runner_utils.py:30] Iteration 1 completed in 468.95s
+INFO 10-25 21:44:59 [runner_utils.py:30] Average time over 1 runs: 468.95s
+INFO 10-25 21:44:59 [runner_utils.py:30] Total time spent: 468.95s
+[bench] 480p_33f p0 s42 r0: pipeline 468.95s, DiT 465.34s
+INFO 10-25 21:45:00 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 21:45:00 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 21:45:00 [runner_utils.py:30] Running model...
+INFO 10-25 21:45:00 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:08<05:16,  8.12s/it]
+  5%|▌         | 2/40 [00:16<05:08,  8.11s/it]
+  8%|▊         | 3/40 [00:24<04:59,  8.11s/it]
+ 10%|█         | 4/40 [00:32<04:51,  8.11s/it]
+ 12%|█▎        | 5/40 [00:41<04:49,  8.28s/it]
+ 15%|█▌        | 6/40 [00:49<04:45,  8.39s/it]
+ 18%|█▊        | 7/40 [00:57<04:35,  8.35s/it]
+ 20%|██        | 8/40 [01:06<04:26,  8.33s/it]
+ 22%|██▎       | 9/40 [01:14<04:17,  8.30s/it]
+ 25%|██▌       | 10/40 [01:22<04:08,  8.28s/it]
+ 28%|██▊       | 11/40 [01:30<04:00,  8.28s/it]
+ 30%|███       | 12/40 [01:39<03:52,  8.29s/it]
+ 32%|███▎      | 13/40 [01:47<03:41,  8.20s/it]
+ 35%|███▌      | 14/40 [01:55<03:31,  8.14s/it]
+ 38%|███▊      | 15/40 [02:03<03:25,  8.22s/it]
+ 40%|████      | 16/40 [02:12<03:19,  8.32s/it]
+ 42%|████▎     | 17/40 [02:20<03:10,  8.28s/it]
+ 45%|████▌     | 18/40 [02:28<03:01,  8.26s/it]
+ 48%|████▊     | 19/40 [02:36<02:53,  8.25s/it]
+ 50%|█████     | 20/40 [02:44<02:44,  8.23s/it]
+ 52%|█████▎    | 21/40 [02:53<02:36,  8.21s/it]
+ 55%|█████▌    | 22/40 [03:01<02:27,  8.21s/it]
+ 57%|█████▊    | 23/40 [03:09<02:19,  8.21s/it]
+ 60%|██████    | 24/40 [03:17<02:11,  8.21s/it]
+ 62%|██████▎   | 25/40 [03:26<02:05,  8.37s/it]
+ 65%|██████▌   | 26/40 [03:34<01:56,  8.32s/it]
+ 68%|██████▊   | 27/40 [03:54<02:31, 11.63s/it]
+ 70%|███████   | 28/40 [04:13<02:47, 13.94s/it]
+ 72%|███████▎  | 29/40 [04:32<02:51, 15.59s/it]
+ 75%|███████▌  | 30/40 [04:52<02:49, 16.92s/it]
+ 78%|███████▊  | 31/40 [05:12<02:38, 17.63s/it]
+ 80%|████████  | 32/40 [05:31<02:25, 18.18s/it]
+ 82%|████████▎ | 33/40 [05:51<02:10, 18.60s/it]
+ 85%|████████▌ | 34/40 [06:10<01:53, 18.84s/it]
+ 88%|████████▊ | 35/40 [06:30<01:35, 19.00s/it]
+ 90%|█████████ | 36/40 [06:49<01:16, 19.13s/it]
+ 92%|█████████▎| 37/40 [07:08<00:57, 19.20s/it]
+ 95%|█████████▌| 38/40 [07:28<00:38, 19.27s/it]
+ 98%|█████████▊| 39/40 [07:47<00:19, 19.35s/it]
+100%|██████████| 40/40 [08:07<00:00, 19.36s/it]
+100%|██████████| 40/40 [08:07<00:00, 12.18s/it]
+INFO 10-25 21:53:10 [runner_utils.py:30] Iteration 1 completed in 489.30s
+INFO 10-25 21:53:10 [runner_utils.py:30] Average time over 1 runs: 489.30s
+INFO 10-25 21:53:10 [runner_utils.py:30] Total time spent: 489.30s
+[bench] 480p_33f p1 s42 r0: pipeline 489.30s, DiT 487.03s
+INFO 10-25 21:53:11 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 21:53:11 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 21:53:11 [runner_utils.py:30] Running model...
+INFO 10-25 21:53:11 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:08<05:12,  8.01s/it]
+  5%|▌         | 2/40 [00:16<05:13,  8.26s/it]
+  8%|▊         | 3/40 [00:24<05:08,  8.33s/it]
+ 10%|█         | 4/40 [00:33<04:59,  8.31s/it]
+ 12%|█▎        | 5/40 [00:41<04:48,  8.25s/it]
+ 15%|█▌        | 6/40 [00:49<04:39,  8.21s/it]
+ 18%|█▊        | 7/40 [00:57<04:30,  8.19s/it]
+ 20%|██        | 8/40 [01:05<04:22,  8.20s/it]
+ 22%|██▎       | 9/40 [01:14<04:18,  8.34s/it]
+ 25%|██▌       | 10/40 [01:22<04:11,  8.40s/it]
+ 28%|██▊       | 11/40 [01:31<04:02,  8.35s/it]
+ 30%|███       | 12/40 [01:39<03:53,  8.33s/it]
+ 32%|███▎      | 13/40 [01:47<03:44,  8.31s/it]
+ 35%|███▌      | 14/40 [01:56<03:35,  8.30s/it]
+ 38%|███▊      | 15/40 [02:04<03:27,  8.29s/it]
+ 40%|████      | 16/40 [02:12<03:18,  8.27s/it]
+ 42%|████▎     | 17/40 [02:20<03:10,  8.27s/it]
+ 45%|████▌     | 18/40 [02:29<03:02,  8.29s/it]
+ 48%|████▊     | 19/40 [02:37<02:53,  8.28s/it]
+ 50%|█████     | 20/40 [02:45<02:45,  8.28s/it]
+ 52%|█████▎    | 21/40 [02:53<02:37,  8.30s/it]
+ 55%|█████▌    | 22/40 [03:02<02:29,  8.30s/it]
+ 57%|█████▊    | 23/40 [03:10<02:21,  8.30s/it]
+ 60%|██████    | 24/40 [03:18<02:12,  8.30s/it]
+ 62%|██████▎   | 25/40 [03:27<02:04,  8.29s/it]
+ 65%|██████▌   | 26/40 [03:35<01:56,  8.34s/it]
+ 68%|██████▊   | 27/40 [03:55<02:31, 11.66s/it]
+ 70%|███████   | 28/40 [04:14<02:48, 14.02s/it]
+ 72%|███████▎  | 29/40 [04:33<02:51, 15.62s/it]
+ 75%|███████▌  | 30/40 [04:53<02:48, 16.81s/it]
+ 78%|███████▊  | 31/40 [05:12<02:38, 17.59s/it]
+ 80%|████████  | 32/40 [05:32<02:25, 18.16s/it]
+ 82%|████████▎ | 33/40 [05:51<02:09, 18.57s/it]
+ 85%|████████▌ | 34/40 [06:11<01:53, 18.84s/it]
+ 88%|████████▊ | 35/40 [06:30<01:35, 19.03s/it]
+ 90%|█████████ | 36/40 [06:50<01:16, 19.15s/it]
+ 92%|█████████▎| 37/40 [07:09<00:57, 19.27s/it]
+ 95%|█████████▌| 38/40 [07:29<00:38, 19.34s/it]
+ 98%|█████████▊| 39/40 [07:48<00:19, 19.37s/it]
+100%|██████████| 40/40 [08:08<00:00, 19.36s/it]
+100%|██████████| 40/40 [08:08<00:00, 12.20s/it]
+INFO 10-25 22:01:21 [runner_utils.py:30] Iteration 1 completed in 490.20s
+INFO 10-25 22:01:21 [runner_utils.py:30] Average time over 1 runs: 490.20s
+INFO 10-25 22:01:21 [runner_utils.py:30] Total time spent: 490.20s
+[bench] 480p_33f p2 s42 r0: pipeline 490.20s, DiT 488.03s
+INFO 10-25 22:01:22 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 22:01:22 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 22:01:24 [runner_utils.py:30] Running model...
+INFO 10-25 22:01:24 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:07<05:06,  7.87s/it]
+  5%|▌         | 2/40 [00:15<05:02,  7.97s/it]
+  8%|▊         | 3/40 [00:24<04:57,  8.05s/it]
+ 10%|█         | 4/40 [00:32<04:57,  8.26s/it]
+ 12%|█▎        | 5/40 [00:40<04:48,  8.25s/it]
+ 15%|█▌        | 6/40 [00:49<04:40,  8.25s/it]
+ 18%|█▊        | 7/40 [00:57<04:32,  8.25s/it]
+ 20%|██        | 8/40 [01:05<04:24,  8.27s/it]
+ 22%|██▎       | 9/40 [01:13<04:15,  8.25s/it]
+ 25%|██▌       | 10/40 [01:22<04:07,  8.25s/it]
+ 28%|██▊       | 11/40 [01:30<03:59,  8.24s/it]
+ 30%|███       | 12/40 [01:38<03:49,  8.21s/it]
+ 32%|███▎      | 13/40 [01:46<03:42,  8.26s/it]
+ 35%|███▌      | 14/40 [01:55<03:38,  8.42s/it]
+ 38%|███▊      | 15/40 [02:04<03:31,  8.45s/it]
+ 40%|████      | 16/40 [02:12<03:20,  8.36s/it]
+ 42%|████▎     | 17/40 [02:20<03:10,  8.28s/it]
+ 45%|████▌     | 18/40 [02:28<03:01,  8.25s/it]
+ 48%|████▊     | 19/40 [02:36<02:52,  8.22s/it]
+ 50%|█████     | 20/40 [02:44<02:44,  8.21s/it]
+ 52%|█████▎    | 21/40 [02:53<02:35,  8.18s/it]
+ 55%|█████▌    | 22/40 [03:01<02:30,  8.36s/it]
+ 57%|█████▊    | 23/40 [03:10<02:21,  8.34s/it]
+ 60%|██████    | 24/40 [03:18<02:13,  8.32s/it]
+ 62%|██████▎   | 25/40 [03:26<02:04,  8.31s/it]
+ 65%|██████▌   | 26/40 [03:34<01:56,  8.30s/it]
+ 68%|██████▊   | 27/40 [03:54<02:30, 11.57s/it]
+ 70%|███████   | 28/40 [04:13<02:47, 13.95s/it]
+ 72%|███████▎  | 29/40 [04:33<02:51, 15.59s/it]
+ 75%|███████▌  | 30/40 [04:52<02:47, 16.72s/it]
+ 78%|███████▊  | 31/40 [05:11<02:37, 17.54s/it]
+ 80%|████████  | 32/40 [05:31<02:24, 18.12s/it]
+ 82%|████████▎ | 33/40 [05:50<02:09, 18.50s/it]
+ 85%|████████▌ | 34/40 [06:10<01:52, 18.79s/it]
+ 88%|████████▊ | 35/40 [06:29<01:34, 18.94s/it]
+ 90%|█████████ | 36/40 [06:48<01:16, 19.09s/it]
+ 92%|█████████▎| 37/40 [07:08<00:57, 19.18s/it]
+ 95%|█████████▌| 38/40 [07:27<00:38, 19.20s/it]
+ 98%|█████████▊| 39/40 [07:46<00:19, 19.25s/it]
+100%|██████████| 40/40 [08:06<00:00, 19.33s/it]
+100%|██████████| 40/40 [08:06<00:00, 12.16s/it]
+INFO 10-25 22:09:33 [runner_utils.py:30] Iteration 1 completed in 488.62s
+INFO 10-25 22:09:33 [runner_utils.py:30] Average time over 1 runs: 488.62s
+INFO 10-25 22:09:33 [runner_utils.py:30] Total time spent: 488.62s
+[bench] 480p_33f p3 s42 r0: pipeline 488.62s, DiT 486.41s
+INFO 10-25 22:09:33 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 22:09:33 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 22:09:34 [runner_utils.py:30] Running model...
+INFO 10-25 22:09:34 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:08<05:14,  8.06s/it]
+  5%|▌         | 2/40 [00:16<05:11,  8.19s/it]
+  8%|▊         | 3/40 [00:24<05:01,  8.14s/it]
+ 10%|█         | 4/40 [00:32<04:52,  8.12s/it]
+ 12%|█▎        | 5/40 [00:40<04:43,  8.11s/it]
+ 15%|█▌        | 6/40 [00:48<04:35,  8.10s/it]
+ 18%|█▊        | 7/40 [00:56<04:27,  8.10s/it]
+ 20%|██        | 8/40 [01:04<04:19,  8.10s/it]
+ 22%|██▎       | 9/40 [01:13<04:11,  8.11s/it]
+ 25%|██▌       | 10/40 [01:21<04:03,  8.13s/it]
+ 28%|██▊       | 11/40 [01:29<03:57,  8.20s/it]
+ 30%|███       | 12/40 [01:38<03:53,  8.35s/it]
+ 32%|███▎      | 13/40 [01:46<03:45,  8.36s/it]
+ 35%|███▌      | 14/40 [01:54<03:37,  8.36s/it]
+ 38%|███▊      | 15/40 [02:03<03:28,  8.34s/it]
+ 40%|████      | 16/40 [02:11<03:20,  8.33s/it]
+ 42%|████▎     | 17/40 [02:19<03:09,  8.25s/it]
+ 45%|████▌     | 18/40 [02:27<03:00,  8.19s/it]
+ 48%|████▊     | 19/40 [02:35<02:50,  8.14s/it]
+ 50%|█████     | 20/40 [02:43<02:42,  8.11s/it]
+ 52%|█████▎    | 21/40 [02:51<02:33,  8.09s/it]
+ 55%|█████▌    | 22/40 [02:59<02:25,  8.09s/it]
+ 57%|█████▊    | 23/40 [03:07<02:17,  8.08s/it]
+ 60%|██████    | 24/40 [03:16<02:10,  8.13s/it]
+ 62%|██████▎   | 25/40 [03:24<02:02,  8.15s/it]
+ 65%|██████▌   | 26/40 [03:32<01:54,  8.16s/it]
+ 68%|██████▊   | 27/40 [03:51<02:29, 11.51s/it]
+ 70%|███████   | 28/40 [04:11<02:46, 13.90s/it]
+ 72%|███████▎  | 29/40 [04:30<02:50, 15.53s/it]
+ 75%|███████▌  | 30/40 [04:50<02:47, 16.71s/it]
+ 78%|███████▊  | 31/40 [05:09<02:37, 17.53s/it]
+ 80%|████████  | 32/40 [05:29<02:24, 18.09s/it]
+ 82%|████████▎ | 33/40 [05:48<02:09, 18.50s/it]
+ 85%|████████▌ | 34/40 [06:07<01:52, 18.74s/it]
+ 88%|████████▊ | 35/40 [06:27<01:35, 19.06s/it]
+ 90%|█████████ | 36/40 [06:46<01:16, 19.08s/it]
+ 92%|█████████▎| 37/40 [07:06<00:57, 19.17s/it]
+ 95%|█████████▌| 38/40 [07:25<00:38, 19.27s/it]
+ 98%|█████████▊| 39/40 [07:45<00:19, 19.37s/it]
+100%|██████████| 40/40 [08:04<00:00, 19.39s/it]
+100%|██████████| 40/40 [08:04<00:00, 12.12s/it]
+INFO 10-25 22:17:40 [runner_utils.py:30] Iteration 1 completed in 486.79s
+INFO 10-25 22:17:40 [runner_utils.py:30] Average time over 1 runs: 486.79s
+INFO 10-25 22:17:40 [runner_utils.py:30] Total time spent: 486.79s
+[bench] 480p_33f p4 s42 r0: pipeline 486.79s, DiT 484.55s
+INFO 10-25 22:17:42 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 22:17:42 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 22:17:42 [runner_utils.py:30] Running model...
+INFO 10-25 22:17:42 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:08<05:11,  8.00s/it]
+  5%|▌         | 2/40 [00:16<05:08,  8.13s/it]
+  8%|▊         | 3/40 [00:24<05:02,  8.18s/it]
+ 10%|█         | 4/40 [00:32<04:56,  8.22s/it]
+ 12%|█▎        | 5/40 [00:41<04:49,  8.26s/it]
+ 15%|█▌        | 6/40 [00:49<04:41,  8.28s/it]
+ 18%|█▊        | 7/40 [00:57<04:33,  8.28s/it]
+ 20%|██        | 8/40 [01:05<04:24,  8.27s/it]
+ 22%|██▎       | 9/40 [01:14<04:16,  8.27s/it]
+ 25%|██▌       | 10/40 [01:22<04:08,  8.28s/it]
+ 28%|██▊       | 11/40 [01:30<04:00,  8.28s/it]
+ 30%|███       | 12/40 [01:39<03:51,  8.27s/it]
+ 32%|███▎      | 13/40 [01:47<03:43,  8.29s/it]
+ 35%|███▌      | 14/40 [01:55<03:37,  8.37s/it]
+ 38%|███▊      | 15/40 [02:04<03:31,  8.46s/it]
+ 40%|████      | 16/40 [02:13<03:22,  8.45s/it]
+ 42%|████▎     | 17/40 [02:21<03:13,  8.41s/it]
+ 45%|████▌     | 18/40 [02:29<03:04,  8.38s/it]
+ 48%|████▊     | 19/40 [02:37<02:55,  8.37s/it]
+ 50%|█████     | 20/40 [02:46<02:47,  8.36s/it]
+ 52%|█████▎    | 21/40 [02:54<02:38,  8.36s/it]
+ 55%|█████▌    | 22/40 [03:03<02:30,  8.34s/it]
+ 57%|█████▊    | 23/40 [03:11<02:21,  8.35s/it]
+ 60%|██████    | 24/40 [03:19<02:13,  8.35s/it]
+ 62%|██████▎   | 25/40 [03:28<02:05,  8.34s/it]
+ 65%|██████▌   | 26/40 [03:36<01:56,  8.31s/it]
+ 68%|██████▊   | 27/40 [03:55<02:31, 11.64s/it]
+ 70%|███████   | 28/40 [04:15<02:48, 14.06s/it]
+ 72%|███████▎  | 29/40 [04:34<02:52, 15.68s/it]
+ 75%|███████▌  | 30/40 [04:54<02:48, 16.84s/it]
+ 78%|███████▊  | 31/40 [05:13<02:38, 17.62s/it]
+ 80%|████████  | 32/40 [05:33<02:25, 18.18s/it]
+ 82%|████████▎ | 33/40 [05:53<02:11, 18.84s/it]
+ 85%|████████▌ | 34/40 [06:13<01:54, 19.03s/it]
+ 88%|████████▊ | 35/40 [06:32<01:35, 19.15s/it]
+ 90%|█████████ | 36/40 [06:52<01:17, 19.27s/it]
+ 92%|█████████▎| 37/40 [07:11<00:57, 19.31s/it]
+ 95%|█████████▌| 38/40 [07:31<00:38, 19.37s/it]
+ 98%|█████████▊| 39/40 [07:50<00:19, 19.40s/it]
+100%|██████████| 40/40 [08:10<00:00, 19.43s/it]
+100%|██████████| 40/40 [08:10<00:00, 12.25s/it]
+INFO 10-25 22:25:55 [runner_utils.py:30] Iteration 1 completed in 492.21s
+INFO 10-25 22:25:55 [runner_utils.py:30] Average time over 1 runs: 492.21s
+INFO 10-25 22:25:55 [runner_utils.py:30] Total time spent: 492.21s
+[bench] 480p_33f p5 s42 r0: pipeline 492.21s, DiT 488.91s
+INFO 10-25 22:25:56 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 22:25:56 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 22:25:56 [runner_utils.py:30] Running model...
+INFO 10-25 22:25:56 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:08<05:23,  8.28s/it]
+  5%|▌         | 2/40 [00:16<05:18,  8.38s/it]
+  8%|▊         | 3/40 [00:24<05:05,  8.26s/it]
+ 10%|█         | 4/40 [00:32<04:55,  8.21s/it]
+ 12%|█▎        | 5/40 [00:41<04:53,  8.38s/it]
+ 15%|█▌        | 6/40 [00:50<04:47,  8.44s/it]
+ 18%|█▊        | 7/40 [00:58<04:39,  8.47s/it]
+ 20%|██        | 8/40 [01:07<04:29,  8.43s/it]
+ 22%|██▎       | 9/40 [01:15<04:19,  8.37s/it]
+ 25%|██▌       | 10/40 [01:23<04:09,  8.32s/it]
+ 28%|██▊       | 11/40 [01:31<04:00,  8.29s/it]
+ 30%|███       | 12/40 [01:39<03:51,  8.26s/it]
+ 32%|███▎      | 13/40 [01:48<03:41,  8.22s/it]
+ 35%|███▌      | 14/40 [01:56<03:34,  8.25s/it]
+ 38%|███▊      | 15/40 [02:05<03:29,  8.36s/it]
+ 40%|████      | 16/40 [02:13<03:21,  8.39s/it]
+ 42%|████▎     | 17/40 [02:21<03:13,  8.42s/it]
+ 45%|████▌     | 18/40 [02:30<03:04,  8.38s/it]
+ 48%|████▊     | 19/40 [02:38<02:54,  8.31s/it]
+ 50%|█████     | 20/40 [02:46<02:45,  8.26s/it]
+ 52%|█████▎    | 21/40 [02:54<02:37,  8.29s/it]
+ 55%|█████▌    | 22/40 [03:03<02:30,  8.36s/it]
+ 57%|█████▊    | 23/40 [03:11<02:22,  8.41s/it]
+ 60%|██████    | 24/40 [03:20<02:13,  8.33s/it]
+ 62%|██████▎   | 25/40 [03:28<02:04,  8.29s/it]
+ 65%|██████▌   | 26/40 [03:36<01:55,  8.24s/it]
+ 68%|██████▊   | 27/40 [03:55<02:30, 11.55s/it]
+ 70%|███████   | 28/40 [04:15<02:47, 13.95s/it]
+ 72%|███████▎  | 29/40 [04:34<02:51, 15.62s/it]
+ 75%|███████▌  | 30/40 [04:54<02:47, 16.76s/it]
+ 78%|███████▊  | 31/40 [05:13<02:38, 17.58s/it]
+ 80%|████████  | 32/40 [05:33<02:25, 18.19s/it]
+ 82%|████████▎ | 33/40 [05:52<02:09, 18.54s/it]
+ 85%|████████▌ | 34/40 [06:12<01:52, 18.82s/it]
+ 88%|████████▊ | 35/40 [06:31<01:35, 19.00s/it]
+ 90%|█████████ | 36/40 [06:50<01:16, 19.13s/it]
+ 92%|█████████▎| 37/40 [07:10<00:57, 19.24s/it]
+ 95%|█████████▌| 38/40 [07:29<00:38, 19.31s/it]
+ 98%|█████████▊| 39/40 [07:49<00:19, 19.35s/it]
+100%|██████████| 40/40 [08:08<00:00, 19.39s/it]
+100%|██████████| 40/40 [08:08<00:00, 12.22s/it]
+INFO 10-25 22:34:07 [runner_utils.py:30] Iteration 1 completed in 491.04s
+INFO 10-25 22:34:07 [runner_utils.py:30] Average time over 1 runs: 491.04s
+INFO 10-25 22:34:07 [runner_utils.py:30] Total time spent: 491.04s
+[bench] 480p_33f p6 s42 r0: pipeline 491.04s, DiT 488.77s
+INFO 10-25 22:34:08 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 22:34:08 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 22:34:08 [runner_utils.py:30] Running model...
+INFO 10-25 22:34:08 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:07<04:55,  7.58s/it]
+  5%|▌         | 2/40 [00:15<04:59,  7.89s/it]
+  8%|▊         | 3/40 [00:24<05:01,  8.15s/it]
+ 10%|█         | 4/40 [00:32<05:00,  8.34s/it]
+ 12%|█▎        | 5/40 [00:41<04:51,  8.34s/it]
+ 15%|█▌        | 6/40 [00:49<04:43,  8.34s/it]
+ 18%|█▊        | 7/40 [00:57<04:34,  8.33s/it]
+ 20%|██        | 8/40 [01:06<04:26,  8.31s/it]
+ 22%|██▎       | 9/40 [01:14<04:17,  8.30s/it]
+ 25%|██▌       | 10/40 [01:22<04:09,  8.31s/it]
+ 28%|██▊       | 11/40 [01:30<03:58,  8.23s/it]
+ 30%|███       | 12/40 [01:38<03:48,  8.18s/it]
+ 32%|███▎      | 13/40 [01:46<03:39,  8.15s/it]
+ 35%|███▌      | 14/40 [01:55<03:32,  8.18s/it]
+ 38%|███▊      | 15/40 [02:03<03:27,  8.29s/it]
+ 40%|████      | 16/40 [02:12<03:19,  8.32s/it]
+ 42%|████▎     | 17/40 [02:20<03:09,  8.25s/it]
+ 45%|████▌     | 18/40 [02:28<03:00,  8.20s/it]
+ 48%|████▊     | 19/40 [02:36<02:51,  8.17s/it]
+ 50%|█████     | 20/40 [02:44<02:44,  8.22s/it]
+ 52%|█████▎    | 21/40 [02:53<02:38,  8.33s/it]
+ 55%|█████▌    | 22/40 [03:01<02:30,  8.38s/it]
+ 57%|█████▊    | 23/40 [03:10<02:22,  8.41s/it]
+ 60%|██████    | 24/40 [03:18<02:13,  8.36s/it]
+ 62%|██████▎   | 25/40 [03:26<02:04,  8.29s/it]
+ 65%|██████▌   | 26/40 [03:34<01:55,  8.23s/it]
+ 68%|██████▊   | 27/40 [03:53<02:29, 11.53s/it]
+ 70%|███████   | 28/40 [04:13<02:46, 13.90s/it]
+ 72%|███████▎  | 29/40 [04:32<02:51, 15.56s/it]
+ 75%|███████▌  | 30/40 [04:52<02:47, 16.73s/it]
+ 78%|███████▊  | 31/40 [05:11<02:38, 17.58s/it]
+ 80%|████████  | 32/40 [05:31<02:25, 18.16s/it]
+ 82%|████████▎ | 33/40 [05:50<02:09, 18.51s/it]
+ 85%|████████▌ | 34/40 [06:10<01:52, 18.79s/it]
+ 88%|████████▊ | 35/40 [06:29<01:34, 19.00s/it]
+ 90%|█████████ | 36/40 [06:49<01:16, 19.16s/it]
+ 92%|█████████▎| 37/40 [07:08<00:57, 19.26s/it]
+ 95%|█████████▌| 38/40 [07:28<00:38, 19.33s/it]
+ 98%|█████████▊| 39/40 [07:47<00:19, 19.39s/it]
+100%|██████████| 40/40 [08:06<00:00, 19.38s/it]
+100%|██████████| 40/40 [08:06<00:00, 12.17s/it]
+INFO 10-25 22:42:17 [runner_utils.py:30] Iteration 1 completed in 489.14s
+INFO 10-25 22:42:17 [runner_utils.py:30] Average time over 1 runs: 489.14s
+INFO 10-25 22:42:17 [runner_utils.py:30] Total time spent: 489.14s
+[bench] 480p_33f p7 s42 r0: pipeline 489.14s, DiT 486.89s
+INFO 10-25 22:42:18 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 22:42:18 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 22:42:19 [runner_utils.py:30] Running model...
+INFO 10-25 22:42:19 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:07<05:05,  7.83s/it]
+  5%|▌         | 2/40 [00:15<05:03,  7.97s/it]
+  8%|▊         | 3/40 [00:24<04:57,  8.03s/it]
+ 10%|█         | 4/40 [00:32<04:57,  8.26s/it]
+ 12%|█▎        | 5/40 [00:40<04:49,  8.26s/it]
+ 15%|█▌        | 6/40 [00:49<04:41,  8.27s/it]
+ 18%|█▊        | 7/40 [00:57<04:32,  8.25s/it]
+ 20%|██        | 8/40 [01:05<04:24,  8.25s/it]
+ 22%|██▎       | 9/40 [01:13<04:15,  8.24s/it]
+ 25%|██▌       | 10/40 [01:22<04:07,  8.24s/it]
+ 28%|██▊       | 11/40 [01:30<03:58,  8.23s/it]
+ 30%|███       | 12/40 [01:38<03:50,  8.23s/it]
+ 32%|███▎      | 13/40 [01:46<03:42,  8.23s/it]
+ 35%|███▌      | 14/40 [01:55<03:34,  8.25s/it]
+ 38%|███▊      | 15/40 [02:03<03:26,  8.27s/it]
+ 40%|████      | 16/40 [02:11<03:18,  8.29s/it]
+ 42%|████▎     | 17/40 [02:19<03:10,  8.27s/it]
+ 45%|████▌     | 18/40 [02:28<03:02,  8.28s/it]
+ 48%|████▊     | 19/40 [02:36<02:53,  8.28s/it]
+ 50%|█████     | 20/40 [02:44<02:45,  8.27s/it]
+ 52%|█████▎    | 21/40 [02:53<02:37,  8.27s/it]
+ 55%|█████▌    | 22/40 [03:01<02:28,  8.27s/it]
+ 57%|█████▊    | 23/40 [03:09<02:20,  8.26s/it]
+ 60%|██████    | 24/40 [03:17<02:12,  8.27s/it]
+ 62%|██████▎   | 25/40 [03:26<02:04,  8.29s/it]
+ 65%|██████▌   | 26/40 [03:34<01:55,  8.29s/it]
+ 68%|██████▊   | 27/40 [03:53<02:31, 11.63s/it]
+ 70%|███████   | 28/40 [04:13<02:47, 13.93s/it]
+ 72%|███████▎  | 29/40 [04:32<02:51, 15.63s/it]
+ 75%|███████▌  | 30/40 [04:52<02:47, 16.75s/it]
+ 78%|███████▊  | 31/40 [05:11<02:37, 17.54s/it]
+ 80%|████████  | 32/40 [05:31<02:25, 18.18s/it]
+ 82%|████████▎ | 33/40 [05:50<02:09, 18.55s/it]
+ 85%|████████▌ | 34/40 [06:09<01:52, 18.79s/it]
+ 88%|████████▊ | 35/40 [06:29<01:34, 18.94s/it]
+ 90%|█████████ | 36/40 [06:48<01:16, 19.10s/it]
+ 92%|█████████▎| 37/40 [07:08<00:57, 19.18s/it]
+ 95%|█████████▌| 38/40 [07:27<00:38, 19.22s/it]
+ 98%|█████████▊| 39/40 [07:46<00:19, 19.25s/it]
+100%|██████████| 40/40 [08:06<00:00, 19.29s/it]
+100%|██████████| 40/40 [08:06<00:00, 12.15s/it]
+INFO 10-25 22:50:28 [runner_utils.py:30] Iteration 1 completed in 488.41s
+INFO 10-25 22:50:28 [runner_utils.py:30] Average time over 1 runs: 488.41s
+INFO 10-25 22:50:28 [runner_utils.py:30] Total time spent: 488.41s
+[bench] 480p_33f p8 s42 r0: pipeline 488.41s, DiT 485.98s
+INFO 10-25 22:50:29 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 22:50:29 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 22:50:29 [runner_utils.py:30] Running model...
+INFO 10-25 22:50:29 [runner_utils.py:30] Running iteration 1/1
+
+  0%|          | 0/40 [00:00<?, ?it/s]
+  2%|▎         | 1/40 [00:07<05:06,  7.85s/it]
+  5%|▌         | 2/40 [00:15<05:04,  8.02s/it]
+  8%|▊         | 3/40 [00:24<04:57,  8.05s/it]
+ 10%|█         | 4/40 [00:32<04:50,  8.07s/it]
+ 12%|█▎        | 5/40 [00:40<04:42,  8.08s/it]
+ 15%|█▌        | 6/40 [00:48<04:35,  8.10s/it]
+ 18%|█▊        | 7/40 [00:56<04:27,  8.10s/it]
+ 20%|██        | 8/40 [01:04<04:19,  8.12s/it]
+ 22%|██▎       | 9/40 [01:12<04:11,  8.12s/it]
+ 25%|██▌       | 10/40 [01:21<04:06,  8.21s/it]
+ 28%|██▊       | 11/40 [01:29<04:01,  8.32s/it]
+ 30%|███       | 12/40 [01:38<03:53,  8.34s/it]
+ 32%|███▎      | 13/40 [01:46<03:44,  8.31s/it]
+ 35%|███▌      | 14/40 [01:54<03:34,  8.24s/it]
+ 38%|███▊      | 15/40 [02:02<03:24,  8.19s/it]
+ 40%|████      | 16/40 [02:10<03:15,  8.16s/it]
+ 42%|████▎     | 17/40 [02:18<03:07,  8.15s/it]
+ 45%|████▌     | 18/40 [02:26<02:59,  8.14s/it]
+ 48%|████▊     | 19/40 [02:34<02:50,  8.13s/it]
+ 50%|█████     | 20/40 [02:43<02:42,  8.12s/it]
+ 52%|█████▎    | 21/40 [02:51<02:34,  8.11s/it]
+ 55%|█████▌    | 22/40 [02:59<02:26,  8.14s/it]
+ 57%|█████▊    | 23/40 [03:07<02:19,  8.21s/it]
+ 60%|██████    | 24/40 [03:16<02:12,  8.26s/it]
+ 62%|██████▎   | 25/40 [03:24<02:04,  8.27s/it]
+ 65%|██████▌   | 26/40 [03:32<01:55,  8.22s/it]
+ 68%|██████▊   | 27/40 [03:51<02:30, 11.58s/it]
+ 70%|███████   | 28/40 [04:11<02:46, 13.90s/it]
+ 72%|███████▎  | 29/40 [04:30<02:50, 15.53s/it]
+ 75%|███████▌  | 30/40 [04:50<02:47, 16.72s/it]
+ 78%|███████▊  | 31/40 [05:09<02:37, 17.49s/it]
+ 80%|████████  | 32/40 [05:28<02:24, 18.05s/it]
+ 82%|████████▎ | 33/40 [05:48<02:09, 18.46s/it]
+ 85%|████████▌ | 34/40 [06:07<01:52, 18.70s/it]
+ 88%|████████▊ | 35/40 [06:26<01:34, 18.90s/it]
+ 90%|█████████ | 36/40 [06:46<01:16, 19.09s/it]
+ 92%|█████████▎| 37/40 [07:05<00:57, 19.18s/it]
+ 95%|█████████▌| 38/40 [07:25<00:38, 19.25s/it]
+ 98%|█████████▊| 39/40 [07:44<00:19, 19.24s/it]
+100%|██████████| 40/40 [08:03<00:00, 19.28s/it]
+100%|██████████| 40/40 [08:03<00:00, 12.09s/it]
+INFO 10-25 22:58:35 [runner_utils.py:30] Iteration 1 completed in 486.02s
+INFO 10-25 22:58:35 [runner_utils.py:30] Average time over 1 runs: 486.02s
+INFO 10-25 22:58:35 [runner_utils.py:30] Total time spent: 486.02s
+[bench] 480p_33f p9 s42 r0: pipeline 486.02s, DiT 483.66s
+[bench] results in $XDIT_WORK/results/phase1/int8_low
+INFO 10-25 22:58:38 [runner_utils.py:30] Cleaned up resources.

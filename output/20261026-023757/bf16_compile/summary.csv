@@ -1,0 +1,3 @@
+case,prompt_index,seed,repeats,clean_repeats,pipeline_s_median,dit_ms_median,dit_peak_gib_max,run_peak_gib_max,transformer_steps,transformer_total_ms_median,transformer_step_ms_median,transformer_2_steps,transformer_2_total_ms_median,transformer_2_step_ms_median
+480p_33f_speed,0,42,1,1,55.45034765625,53482.7880859375,66.10942602157593,68.62454414367676,7,37332.9091796875,5337.357177734375,3,16149.87890625,5382.94677734375
+480p_81f,0,42,1,1,377.2433125,349249.1787109375,68.45249032974243,68.76581764221191,7,273404.0869140625,20193.8935546875,3,75845.091796875,25282.662109375

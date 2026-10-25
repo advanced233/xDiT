@@ -1,0 +1,38 @@
+{
+  "label": "remaining_vbench_int8_high_imaging_quality",
+  "command_template": [
+    "bash",
+    "$XDIT_WORK/scripts/run-vbench-remaining.sh",
+    "{PORT}",
+    "$XDIT_WORK/results/phase1/int8_high/videos/480p_33f",
+    "imaging_quality",
+    "$XDIT_WORK/results/phase1/vbench_int8_high/imaging_quality"
+  ],
+  "started": 1792953376.964607,
+  "selected_gpus": [
+    {
+      "index": 1,
+      "uuid": "<GPU_UUID>",
+      "name": "NVIDIA A100 80GB PCIe",
+      "total_mib": 81920
+    }
+  ],
+  "master_port": 45618,
+  "command": [
+    "bash",
+    "$XDIT_WORK/scripts/run-vbench-remaining.sh",
+    "45618",
+    "$XDIT_WORK/results/phase1/int8_high/videos/480p_33f",
+    "imaging_quality",
+    "$XDIT_WORK/results/phase1/vbench_int8_high/imaging_quality"
+  ],
+  "attempts": 1,
+  "runtime_overrides": {
+    "HF_DEACTIVATE_ASYNC_LOAD": null,
+    "LD_LIBRARY_PATH": "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cublas/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cuda_cupti/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cuda_nvrtc/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cuda_runtime/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cudnn/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cufft/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cufile/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/curand/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cusolver/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cusparse/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cusparselt/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nccl/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nvjitlink/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nvshmem/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nvtx/lib:$XDIT_WORK/envs/xdit-cu126/lib",
+    "TRITON_PTXAS_PATH": null
+  },
+  "returncode": 0,
+  "status": "passed",
+  "elapsed_seconds": 19.878337621688843
+}

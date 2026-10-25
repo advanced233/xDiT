@@ -1,0 +1,12 @@
+{
+  "dimension": "subject_consistency",
+  "ready": false,
+  "elapsed_seconds": 1800.0003577629104,
+  "limit_seconds": 1800,
+  "files": [
+    {
+      "file": "dino_model/dino-main.tar.gz",
+      "downloaded": false
+    }
+  ]
+}

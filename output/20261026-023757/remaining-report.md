@@ -1,0 +1,225 @@
+# 阶段 1 剩余评测执行记录
+
+此前生成、计时不重跑；本次只补视频对比、VBench、注意力计时。失败和下载超时按要求记录并继续。
+
+```json
+{
+  "commit": "3038c24fd7d4b1783eb37578421799bd152a0c41",
+  "status": "complete_with_skips_or_errors",
+  "completed": [
+    {
+      "stage": "remaining_compare_int8_both",
+      "returncode": 0,
+      "log": "logs/remaining_compare_int8_both.log"
+    },
+    {
+      "stage": "remaining_compare_int8_high",
+      "returncode": 0,
+      "log": "logs/remaining_compare_int8_high.log"
+    },
+    {
+      "stage": "remaining_compare_int8_low",
+      "returncode": 0,
+      "log": "logs/remaining_compare_int8_low.log"
+    },
+    {
+      "stage": "remaining_vbench_bf16_imaging_quality",
+      "returncode": 0,
+      "log": "logs/remaining_vbench_bf16_imaging_quality.log"
+    },
+    {
+      "stage": "remaining_vbench_int8_both_imaging_quality",
+      "returncode": 0,
+      "log": "logs/remaining_vbench_int8_both_imaging_quality.log"
+    },
+    {
+      "stage": "remaining_vbench_int8_high_imaging_quality",
+      "returncode": 0,
+      "log": "logs/remaining_vbench_int8_high_imaging_quality.log"
+    },
+    {
+      "stage": "remaining_vbench_int8_low_imaging_quality",
+      "returncode": 0,
+      "log": "logs/remaining_vbench_int8_low_imaging_quality.log"
+    },
+    {
+      "stage": "remaining_attention",
+      "returncode": 0,
+      "log": "logs/remaining_attention.log"
+    }
+  ],
+  "failed": [
+    {
+      "stage": "remaining_vbench_bf16_motion_smoothness",
+      "returncode": 1,
+      "log": "logs/remaining_vbench_bf16_motion_smoothness.log"
+    },
+    {
+      "stage": "remaining_vbench_int8_both_motion_smoothness",
+      "returncode": 1,
+      "log": "logs/remaining_vbench_int8_both_motion_smoothness.log"
+    },
+    {
+      "stage": "remaining_vbench_int8_high_motion_smoothness",
+      "returncode": 1,
+      "log": "logs/remaining_vbench_int8_high_motion_smoothness.log"
+    },
+    {
+      "stage": "remaining_vbench_int8_low_motion_smoothness",
+      "returncode": 1,
+      "log": "logs/remaining_vbench_int8_low_motion_smoothness.log"
+    }
+  ],
+  "skipped": [
+    {
+      "stage": "vbench_subject_consistency",
+      "groups": "all four",
+      "reason": "Weights unavailable within download budget",
+      "detail": {
+        "dimension": "subject_consistency",
+        "ready": false,
+        "elapsed_seconds": 1800.0003577629104,
+        "limit_seconds": 1800,
+        "files": [
+          {
+            "file": "dino_model/dino-main.tar.gz",
+            "downloaded": false
+          }
+        ]
+      }
+    },
+    {
+      "stage": "vbench_background_consistency",
+      "groups": "all four",
+      "reason": "Weights unavailable within download budget",
+      "detail": {
+        "dimension": "background_consistency",
+        "ready": false,
+        "elapsed_seconds": 1800.0009115114808,
+        "limit_seconds": 1800,
+        "files": [
+          {
+            "file": "clip_model/ViT-B-32.pt",
+            "downloaded": false
+          }
+        ]
+      }
+    },
+    {
+      "stage": "vbench_dynamic_degree",
+      "groups": "all four",
+      "reason": "Weights unavailable within download budget",
+      "detail": {
+        "dimension": "dynamic_degree",
+        "ready": false,
+        "elapsed_seconds": 1799.6064164685085,
+        "limit_seconds": 1800,
+        "files": [
+          {
+            "file": "raft_model/models.zip",
+            "downloaded": false
+          }
+        ]
+      }
+    },
+    {
+      "stage": "vbench_aesthetic_quality",
+      "groups": "all four",
+      "reason": "Weights unavailable within download budget",
+      "detail": {
+        "dimension": "aesthetic_quality",
+        "ready": false,
+        "elapsed_seconds": 1800.0002397820354,
+        "limit_seconds": 1800,
+        "files": [
+          {
+            "file": "clip_model/ViT-L-14.pt",
+            "downloaded": false
+          }
+        ]
+      }
+    }
+  ],
+  "started": "2026-10-26T01:34:19.510829",
+  "current": "remaining_attention",
+  "alexnet": {
+    "verified": true,
+    "sha256": "7be5be791159472b1fbf3c69796f7cb30dca7ad8466c2df70058c37116cdee02"
+  },
+  "downloads": {
+    "motion_smoothness": {
+      "dimension": "motion_smoothness",
+      "ready": true,
+      "elapsed_seconds": 15.120307344943285,
+      "limit_seconds": 1800,
+      "files": [
+        {
+          "file": "amt_model/amt-s.pth",
+          "downloaded": true
+        }
+      ]
+    },
+    "subject_consistency": {
+      "dimension": "subject_consistency",
+      "ready": false,
+      "elapsed_seconds": 1800.0003577629104,
+      "limit_seconds": 1800,
+      "files": [
+        {
+          "file": "dino_model/dino-main.tar.gz",
+          "downloaded": false
+        }
+      ]
+    },
+    "background_consistency": {
+      "dimension": "background_consistency",
+      "ready": false,
+      "elapsed_seconds": 1800.0009115114808,
+      "limit_seconds": 1800,
+      "files": [
+        {
+          "file": "clip_model/ViT-B-32.pt",
+          "downloaded": false
+        }
+      ]
+    },
+    "dynamic_degree": {
+      "dimension": "dynamic_degree",
+      "ready": false,
+      "elapsed_seconds": 1799.6064164685085,
+      "limit_seconds": 1800,
+      "files": [
+        {
+          "file": "raft_model/models.zip",
+          "downloaded": false
+        }
+      ]
+    },
+    "imaging_quality": {
+      "dimension": "imaging_quality",
+      "ready": true,
+      "elapsed_seconds": 710.4815448839217,
+      "limit_seconds": 1800,
+      "files": [
+        {
+          "file": "pyiqa_model/musiq_spaq_ckpt-358bb6af.pth",
+          "downloaded": true
+        }
+      ]
+    },
+    "aesthetic_quality": {
+      "dimension": "aesthetic_quality",
+      "ready": false,
+      "elapsed_seconds": 1800.0002397820354,
+      "limit_seconds": 1800,
+      "files": [
+        {
+          "file": "clip_model/ViT-L-14.pt",
+          "downloaded": false
+        }
+      ]
+    }
+  },
+  "finished": "2026-10-26T02:37:57.165126"
+}
+```

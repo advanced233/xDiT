@@ -1,0 +1,82 @@
+{
+  "reference": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f",
+  "candidate": "$XDIT_WORK/results/phase1/int8_high/videos/480p_33f",
+  "mean": {
+    "psnr_db": 21.606492897958468,
+    "ssim": 0.741108020372463,
+    "lpips": 0.19015255622339972
+  },
+  "videos": {
+    "p000_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 32.211775635228015,
+      "identical_frames": 0,
+      "ssim": 0.9357106649514401,
+      "lpips": 0.09743122079155662
+    },
+    "p001_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 14.576141415220318,
+      "identical_frames": 0,
+      "ssim": 0.5901579242764097,
+      "lpips": 0.3058487538135413
+    },
+    "p002_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 21.379423719463926,
+      "identical_frames": 0,
+      "ssim": 0.682597664269534,
+      "lpips": 0.12598501394192377
+    },
+    "p003_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 25.725393642078746,
+      "identical_frames": 0,
+      "ssim": 0.8934882608326998,
+      "lpips": 0.07478855053583781
+    },
+    "p004_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 19.823259006847035,
+      "identical_frames": 0,
+      "ssim": 0.780022969751647,
+      "lpips": 0.18809954912373514
+    },
+    "p005_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 29.538784489487156,
+      "identical_frames": 0,
+      "ssim": 0.9503963354862097,
+      "lpips": 0.05165542458946055
+    },
+    "p006_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 17.83289978720925,
+      "identical_frames": 0,
+      "ssim": 0.5987751303297101,
+      "lpips": 0.34421379548130615
+    },
+    "p007_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 24.028388167872574,
+      "identical_frames": 0,
+      "ssim": 0.8842322266463077,
+      "lpips": 0.08859220576105696
+    },
+    "p008_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 20.545503038348574,
+      "identical_frames": 0,
+      "ssim": 0.8708057764804724,
+      "lpips": 0.12695017818248633
+    },
+    "p009_s42.mp4": {
+      "frames": 33,
+      "psnr_db": 10.403360077829072,
+      "identical_frames": 0,
+      "ssim": 0.22489325070019925,
+      "lpips": 0.4979608700130925
+    }
+  },
+  "missing_in_candidate": []
+}

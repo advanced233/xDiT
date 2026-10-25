@@ -1,0 +1,12 @@
+{
+  "dimension": "background_consistency",
+  "ready": false,
+  "elapsed_seconds": 1800.0009115114808,
+  "limit_seconds": 1800,
+  "files": [
+    {
+      "file": "clip_model/ViT-B-32.pt",
+      "downloaded": false
+    }
+  ]
+}

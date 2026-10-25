@@ -1,0 +1,18 @@
+COMMAND ["python", "benchmarks/wan22/compare_videos.py", "--reference", "$XDIT_WORK/results/phase1/bf16/videos/480p_33f", "--candidate", "$XDIT_WORK/results/phase1/int8_low/videos/480p_33f", "--json", "$XDIT_WORK/results/phase1/compare_int8_low_vs_bf16.json"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=46018
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torchvision/models/_utils.py:207: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torchvision/models/_utils.py:222: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=AlexNet_Weights.IMAGENET1K_V1`. You can also use `weights=AlexNet_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+p000_s42.mp4: {'frames': 33, 'psnr_db': 40.4840842738296, 'identical_frames': 0, 'ssim': 0.9601519739989078, 'lpips': 0.009201215918768536}
+p001_s42.mp4: {'frames': 33, 'psnr_db': 28.48810773907286, 'identical_frames': 0, 'ssim': 0.914178313631, 'lpips': 0.04320048800472057}
+p002_s42.mp4: {'frames': 33, 'psnr_db': 32.109323212594695, 'identical_frames': 0, 'ssim': 0.92474498351415, 'lpips': 0.030241563408212227}
+p003_s42.mp4: {'frames': 33, 'psnr_db': 38.030286037560664, 'identical_frames': 0, 'ssim': 0.953548763737534, 'lpips': 0.014328853198976227}
+p004_s42.mp4: {'frames': 33, 'psnr_db': 31.376135045831855, 'identical_frames': 0, 'ssim': 0.9424599571661516, 'lpips': 0.03333133837264596}
+p005_s42.mp4: {'frames': 33, 'psnr_db': 35.74483316594904, 'identical_frames': 0, 'ssim': 0.9694166291843761, 'lpips': 0.027344062755053692}
+p006_s42.mp4: {'frames': 33, 'psnr_db': 32.247906135790274, 'identical_frames': 0, 'ssim': 0.9290670066168814, 'lpips': 0.039846469507072914}
+p007_s42.mp4: {'frames': 33, 'psnr_db': 30.75776579885772, 'identical_frames': 0, 'ssim': 0.9497152693343885, 'lpips': 0.028693877950762257}
+p008_s42.mp4: {'frames': 33, 'psnr_db': 34.50507013725512, 'identical_frames': 0, 'ssim': 0.9586275418599447, 'lpips': 0.019297762604599648}
+p009_s42.mp4: {'frames': 33, 'psnr_db': 27.166429982040867, 'identical_frames': 0, 'ssim': 0.8894212191755121, 'lpips': 0.0495274592981194}
+mean over 10 videos: {'psnr_db': 33.09099415287827, 'ssim': 0.9391331658218846, 'lpips': 0.029501309101893143}; unmatched in candidate: []

@@ -1,0 +1,58 @@
+{
+  "label": "int8_compile",
+  "command_template": [
+    "torchrun",
+    "--nproc_per_node=1",
+    "benchmarks/wan22/bench.py",
+    "--config",
+    "benchmarks/wan22/configs/phase1.yaml",
+    "--output-dir",
+    "$XDIT_WORK/results/phase1/int8_compile",
+    "--case",
+    "480p_33f_speed",
+    "--case",
+    "480p_81f",
+    "--runner-arg",
+    "use_torch_compile=true",
+    "--runner-arg",
+    "gemm_quantization=int8"
+  ],
+  "started": 1792928067.8608336,
+  "selected_gpus": [
+    {
+      "index": 1,
+      "uuid": "<GPU_UUID>",
+      "name": "NVIDIA A100 80GB PCIe",
+      "total_mib": 81920
+    }
+  ],
+  "master_port": 40036,
+  "command": [
+    "torchrun",
+    "--master_port",
+    "40036",
+    "--nproc_per_node=1",
+    "benchmarks/wan22/bench.py",
+    "--config",
+    "benchmarks/wan22/configs/phase1.yaml",
+    "--output-dir",
+    "$XDIT_WORK/results/phase1/int8_compile",
+    "--case",
+    "480p_33f_speed",
+    "--case",
+    "480p_81f",
+    "--runner-arg",
+    "use_torch_compile=true",
+    "--runner-arg",
+    "gemm_quantization=int8"
+  ],
+  "attempts": 1,
+  "runtime_overrides": {
+    "HF_DEACTIVATE_ASYNC_LOAD": "1",
+    "LD_LIBRARY_PATH": "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cublas/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cuda_cupti/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cuda_nvrtc/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cuda_runtime/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cudnn/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cufft/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cufile/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/curand/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cusolver/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cusparse/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/cusparselt/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nccl/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nvjitlink/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nvshmem/lib:$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/nvidia/nvtx/lib:$XDIT_WORK/envs/xdit-cu126/lib",
+    "TRITON_PTXAS_PATH": null
+  },
+  "returncode": 0,
+  "status": "passed",
+  "elapsed_seconds": 974.649894952774
+}

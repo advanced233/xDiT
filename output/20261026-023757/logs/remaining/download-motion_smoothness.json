@@ -1,0 +1,12 @@
+{
+  "dimension": "motion_smoothness",
+  "ready": true,
+  "elapsed_seconds": 15.120307344943285,
+  "limit_seconds": 1800,
+  "files": [
+    {
+      "file": "amt_model/amt-s.pth",
+      "downloaded": true
+    }
+  ]
+}

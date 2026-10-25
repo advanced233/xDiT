@@ -1,0 +1,21 @@
+COMMAND ["python", "benchmarks/wan22/attention_bench.py", "--json", "$XDIT_WORK/results/phase1/attention.json"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=24654
+W1026 02:37:06.653000 2328244 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1026 02:37:06.856000 2328244 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+FLASH: unavailable (flash_attn.flash_attn_func is unavailable -- flash_attn is not installed)
+L= 14040 H= 40 CUDNN           23.28 ms   173.4 TFLOPS  rel_l2 vs SDPA_FLASH 3.08e-03
+L= 14040 H= 40 SDPA_FLASH      21.49 ms   187.9 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00
+L= 14040 H= 40 SAGE            18.60 ms   217.0 TFLOPS  rel_l2 vs SDPA_FLASH 1.17e-02
+L= 14040 H= 20 CUDNN           11.70 ms   172.6 TFLOPS  rel_l2 vs SDPA_FLASH 3.06e-03
+L= 14040 H= 20 SDPA_FLASH      10.95 ms   184.4 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00
+L= 14040 H= 20 SAGE             9.53 ms   211.9 TFLOPS  rel_l2 vs SDPA_FLASH 1.16e-02
+L= 32760 H= 40 CUDNN          126.08 ms   174.3 TFLOPS  rel_l2 vs SDPA_FLASH 3.10e-03
+L= 32760 H= 40 SDPA_FLASH     117.04 ms   187.8 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00
+L= 32760 H= 40 SAGE            97.87 ms   224.6 TFLOPS  rel_l2 vs SDPA_FLASH 1.16e-02
+L= 32760 H= 20 CUDNN           63.65 ms   172.7 TFLOPS  rel_l2 vs SDPA_FLASH 3.12e-03
+L= 32760 H= 20 SDPA_FLASH      59.27 ms   185.4 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00
+L= 32760 H= 20 SAGE            49.37 ms   222.6 TFLOPS  rel_l2 vs SDPA_FLASH 1.18e-02

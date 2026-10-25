@@ -1,0 +1,92 @@
+[
+    {
+        "prompt_en": "p005_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p005_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p004_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p004_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p000_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p000_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p007_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p007_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p008_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p008_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p009_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p009_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p003_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p003_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p001_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p001_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p002_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p002_s42.mp4"
+        ]
+    },
+    {
+        "prompt_en": "p006_s42",
+        "dimension": [
+            "motion_smoothness"
+        ],
+        "video_list": [
+            "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p006_s42.mp4"
+        ]
+    }
+]

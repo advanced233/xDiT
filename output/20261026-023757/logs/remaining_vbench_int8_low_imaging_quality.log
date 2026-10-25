@@ -1,0 +1,28 @@
+COMMAND ["bash", "$XDIT_WORK/scripts/run-vbench-remaining.sh", "48644", "$XDIT_WORK/results/phase1/int8_low/videos/480p_33f", "imaging_quality", "$XDIT_WORK/results/phase1/vbench_int8_low/imaging_quality"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=48644
+args: Namespace(output_path='$XDIT_WORK/results/phase1/vbench_int8_low/imaging_quality', full_json_dir='$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/vbench/launch/../VBench_full_info.json', videos_path='$XDIT_WORK/results/phase1/int8_low/videos/480p_33f', dimension=['imaging_quality'], load_ckpt_from_local=True, read_frame=None, mode='custom_input', prompt='None', prompt_file=None, category=None, imaging_quality_preprocessing_mode='longer')
+start evaluation
+2026-10-26 02:36:44,018 - vbench.utils - INFO - [32m[Local Mode][0m Working in local mode, please make sure that the pre-trained model has been fully downloaded.
+[rank0]:[W1026 02:36:44.387710466 ProcessGroupNCCL.cpp:4561] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. Specify device_ids in barrier() to force use of a particular device, or call init_process_group() with a device_id.
+Evaluation meta data saved to $XDIT_WORK/results/phase1/vbench_int8_low/imaging_quality/results_2026-10-26-02:36:44_full_info.json
+$XDIT_WORK/envs/vbench/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+cur_full_info_path: $XDIT_WORK/results/phase1/vbench_int8_low/imaging_quality/results_2026-10-26-02:36:44_full_info.json
+Loading pretrained model MUSIQ from $XDIT_WORK/cache/vbench/pyiqa_model/musiq_spaq_ckpt-358bb6af.pth
+
+  0%|          | 0/10 [00:00<?, ?it/s]
+ 10%|█         | 1/10 [00:00<00:08,  1.04it/s]
+ 20%|██        | 2/10 [00:01<00:06,  1.30it/s]
+ 30%|███       | 3/10 [00:02<00:05,  1.40it/s]
+ 40%|████      | 4/10 [00:02<00:04,  1.41it/s]
+ 50%|█████     | 5/10 [00:03<00:03,  1.40it/s]
+ 60%|██████    | 6/10 [00:04<00:02,  1.37it/s]
+ 70%|███████   | 7/10 [00:05<00:02,  1.43it/s]
+ 80%|████████  | 8/10 [00:05<00:01,  1.47it/s]
+ 90%|█████████ | 9/10 [00:06<00:00,  1.48it/s]
+100%|██████████| 10/10 [00:07<00:00,  1.50it/s]
+100%|██████████| 10/10 [00:07<00:00,  1.42it/s]
+Evaluation results saved to $XDIT_WORK/results/phase1/vbench_int8_low/imaging_quality/results_2026-10-26-02:36:44_eval_results.json
+done
+[rank0]:[W1026 02:36:53.567126276 ProcessGroupNCCL.cpp:1496] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())

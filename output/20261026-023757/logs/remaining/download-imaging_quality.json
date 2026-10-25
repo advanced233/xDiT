@@ -1,0 +1,12 @@
+{
+  "dimension": "imaging_quality",
+  "ready": true,
+  "elapsed_seconds": 710.4815448839217,
+  "limit_seconds": 1800,
+  "files": [
+    {
+      "file": "pyiqa_model/musiq_spaq_ckpt-358bb6af.pth",
+      "downloaded": true
+    }
+  ]
+}

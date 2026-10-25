@@ -1,0 +1,12 @@
+{
+  "dimension": "dynamic_degree",
+  "ready": false,
+  "elapsed_seconds": 1799.6064164685085,
+  "limit_seconds": 1800,
+  "files": [
+    {
+      "file": "raft_model/models.zip",
+      "downloaded": false
+    }
+  ]
+}

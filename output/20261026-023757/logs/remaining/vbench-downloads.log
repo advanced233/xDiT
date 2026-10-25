@@ -1,0 +1,6 @@
+motion_smoothness {'dimension': 'motion_smoothness', 'ready': True, 'elapsed_seconds': 15.120307344943285, 'limit_seconds': 1800, 'files': [{'file': 'amt_model/amt-s.pth', 'downloaded': True}]}
+subject_consistency {'dimension': 'subject_consistency', 'ready': False, 'elapsed_seconds': 1800.0003577629104, 'limit_seconds': 1800, 'files': [{'file': 'dino_model/dino-main.tar.gz', 'downloaded': False}]}
+background_consistency {'dimension': 'background_consistency', 'ready': False, 'elapsed_seconds': 1800.0009115114808, 'limit_seconds': 1800, 'files': [{'file': 'clip_model/ViT-B-32.pt', 'downloaded': False}]}
+dynamic_degree {'dimension': 'dynamic_degree', 'ready': False, 'elapsed_seconds': 1799.6064164685085, 'limit_seconds': 1800, 'files': [{'file': 'raft_model/models.zip', 'downloaded': False}]}
+imaging_quality {'dimension': 'imaging_quality', 'ready': True, 'elapsed_seconds': 710.4815448839217, 'limit_seconds': 1800, 'files': [{'file': 'pyiqa_model/musiq_spaq_ckpt-358bb6af.pth', 'downloaded': True}]}
+aesthetic_quality {'dimension': 'aesthetic_quality', 'ready': False, 'elapsed_seconds': 1800.0002397820354, 'limit_seconds': 1800, 'files': [{'file': 'clip_model/ViT-L-14.pt', 'downloaded': False}]}

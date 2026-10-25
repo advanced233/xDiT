@@ -1,0 +1,12 @@
+{
+  "dimension": "aesthetic_quality",
+  "ready": false,
+  "elapsed_seconds": 1800.0002397820354,
+  "limit_seconds": 1800,
+  "files": [
+    {
+      "file": "clip_model/ViT-L-14.pt",
+      "downloaded": false
+    }
+  ]
+}

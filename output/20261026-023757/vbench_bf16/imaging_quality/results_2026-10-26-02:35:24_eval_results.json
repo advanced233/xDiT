@@ -1,0 +1,47 @@
+{
+    "imaging_quality": [
+        0.6180719406821512,
+        [
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p005_s42.mp4",
+                "video_results": 36.64949081883286
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p004_s42.mp4",
+                "video_results": 69.29258635549834
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p000_s42.mp4",
+                "video_results": 71.3060575543028
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p007_s42.mp4",
+                "video_results": 68.4730092828924
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p008_s42.mp4",
+                "video_results": 45.78469490282463
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p009_s42.mp4",
+                "video_results": 61.24983261570786
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p003_s42.mp4",
+                "video_results": 69.5307450727983
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p001_s42.mp4",
+                "video_results": 67.78460254091205
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p002_s42.mp4",
+                "video_results": 67.8062138412938
+            },
+            {
+                "video_path": "$XDIT_WORK/results/phase1/bf16/videos/480p_33f/p006_s42.mp4",
+                "video_results": 60.19470769708807
+            }
+        ]
+    ]
+}

@@ -1,0 +1,43 @@
+COMMAND ["python", "benchmarks/wan22/int8_linear_bench.py", "--tokens", "14040", "32760", "--json", "$XDIT_WORK/results/phase1/int8_linear.json"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=35840
+W1025 19:18:36.986000 1907524 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1025 19:18:37.013000 1907524 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DEBUG 10-25 19:18:40 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+GPU: sm clock 1410 MHz, 37 C
+M= 14040  5120x5120  bf16                3.117 ms  236.1 TOPS  x1.00 vs bf16
+M= 14040  5120x5120  torchao_eager      15.209 ms   48.4 TOPS  x0.20 vs bf16  rel_l2 1.00e-02
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/autograd_cache.py:707: UserWarning: Int8Tensor does not implement _stable_hash_for_caching. For PT2-compatible tensor subclasses, it is recommended to implement _stable_hash_for_caching(self) -> str for stable AOT autograd caching.
+  warn_once(
+M= 14040  5120x5120  torchao_compile     2.360 ms  311.9 TOPS  x1.32 vs bf16  rel_l2 9.88e-03
+M= 14040  5120x5120  int_mm_nn           9.863 ms   74.6 TOPS  x0.32 vs bf16
+M= 14040  5120x5120  int_mm_tn           1.816 ms  405.3 TOPS  x1.72 vs bf16  matches_nn True
+M= 14040  5120x13824 bf16                8.383 ms  237.1 TOPS  x1.00 vs bf16
+M= 14040  5120x13824 torchao_eager      35.836 ms   55.5 TOPS  x0.23 vs bf16  rel_l2 1.00e-02
+M= 14040  5120x13824 torchao_compile     6.164 ms  322.4 TOPS  x1.36 vs bf16  rel_l2 9.89e-03
+M= 14040  5120x13824 int_mm_nn          26.789 ms   74.2 TOPS  x0.31 vs bf16
+M= 14040  5120x13824 int_mm_tn           5.618 ms  353.7 TOPS  x1.49 vs bf16  matches_nn True
+M= 14040 13824x5120  bf16                8.355 ms  237.9 TOPS  x1.00 vs bf16
+M= 14040 13824x5120  torchao_eager      35.906 ms   55.4 TOPS  x0.23 vs bf16  rel_l2 1.05e-02
+M= 14040 13824x5120  torchao_compile     5.906 ms  336.5 TOPS  x1.41 vs bf16  rel_l2 1.04e-02
+M= 14040 13824x5120  int_mm_nn          26.568 ms   74.8 TOPS  x0.31 vs bf16
+M= 14040 13824x5120  int_mm_tn           5.554 ms  357.8 TOPS  x1.50 vs bf16  matches_nn True
+M= 32760  5120x5120  bf16                7.316 ms  234.8 TOPS  x1.00 vs bf16
+M= 32760  5120x5120  torchao_eager      33.472 ms   51.3 TOPS  x0.22 vs bf16  rel_l2 1.00e-02
+M= 32760  5120x5120  torchao_compile     5.564 ms  308.7 TOPS  x1.31 vs bf16  rel_l2 9.88e-03
+M= 32760  5120x5120  int_mm_nn          22.931 ms   74.9 TOPS  x0.32 vs bf16
+M= 32760  5120x5120  int_mm_tn           4.769 ms  360.1 TOPS  x1.53 vs bf16  matches_nn True
+M= 32760  5120x13824 bf16               19.482 ms  238.0 TOPS  x1.00 vs bf16
+M= 32760  5120x13824 torchao_eager      81.414 ms   57.0 TOPS  x0.24 vs bf16  rel_l2 1.00e-02
+M= 32760  5120x13824 torchao_compile    14.427 ms  321.4 TOPS  x1.35 vs bf16  rel_l2 9.89e-03
+M= 32760  5120x13824 int_mm_nn          63.337 ms   73.2 TOPS  x0.31 vs bf16
+M= 32760  5120x13824 int_mm_tn          12.794 ms  362.5 TOPS  x1.52 vs bf16  matches_nn True
+M= 32760 13824x5120  bf16               19.280 ms  240.5 TOPS  x1.00 vs bf16
+M= 32760 13824x5120  torchao_eager      81.992 ms   56.6 TOPS  x0.24 vs bf16  rel_l2 1.05e-02
+M= 32760 13824x5120  torchao_compile    13.747 ms  337.3 TOPS  x1.40 vs bf16  rel_l2 1.04e-02
+M= 32760 13824x5120  int_mm_nn          62.359 ms   74.4 TOPS  x0.31 vs bf16
+M= 32760 13824x5120  int_mm_tn          12.662 ms  366.2 TOPS  x1.52 vs bf16  matches_nn True
+GPU: sm clock 1410 MHz, 50 C
