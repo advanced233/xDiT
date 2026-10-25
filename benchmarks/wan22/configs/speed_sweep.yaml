@@ -1,0 +1,23 @@
+# Phase 1 speed sweep on one A100-80G: how DiT time and the INT8 gain change with sequence length.
+# Run once per load configuration, for example:
+#   python benchmarks/wan22/bench.py --config benchmarks/wan22/configs/speed_sweep.yaml --output-dir DIR
+#   ... --runner-arg gemm_quantization=int8                                   (both experts INT8)
+#   ... --runner-arg gemm_quantization=int8 --runner-arg int8_gemm_modules=transformer.blocks
+runner_args:
+  model: Wan2.2-T2V
+  # Fix the attention baseline to the fastest dense backend from attention_bench.py.
+  attention_backend: CUDNN
+  # guidance 4.0 / 3.0 and flow_shift 12 are the Wan2.2-T2V defaults; spelled out so results state them.
+  guidance_scale: 4.0
+  guidance_scale_2: 3.0
+  flow_shift: 12
+cases:
+  - {name: 480p_33f, height: 480, width: 832, num_frames: 33, num_inference_steps: 40}
+  - {name: 480p_49f, height: 480, width: 832, num_frames: 49, num_inference_steps: 40}
+  - {name: 480p_81f, height: 480, width: 832, num_frames: 81, num_inference_steps: 40}
+prompts:
+  - A golden retriever running across a sunlit meadow, slow motion, shallow depth of field.
+seeds: [42]
+repeats: 3
+warmup: 1
+save_videos: first_repeat
