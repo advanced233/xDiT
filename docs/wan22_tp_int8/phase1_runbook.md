@@ -42,7 +42,10 @@ GPU 任务继续通过你自己的 `scripts/run_gpu_job.py`（或等效方式）
 
 （表中的 `...` 即 `python benchmarks/wan22/bench.py --config $C`。）
 
-状态（2026-10-25）：前两行已完成，结果在仓库 `output/20261025-185155/`；INT8 比 BF16 慢，诊断与补测见第 5 节。后两行未跑。
+状态（2026-10-25）：四行和第 5 节的单层计时、compile 对照都已完成，结果在仓库 `output/20261025-235940/`，结论记在 `plan.md` M2。还剩三件事：
+- 第 2 节的偏离度：先按第 2 节下好 LPIPS 权重。
+- 第 2 节的 VBench。
+- 第 3 节最后一行的 `attention_bench.py`。注意力已经占单步时间约 35%，需要确认 CUDNN 是否是最快的 dense 后端，并测出 SAGE 的单核加速，用来决定 M7 做不做。
 
 ## 2. 读数
 
@@ -62,7 +65,16 @@ for c in int8_both int8_high int8_low; do
 done
 ```
 
-LPIPS 第一次运行会下载 AlexNet 权重，下载位置在 `$XDG_CACHE_HOME`、`$TORCH_HOME` 下。
+LPIPS 需要 torchvision 的 AlexNet 权重（约 233 MB）。上次在线下载中途断了，所以先用断点续传下好，再跑上面的循环：
+
+```bash
+F=$(python -c "import torch; print(torch.hub.get_dir())")/checkpoints/alexnet-owt-7be5be79.pth
+mkdir -p "$(dirname "$F")"
+for i in $(seq 20); do curl -fL -C - -o "$F" https://download.pytorch.org/models/alexnet-owt-7be5be79.pth && break; sleep 5; done
+sha256sum "$F"    # 前 8 位必须是 7be5be79；不是的话删掉重下
+```
+
+如果实在下不下来，先给 `compare_videos.py` 加 `--no-lpips`，只出 PSNR / SSIM，报告里注明。
 
 **画质（VBench，在 `envs/vbench` 环境里运行，4 组 × 6 个维度，约半小时）：**
 
@@ -74,6 +86,8 @@ for c in bf16 int8_both int8_high int8_low; do
   done
 done
 ```
+
+每个维度第一次运行时，VBench 会把各自的权重（DINO、CLIP、RAFT、AMT、MUSIQ、LAION 美学头）下载到 `$VBENCH_CACHE_DIR`，来源包括 GitHub、Dropbox、OpenAI 和 HuggingFace。下载中断时，按报错里的 URL 和目标路径，用上面同样的 curl 断点续传循环手动下好，再重跑。某个维度 30 分钟内拿不到权重就跳过，报告里写明。
 
 解读时要注意：量化高噪声专家可能会改变构图，导致 LPIPS 升高，但 VBench 不一定下降。两类指标要一起看。
 
