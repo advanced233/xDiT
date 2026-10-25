@@ -1,0 +1,44 @@
+COMMAND ["torchrun", "--master_port", "23432", "--nproc_per_node=1", "benchmarks/wan22/bench.py", "--config", "benchmarks/wan22/configs/phase1.yaml", "--output-dir", "$XDIT_WORK/results/phase1/int8_high", "--case", "480p_33f", "--runner-arg", "gemm_quantization=int8", "--runner-arg", "int8_gemm_modules=transformer.blocks"]
+CUDA_VISIBLE_DEVICES=<GPU_UUID>
+MASTER_PORT=23432
+W1025 18:48:09.966000 1885452 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1025 18:48:09.992000 1885452 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DEBUG 10-25 18:48:13 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+WARNING 10-25 18:48:13 [args.py:1494] Distributed environment is not initialized. Initializing...
+DEBUG 10-25 18:48:13 [parallel_state.py:247] world_size=-1 rank=-1 local_rank=-1 distributed_init_method=env:// backend=nccl
+INFO 10-25 18:48:13 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-25 18:48:13 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-25 18:48:13 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-25 18:48:13 [runner_utils.py:30] Initializing model: Wan2.2-T2V
+INFO 10-25 18:48:13 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-25 18:48:13 [runner_utils.py:30] Loading model pipeline...
+$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+INFO 10-25 18:48:13 [runner_utils.py:30] transformer quantization: requested=int8, backend=torchao, storage=torchao_w8a8_dynamic_per_row_symmetric, materialization=streaming, parameters=torchao_int8_tensor_subclass, auxiliary=backend_managed, trainability=inference_only, serialization=torchao_version_dependent
+Loading checkpoint shards:   0%|          | 0/12 [00:00<?, ?it/s]Loading checkpoint shards:   8%|▊         | 1/12 [00:01<00:21,  1.99s/it]Loading checkpoint shards:  17%|█▋        | 2/12 [00:03<00:17,  1.78s/it]Loading checkpoint shards:  25%|██▌       | 3/12 [00:05<00:14,  1.66s/it]Loading checkpoint shards:  33%|███▎      | 4/12 [00:06<00:13,  1.72s/it]Loading checkpoint shards:  42%|████▏     | 5/12 [00:08<00:12,  1.83s/it]Loading checkpoint shards:  50%|█████     | 6/12 [00:11<00:12,  2.06s/it]Loading checkpoint shards:  58%|█████▊    | 7/12 [00:13<00:10,  2.05s/it]Loading checkpoint shards:  67%|██████▋   | 8/12 [00:15<00:08,  2.14s/it]Loading checkpoint shards:  75%|███████▌  | 9/12 [00:37<00:24,  8.09s/it]Loading checkpoint shards:  83%|████████▎ | 10/12 [01:43<00:52, 26.11s/it]Loading checkpoint shards:  92%|█████████▏| 11/12 [02:24<00:30, 30.71s/it]W1025 18:50:43.417000 1885437 site-packages/torch/distributed/elastic/agent/server/api.py:753] Received Signals.SIGTERM death signal, shutting down workers
+W1025 18:50:43.418000 1885437 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 1885452 closing signal SIGTERM
+Traceback (most recent call last):
+  File "$XDIT_WORK/envs/xdit-cu126/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 380, in wrapper
+    return f(*args, **kwargs)
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/run.py", line 1138, in main
+    run(args)
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/run.py", line 1129, in run
+    elastic_launch(
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 197, in __call__
+    return launch_agent(
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 377, in launch_agent
+    result = agent.run()
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 134, in wrapper
+    result = f(*args, **kwargs)
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 745, in run
+    result = self._invoke_run(role)
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 923, in _invoke_run
+    time.sleep(monitor_interval)
+  File "$XDIT_WORK/envs/xdit-cu126/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 1885437 got signal: 15
