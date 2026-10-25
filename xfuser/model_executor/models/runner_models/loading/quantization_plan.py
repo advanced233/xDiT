@@ -17,10 +17,7 @@ def apply_fp8_override_cli_to_settings(config, settings) -> None:
     spec = getattr(config, "gemm_quantization_spec", None)
     if spec is not None and spec.is_pure("fp4"):
         settings.fp4_gemm_module_list = list(
-            dict.fromkeys(
-                list(settings.fp4_gemm_module_list or ())
-                + list(settings.fp8_gemm_module_list or ())
-            )
+            dict.fromkeys(list(settings.fp4_gemm_module_list or ()) + list(settings.fp8_gemm_module_list or ()))
         )
         settings.fp8_gemm_module_list = []
         settings.fp8_precision_overrides = None
@@ -29,10 +26,7 @@ def apply_fp8_override_cli_to_settings(config, settings) -> None:
 
     if getattr(config, "_gemm_config_loaded", False):
         eligible = list(
-            dict.fromkeys(
-                list(settings.fp4_gemm_module_list or ())
-                + list(settings.fp8_gemm_module_list or ())
-            )
+            dict.fromkeys(list(settings.fp4_gemm_module_list or ()) + list(settings.fp8_gemm_module_list or ()))
         )
         if config.gemm_high_precision_targets == "none":
             settings.fp8_gemm_module_list = []
@@ -45,8 +39,7 @@ def apply_fp8_override_cli_to_settings(config, settings) -> None:
             unknown = set(modules) - set(eligible)
             if unknown:
                 raise ValueError(
-                    "GEMM high-precision modules must exactly match declared "
-                    f"model targets; unknown: {sorted(unknown)}"
+                    f"GEMM high-precision modules must exactly match declared model targets; unknown: {sorted(unknown)}"
                 )
             high_modules = list(settings.fp8_gemm_module_list or ())
             low_modules = list(settings.fp4_gemm_module_list or ())
@@ -58,27 +51,19 @@ def apply_fp8_override_cli_to_settings(config, settings) -> None:
         prefixes = _parse_csv_patterns(config.gemm_high_precision_prefix_patterns)
         if prefixes:
             settings.fp8_precision_overrides = tuple(
-                dict.fromkeys(
-                    tuple(settings.fp8_precision_overrides or ()) + prefixes
-                )
+                dict.fromkeys(tuple(settings.fp8_precision_overrides or ()) + prefixes)
             )
         suffixes = _parse_csv_patterns(config.gemm_high_precision_suffix_patterns)
         if suffixes:
             settings.fp8_precision_override_suffixes = tuple(
-                dict.fromkeys(
-                    tuple(settings.fp8_precision_override_suffixes or ()) + suffixes
-                )
+                dict.fromkeys(tuple(settings.fp8_precision_override_suffixes or ()) + suffixes)
             )
         return
 
     if config.fp8_precision_override_prefix_patterns is not None:
-        settings.fp8_precision_overrides = _parse_csv_patterns(
-            config.fp8_precision_override_prefix_patterns
-        )
+        settings.fp8_precision_overrides = _parse_csv_patterns(config.fp8_precision_override_prefix_patterns)
     if config.fp8_precision_override_suffix_patterns is not None:
-        settings.fp8_precision_override_suffixes = _parse_csv_patterns(
-            config.fp8_precision_override_suffix_patterns
-        )
+        settings.fp8_precision_override_suffixes = _parse_csv_patterns(config.fp8_precision_override_suffix_patterns)
 
 
 class QuantizationPlan:
@@ -171,10 +156,7 @@ class QuantizationPlan:
         high_only_targets = [
             target
             for target in high_targets
-            if not any(
-                target == low or target.startswith(f"{low}.")
-                for low in low_targets
-            )
+            if not any(target == low or target.startswith(f"{low}.") for low in low_targets)
         ]
         prefixes = tuple(settings.fp8_precision_overrides or ())
         suffixes = tuple(settings.fp8_precision_override_suffixes or ())
@@ -195,10 +177,7 @@ class QuantizationPlan:
             if target in high_only_targets:
                 detail = spec.high.upper()
             elif hybrid:
-                detail = (
-                    f"{spec.high.upper()} endpoints / "
-                    f"{spec.low.upper()} middle"
-                )
+                detail = f"{spec.high.upper()} endpoints / {spec.low.upper()} middle"
             else:
                 detail = spec.low.upper()
             if target in low_targets and (prefixes or suffixes):
