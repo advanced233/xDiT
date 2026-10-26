@@ -1,0 +1,16 @@
+GPU 0: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive
+GPU 1: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive
+GPU 2: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive
+GPU 3: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive
+GPU 4: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive
+GPU 5: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive
+GPU 6: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive
+GPU 7: NVIDIA RTX A6000 (UUID: ${GPU_UUID})
+NVML: Unable to retrieve NVLink information as all links are inActive

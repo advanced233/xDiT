@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "scope": "all files under output/a6000/env",
+  "redacted_categories": [
+    "hostname",
+    "account name",
+    "absolute local paths",
+    "GPU UUID",
+    "generic UUID"
+  ],
+  "preserved": [
+    "relative source/test/model filenames",
+    "line numbers",
+    "error text",
+    "GPU index",
+    "CPU/NUMA topology",
+    "versions"
+  ],
+  "format_changes": "ANSI formatting removed except topology.raw.txt; no log lines or stack frames intentionally omitted. Local identifiers replaced with logical markers.",
+  "replacement_counts": {
+    "ansi": 62,
+    "work_paths": 2253,
+    "gpu_uuids": 8,
+    "uuids": 0,
+    "file_uris": 1,
+    "other_absolute_paths": 29,
+    "home_relative_paths": 0,
+    "account": 6,
+    "host": 4
+  },
+  "original_logs_modified": false,
+  "source_changes_in_this_commit": false,
+  "test_baseline_commit": "256cd1941973d8678b1b21ae033627d163a89984",
+  "prepared_after_pull_commit": "a0fb2b9232b88def1ed13eebd17a109917353cde"
+}

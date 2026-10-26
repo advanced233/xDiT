@@ -1,0 +1,11 @@
+[
+  {
+    "repo": "Wan-AI/Wan2.1-T2V-1.3B-Diffusers",
+    "start": 1792857494.7307405,
+    "snapshot": "${XDIT_WORK}/cache/hf/hub/models--Wan-AI--Wan2.1-T2V-1.3B-Diffusers/snapshots/0fad780a534b6463e45facd96134c9f345acfa5b",
+    "status": "PASS",
+    "pipeline": "WanPipeline",
+    "device": "cpu",
+    "seconds": 380.3596615791321
+  }
+]

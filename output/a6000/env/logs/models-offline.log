@@ -1,0 +1,65 @@
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+${ENV}/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]
+Loading checkpoint shards:  50%|█████     | 1/2 [00:51<00:51, 51.18s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:57<00:00, 24.78s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:57<00:00, 28.74s/it]
+Loading pipeline components...:  20%|██        | 1/5 [00:58<03:53, 58.39s/it]Loading pipeline components...:  40%|████      | 2/5 [01:00<01:15, 25.08s/it]
+Loading weights:   0%|          | 0/242 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/242 [00:03<12:43,  3.17s/it]
+Loading weights:   3%|▎         | 7/242 [00:05<02:30,  1.56it/s]
+Loading weights:   3%|▎         | 8/242 [00:11<06:12,  1.59s/it]
+Loading weights:   4%|▎         | 9/242 [00:13<06:22,  1.64s/it]
+Loading weights:   7%|▋         | 17/242 [00:15<02:40,  1.41it/s]
+Loading weights:   9%|▊         | 21/242 [00:18<02:45,  1.33it/s]
+Loading weights:  10%|▉         | 23/242 [00:19<02:16,  1.60it/s]
+Loading weights:  11%|█         | 27/242 [00:26<03:53,  1.08s/it]
+Loading weights:  12%|█▏        | 28/242 [00:27<03:32,  1.01it/s]
+Loading weights:  14%|█▍        | 35/242 [00:29<02:11,  1.58it/s]
+Loading weights:  15%|█▌        | 37/242 [00:42<05:47,  1.70s/it]
+Loading weights:  16%|█▌        | 38/242 [00:50<08:07,  2.39s/it]
+Loading weights:  24%|██▍       | 59/242 [00:56<02:18,  1.32it/s]
+Loading weights:  27%|██▋       | 65/242 [00:56<01:43,  1.71it/s]
+Loading weights:  28%|██▊       | 67/242 [01:04<02:42,  1.08it/s]
+Loading weights:  28%|██▊       | 68/242 [01:05<02:48,  1.03it/s]
+Loading weights:  32%|███▏      | 77/242 [01:10<02:08,  1.28it/s]
+Loading weights:  32%|███▏      | 78/242 [01:13<02:27,  1.11it/s]
+Loading weights:  33%|███▎      | 79/242 [01:13<02:15,  1.20it/s]
+Loading weights:  34%|███▍      | 82/242 [01:14<01:44,  1.52it/s]
+Loading weights:  34%|███▍      | 83/242 [01:18<02:46,  1.05s/it]
+Loading weights:  36%|███▌      | 87/242 [01:18<01:48,  1.43it/s]
+Loading weights:  36%|███▋      | 88/242 [01:22<02:37,  1.02s/it]
+Loading weights:  45%|████▌     | 109/242 [01:23<00:35,  3.70it/s]
+Loading weights:  46%|████▋     | 112/242 [01:26<00:48,  2.68it/s]
+Loading weights:  48%|████▊     | 117/242 [01:38<01:48,  1.15it/s]
+Loading weights:  50%|█████     | 122/242 [01:40<01:29,  1.34it/s]
+Loading weights:  51%|█████     | 123/242 [01:41<01:33,  1.27it/s]
+Loading weights:  52%|█████▏    | 127/242 [01:52<02:29,  1.30s/it]
+Loading weights:  53%|█████▎    | 128/242 [01:52<02:17,  1.21s/it]
+Loading weights:  56%|█████▌    | 135/242 [01:56<01:40,  1.07it/s]
+Loading weights:  57%|█████▋    | 137/242 [02:08<03:00,  1.72s/it]
+Loading weights:  61%|██████    | 148/242 [02:15<01:45,  1.12s/it]
+Loading weights:  63%|██████▎   | 153/242 [02:16<01:16,  1.16it/s]
+Loading weights:  65%|██████▍   | 157/242 [02:30<02:05,  1.48s/it]
+Loading weights:  74%|███████▎  | 178/242 [02:35<00:43,  1.46it/s]
+Loading weights:  78%|███████▊  | 188/242 [02:51<00:53,  1.02it/s]
+Loading weights:  83%|████████▎ | 202/242 [02:57<00:30,  1.32it/s]
+Loading weights:  86%|████████▌ | 207/242 [03:10<00:36,  1.05s/it]
+Loading weights:  86%|████████▋ | 209/242 [03:11<00:33,  1.01s/it]
+Loading weights:  88%|████████▊ | 212/242 [03:15<00:32,  1.09s/it]
+Loading weights:  88%|████████▊ | 213/242 [03:16<00:30,  1.05s/it]
+Loading weights:  88%|████████▊ | 214/242 [03:16<00:27,  1.00it/s]
+Loading weights:  89%|████████▉ | 215/242 [03:17<00:26,  1.01it/s]
+Loading weights:  89%|████████▉ | 216/242 [03:17<00:23,  1.13it/s]
+Loading weights:  90%|████████▉ | 217/242 [03:31<01:12,  2.92s/it]
+Loading weights:  90%|█████████ | 218/242 [03:39<01:32,  3.85s/it]
+Loading weights:  90%|█████████ | 219/242 [03:45<01:41,  4.41s/it]
+Loading weights:  93%|█████████▎| 225/242 [03:47<00:30,  1.81s/it]
+Loading weights:  94%|█████████▍| 227/242 [04:17<01:13,  4.92s/it]
+Loading weights:  94%|█████████▍| 228/242 [04:18<01:01,  4.36s/it]
+Loading weights:  98%|█████████▊| 237/242 [04:24<00:09,  1.92s/it]
+Loading weights:  98%|█████████▊| 238/242 [04:29<00:08,  2.22s/it]
+Loading weights: 100%|██████████| 242/242 [05:13<00:00,  5.26s/it]Loading weights: 100%|██████████| 242/242 [05:13<00:00,  1.29s/it]
+Loading pipeline components...:  60%|██████    | 3/5 [06:14<05:14, 157.33s/it]Loading pipeline components...:  80%|████████  | 4/5 [06:18<01:36, 96.54s/it] Loading pipeline components...: 100%|██████████| 5/5 [06:18<00:00, 62.00s/it]Loading pipeline components...: 100%|██████████| 5/5 [06:18<00:00, 75.79s/it]
+{'repo': 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers', 'start': 1792857494.7307405, 'snapshot': '${XDIT_WORK}/cache/hf/hub/models--Wan-AI--Wan2.1-T2V-1.3B-Diffusers/snapshots/0fad780a534b6463e45facd96134c9f345acfa5b', 'status': 'PASS', 'pipeline': 'WanPipeline', 'device': 'cpu', 'seconds': 380.3596615791321}

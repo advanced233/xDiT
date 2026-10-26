@@ -1,0 +1,80 @@
+[
+  {
+    "name": "gpu-operators",
+    "required_gpus": 1,
+    "start": 1792858723.8551624,
+    "gpus": [
+      "3"
+    ],
+    "port": 39807,
+    "command": [
+      "python",
+      "${XDIT_WORK}/scripts/gpu_operators.py"
+    ],
+    "returncode": 0,
+    "status": "COMPLETED",
+    "elapsed_seconds": 12.436362981796265
+  },
+  {
+    "name": "nccl-bandwidth",
+    "required_gpus": 2,
+    "start": 1792858736.72487,
+    "status": "SKIPPED",
+    "reason": "Only 1 idle GPUs; need 2.",
+    "elapsed_seconds": 1.52587890625e-05
+  },
+  {
+    "name": "pytest-gpu-single",
+    "required_gpus": 1,
+    "start": 1792858737.0031006,
+    "gpus": [
+      "3"
+    ],
+    "port": 27630,
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-m",
+      "accelerator and not rocm and not multi_gpu",
+      "-o",
+      "cache_dir=${XDIT_WORK}/cache/pytest-gpu-single",
+      "--junitxml=${XDIT_WORK}/logs/pytest-gpu-single.xml"
+    ],
+    "returncode": 1,
+    "status": "FAILED",
+    "elapsed_seconds": 158.5991861820221
+  },
+  {
+    "name": "pytest-gpu-multi",
+    "required_gpus": 2,
+    "start": 1792858896.711981,
+    "status": "SKIPPED",
+    "reason": "Only 1 idle GPUs; need 2.",
+    "elapsed_seconds": 1.52587890625e-05
+  },
+  {
+    "name": "smoke-1.3b-single",
+    "required_gpus": 1,
+    "start": 1792858897.71943,
+    "status": "SKIPPED_BY_USER",
+    "reason": "User explicitly requested skipping all end-to-end smoke runs; no further GPU waiting.",
+    "elapsed_seconds": 1.2874603271484375e-05
+  },
+  {
+    "name": "smoke-1.3b-ulysses2",
+    "required_gpus": 2,
+    "start": 1792858898.0416582,
+    "status": "SKIPPED_BY_USER",
+    "reason": "User explicitly requested skipping all end-to-end smoke runs; no further GPU waiting.",
+    "elapsed_seconds": 1.0251998901367188e-05
+  },
+  {
+    "name": "smoke-a14b",
+    "required_gpus": 2,
+    "start": 1792858898.3411224,
+    "status": "SKIPPED_BY_USER",
+    "reason": "User explicitly requested skipping all end-to-end smoke runs; no further GPU waiting.",
+    "elapsed_seconds": 9.059906005859375e-06
+  }
+]

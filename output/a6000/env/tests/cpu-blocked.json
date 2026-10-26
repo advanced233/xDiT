@@ -1,0 +1,7 @@
+{
+  "time": "2026-10-25T00:38:53.224594+08:00",
+  "pid": 631517,
+  "nodeid": "tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py::test_usp_matches_attention_over_the_real_tokens[hybrid-ring4]",
+  "status": "BLOCKED_INTERRUPTED",
+  "reason": "Worker timeout 900 s expired and workers were killed by test harness, but parent remained in pipe_read for over 1 minute. Sent SIGINT only to this task pytest parent; continue unexecuted nodes without code changes."
+}

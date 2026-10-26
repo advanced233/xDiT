@@ -1,0 +1,13 @@
+{
+  "python": "3.10.22",
+  "torch": "2.11.0+cu128",
+  "torchvision": "0.26.0+cu128",
+  "diffusers": "0.41.0",
+  "transformers": "5.20.2",
+  "torchao": "0.17.0+cu128",
+  "flash-attn": "未安装",
+  "yunchang": "0.6.4",
+  "sageattention": "1.0.6",
+  "lpips": "0.1.4",
+  "xfuser": "0.0.0.dev1+g256cd1941"
+}

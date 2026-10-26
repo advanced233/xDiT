@@ -1,0 +1,328 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-9.1.1, pluggy-1.7.0
+cachedir: ${XDIT_WORK}/cache/pytest-gpu-single
+rootdir: ${REPO}
+configfile: pytest.ini
+testpaths: tests/unit, tests/integration/cpu, tests/integration/accelerator
+plugins: anyio-4.15.1, timeout-2.4.0
+collected 2066 items / 1850 deselected / 216 selected
+
+tests/unit/core/test_vsa_h3_attention.py .........                       [  4%]
+tests/unit/model_executor/layers/test_mxfp4_linear_registration.py .     [  4%]
+tests/unit/model_executor/loading/test_format_backend_adapters.py .s     [  5%]
+tests/unit/model_executor/loading/test_fp8_backend_adapters.py s         [  6%]
+tests/unit/model_executor/runner_models/test_minimax_h3.py ...           [  7%]
+tests/integration/accelerator/core/attention/test_aiter_sage_v1_stride_canary.py s [  7%]
+ss                                                                       [  8%]
+tests/integration/accelerator/core/attention/test_sdpa_key_mask.py ..... [ 11%]
+...                                                                      [ 12%]
+tests/integration/accelerator/core/attention/test_sdpa_ring_lse.py ..... [ 14%]
+.......                                                                  [ 18%]
+tests/integration/accelerator/core/attention/test_sol_attn_kernel.py s   [ 18%]
+tests/integration/accelerator/core/attention/test_sparse_backends_sp_pad.py s [ 18%]
+sssssssssssssssssssssssssss                                              [ 31%]
+tests/integration/accelerator/core/attention/test_strided_kv_backends.py . [ 31%]
+...............ssss....ssssssssssssssssssssF.F.sssssssssssssssssssssssss [ 65%]
+sssssssssssssssssssssssssssssssssssssssssssss                            [ 86%]
+tests/integration/accelerator/core/attention/test_triton_bsa.py .......  [ 89%]
+tests/integration/accelerator/core/distributed/test_sharding.py ...      [ 90%]
+tests/integration/accelerator/core/test_cudnn_attention_precision.py ... [ 92%]
+                                                                         [ 92%]
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py F [ 92%]
+FF                                                                       [ 93%]
+tests/integration/accelerator/model_executor/layers/test_usp_accelerator.py s [ 93%]
+.s.sss..                                                                 [ 97%]
+tests/integration/accelerator/model_executor/loading/test_sharded_text_encoder_outputs.py . [ 98%]
+..                                                                       [ 99%]
+tests/integration/accelerator/model_executor/models/transformers/test_krea2_cudnn.py . [ 99%]
+                                                                         [ 99%]
+tests/integration/accelerator/model_executor/models/transformers/test_ltx2_cross_attention_cudnn.py . [100%]
+
+=================================== FAILURES ===================================
+___ test_strided_kv_gives_what_contiguous_kv_gives[SAGE-pad-dropped-batch1] ____
+
+backend = <AttentionBackendType.SAGE: 'Sage Attention'>, layout = 'pad-dropped'
+batch = 1
+
+    @pytest.mark.parametrize("batch", BATCH_SIZES)
+    @pytest.mark.parametrize("layout", ["pad-dropped", "transposed-cross-attention"])
+    @pytest.mark.parametrize("backend", DENSE_BACKENDS, ids=lambda backend: backend.name)
+    def test_strided_kv_gives_what_contiguous_kv_gives(backend, layout, batch):
+        spec = registry.get(backend)
+        _available(spec)
+        query, key, value = _strided_qkv(layout, batch)
+        reason = spec.rejects(query, key, value, AttnCall())
+        if reason is not None:
+            pytest.skip(reason)
+        reference = F.scaled_dot_product_attention(query.float(), key.float(), value.float())
+        full_len = [tensor.contiguous() for tensor in (query, key, value)]
+        full_reference = F.scaled_dot_product_attention(*(tensor.float() for tensor in full_len))
+    
+>       view_error = _error(usp.attention(query, key, value, backend=backend), reference)
+
+tests/integration/accelerator/core/attention/test_strided_kv_backends.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+query = tensor([[[[-1.1250, -1.1562, -0.2500,  ...,  1.1641,  0.9219,  1.3906],
+          [-0.8828, -0.4180, -0.8047,  ...,  0...         [ 0.3359,  0.1201,  0.4844,  ...,  0.9648, -0.4824,  0.5586]]]],
+       device='cuda:0', dtype=torch.bfloat16)
+key = tensor([[[[ 1.2891e+00, -2.5000e-01, -1.6797e+00,  ..., -1.0234e+00,
+            3.2227e-01, -8.2422e-01],
+          [...34e+00,  3.3789e-01,  ...,  1.8652e-01,
+           -9.1406e-01,  2.2031e+00]]]], device='cuda:0', dtype=torch.bfloat16)
+value = tensor([[[[ 0.1680,  0.1904,  0.6953,  ...,  0.5625, -0.2969, -0.3047],
+          [ 0.8242,  0.2930, -0.4043,  ..., -0...         [-0.9492, -0.4121,  0.4590,  ...,  0.5820,  0.3164, -0.1465]]]],
+       device='cuda:0', dtype=torch.bfloat16)
+dropout_p = 0.0, is_causal = False
+backend = <AttentionBackendType.SAGE: 'Sage Attention'>, attention_kwargs = None
+head_balance_layer = None, attn_layer = None
+
+    def attention(
+        query: torch.Tensor,
+        key: torch.Tensor,
+        value: torch.Tensor,
+        dropout_p: float = 0.0,
+        is_causal: bool = False,
+        backend=None,
+        attention_kwargs=None,
+        head_balance_layer=None,
+        attn_layer=None,
+    ):
+        """
+        Runs attention call without any parallelism.
+        This can be used when the logic necessitates no Ulysses or Ring parallelism in any case.
+        Explicit backend can be provided to specify the attention backend to use.
+    
+        ``attn_layer`` and ``head_balance_layer`` are accepted for call-site signature
+        parity with ``USP`` but ignored here: with no Ulysses parallelism there is
+        no head sharding or FP8 all-to-all.
+        """
+        attention_function = _get_attention_function(backend=backend)
+        # Same rule as USP: a backend that cannot serve packed keys gets the pad
+        # sliced instead, which is the same computation.
+        resolved = backend if backend is not None else get_runtime_state().attention_backend
+        key, value, attention_kwargs = _trim_trailing_kv_padding(key, value, attention_kwargs, resolved)
+>       out, _ = attention_function(
+            query,
+            key,
+            value,
+            dropout_p=dropout_p,
+            is_causal=is_causal,
+            attention_kwargs=attention_kwargs,
+        )
+E       ValueError: not enough values to unpack (expected 2, got 1)
+
+xfuser/model_executor/layers/usp.py:808: ValueError
+_ test_strided_kv_gives_what_contiguous_kv_gives[SAGE-transposed-cross-attention-batch1] _
+
+backend = <AttentionBackendType.SAGE: 'Sage Attention'>
+layout = 'transposed-cross-attention', batch = 1
+
+    @pytest.mark.parametrize("batch", BATCH_SIZES)
+    @pytest.mark.parametrize("layout", ["pad-dropped", "transposed-cross-attention"])
+    @pytest.mark.parametrize("backend", DENSE_BACKENDS, ids=lambda backend: backend.name)
+    def test_strided_kv_gives_what_contiguous_kv_gives(backend, layout, batch):
+        spec = registry.get(backend)
+        _available(spec)
+        query, key, value = _strided_qkv(layout, batch)
+        reason = spec.rejects(query, key, value, AttnCall())
+        if reason is not None:
+            pytest.skip(reason)
+        reference = F.scaled_dot_product_attention(query.float(), key.float(), value.float())
+        full_len = [tensor.contiguous() for tensor in (query, key, value)]
+        full_reference = F.scaled_dot_product_attention(*(tensor.float() for tensor in full_len))
+    
+>       view_error = _error(usp.attention(query, key, value, backend=backend), reference)
+
+tests/integration/accelerator/core/attention/test_strided_kv_backends.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+query = tensor([[[[-1.1250, -1.1562, -0.2500,  ...,  1.1641,  0.9219,  1.3906],
+          [-1.0859, -0.1289, -0.6797,  ...,  0...         [ 0.3359,  0.1201,  0.4844,  ...,  0.9648, -0.4824,  0.5586]]]],
+       device='cuda:0', dtype=torch.bfloat16)
+key = tensor([[[[ 1.1953e+00, -3.5547e-01, -1.6875e+00,  ..., -1.0547e+00,
+            3.5156e-01, -7.8125e-01],
+          [...73e-03, -5.2734e-01,  ..., -1.4219e+00,
+           -4.2383e-01, -1.6016e+00]]]], device='cuda:0', dtype=torch.bfloat16)
+value = tensor([[[[-0.6523, -1.8438, -0.6406,  ..., -0.9297, -0.4297, -1.6094],
+          [ 0.8125,  0.2539, -2.2188,  ...,  0...         [-0.6133,  1.5078,  1.0312,  ...,  0.1240, -1.0859, -3.1875]]]],
+       device='cuda:0', dtype=torch.bfloat16)
+dropout_p = 0.0, is_causal = False
+backend = <AttentionBackendType.SAGE: 'Sage Attention'>, attention_kwargs = None
+head_balance_layer = None, attn_layer = None
+
+    def attention(
+        query: torch.Tensor,
+        key: torch.Tensor,
+        value: torch.Tensor,
+        dropout_p: float = 0.0,
+        is_causal: bool = False,
+        backend=None,
+        attention_kwargs=None,
+        head_balance_layer=None,
+        attn_layer=None,
+    ):
+        """
+        Runs attention call without any parallelism.
+        This can be used when the logic necessitates no Ulysses or Ring parallelism in any case.
+        Explicit backend can be provided to specify the attention backend to use.
+    
+        ``attn_layer`` and ``head_balance_layer`` are accepted for call-site signature
+        parity with ``USP`` but ignored here: with no Ulysses parallelism there is
+        no head sharding or FP8 all-to-all.
+        """
+        attention_function = _get_attention_function(backend=backend)
+        # Same rule as USP: a backend that cannot serve packed keys gets the pad
+        # sliced instead, which is the same computation.
+        resolved = backend if backend is not None else get_runtime_state().attention_backend
+        key, value, attention_kwargs = _trim_trailing_kv_padding(key, value, attention_kwargs, resolved)
+>       out, _ = attention_function(
+            query,
+            key,
+            value,
+            dropout_p=dropout_p,
+            is_causal=is_causal,
+            attention_kwargs=attention_kwargs,
+        )
+E       ValueError: not enough values to unpack (expected 2, got 1)
+
+xfuser/model_executor/layers/usp.py:808: ValueError
+__________ test_an_all_zero_activation_gives_the_bias_rather_than_nan __________
+
+    def test_an_all_zero_activation_gives_the_bias_rather_than_nan():
+>       linear = _quantized_linear()
+
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py:36: in _quantized_linear
+    quantize_(linear, Float8DynamicActivationFloat8WeightConfig(**settings))
+..${LOCAL_PATH}:445: in quantize_
+    _replace_with_custom_fn_if_matches_filter(
+..${LOCAL_PATH}:174: in _replace_with_custom_fn_if_matches_filter
+    model = replacement_fn(model, *extra_args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+module = Linear(in_features=1024, out_features=1024, bias=True)
+config = Float8DynamicActivationFloat8WeightConfig(activation_dtype=torch.float8_e4m3fn, weight_dtype=torch.float8_e4m3fn, gran...e-12, activation_value_ub=None, kernel_preference=<KernelPreference.AUTO: 'auto'>, set_inductor_config=True, version=2)
+parameter_name = 'weight'
+
+    @register_quantize_module_handler(Float8DynamicActivationFloat8WeightConfig)
+    def _float8_dynamic_activation_float8_weight_transform(
+        module: torch.nn.Module,
+        config: Float8DynamicActivationFloat8WeightConfig,
+        *,
+        parameter_name: str = "weight",
+    ):
+        if torch.cuda.is_available():
+>           assert is_sm_at_least_89() or is_MI300(), (
+                "Float8 dynamic activation quantization is only supported on CUDA>=8.9 and MI300+"
+            )
+E           AssertionError: Float8 dynamic activation quantization is only supported on CUDA>=8.9 and MI300+
+
+..${LOCAL_PATH}:1523: AssertionError
+______________________ test_the_floor_is_what_prevents_it ______________________
+
+    def test_the_floor_is_what_prevents_it():
+        """Without the floor the same input returns all NaN, which is what the floor prevents."""
+>       unfloored = _quantized_linear(activation_value_lb=None)
+
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py:36: in _quantized_linear
+    quantize_(linear, Float8DynamicActivationFloat8WeightConfig(**settings))
+..${LOCAL_PATH}:445: in quantize_
+    _replace_with_custom_fn_if_matches_filter(
+..${LOCAL_PATH}:174: in _replace_with_custom_fn_if_matches_filter
+    model = replacement_fn(model, *extra_args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+module = Linear(in_features=1024, out_features=1024, bias=True)
+config = Float8DynamicActivationFloat8WeightConfig(activation_dtype=torch.float8_e4m3fn, weight_dtype=torch.float8_e4m3fn, gran...None, activation_value_ub=None, kernel_preference=<KernelPreference.AUTO: 'auto'>, set_inductor_config=True, version=2)
+parameter_name = 'weight'
+
+    @register_quantize_module_handler(Float8DynamicActivationFloat8WeightConfig)
+    def _float8_dynamic_activation_float8_weight_transform(
+        module: torch.nn.Module,
+        config: Float8DynamicActivationFloat8WeightConfig,
+        *,
+        parameter_name: str = "weight",
+    ):
+        if torch.cuda.is_available():
+>           assert is_sm_at_least_89() or is_MI300(), (
+                "Float8 dynamic activation quantization is only supported on CUDA>=8.9 and MI300+"
+            )
+E           AssertionError: Float8 dynamic activation quantization is only supported on CUDA>=8.9 and MI300+
+
+..${LOCAL_PATH}:1523: AssertionError
+_____________ test_ordinary_activations_are_untouched_by_the_floor _____________
+
+    def test_ordinary_activations_are_untouched_by_the_floor():
+        """The floor may only bind below itself: a change to normal numerics would be a regression."""
+>       floored = _quantized_linear()
+
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py:36: in _quantized_linear
+    quantize_(linear, Float8DynamicActivationFloat8WeightConfig(**settings))
+..${LOCAL_PATH}:445: in quantize_
+    _replace_with_custom_fn_if_matches_filter(
+..${LOCAL_PATH}:174: in _replace_with_custom_fn_if_matches_filter
+    model = replacement_fn(model, *extra_args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+module = Linear(in_features=1024, out_features=1024, bias=True)
+config = Float8DynamicActivationFloat8WeightConfig(activation_dtype=torch.float8_e4m3fn, weight_dtype=torch.float8_e4m3fn, gran...e-12, activation_value_ub=None, kernel_preference=<KernelPreference.AUTO: 'auto'>, set_inductor_config=True, version=2)
+parameter_name = 'weight'
+
+    @register_quantize_module_handler(Float8DynamicActivationFloat8WeightConfig)
+    def _float8_dynamic_activation_float8_weight_transform(
+        module: torch.nn.Module,
+        config: Float8DynamicActivationFloat8WeightConfig,
+        *,
+        parameter_name: str = "weight",
+    ):
+        if torch.cuda.is_available():
+>           assert is_sm_at_least_89() or is_MI300(), (
+                "Float8 dynamic activation quantization is only supported on CUDA>=8.9 and MI300+"
+            )
+E           AssertionError: Float8 dynamic activation quantization is only supported on CUDA>=8.9 and MI300+
+
+..${LOCAL_PATH}:1523: AssertionError
+=============================== warnings summary ===============================
+..${LOCAL_PATH}:1488
+..${LOCAL_PATH}:1488
+..${LOCAL_PATH}:1488
+..${LOCAL_PATH}:1488
+..${LOCAL_PATH}:1488
+  ${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+..${LOCAL_PATH}:365: 14 warnings
+  ${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:365: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/unit/model_executor/loading/test_format_backend_adapters.py::test_native_diffusers_load_preserves_format_targets[INT8]
+  ${ENV}/lib/python3.10/site-packages/torchao/dtypes/utils.py:89: UserWarning: Deprecation: PlainLayout is deprecated and will be removed in a future release of torchao, see https://github.com/pytorch/ao/issues/2752 for more details
+    warnings.warn(
+
+tests/unit/model_executor/loading/test_format_backend_adapters.py::test_native_diffusers_load_preserves_format_targets[INT8]
+  ${ENV}/lib/python3.10/site-packages/torchao/dtypes/uintx/plain_layout.py:82: UserWarning: Deprecation: PlainAQTTensorImpl is deprecated and will be removed in a future release of torchao, see https://github.com/pytorch/ao/issues/2752 for more details
+    warnings.warn(
+
+tests/unit/model_executor/loading/test_format_backend_adapters.py::test_native_diffusers_load_preserves_format_targets[INT8]
+  ${ENV}/lib/python3.10/site-packages/torchao/dtypes/affine_quantized_tensor.py:116: UserWarning: Deprecation: AffineQuantizedTensor is deprecated and will be removed in a future release of torchao, see https://github.com/pytorch/ao/issues/2752 for more details
+    warnings.warn(
+
+tests/unit/model_executor/runner_models/test_minimax_h3.py::test_fasth3_vsa_transformer_compiles_fullgraph[FLEX_VSA_H3]
+  ${ENV}/lib/python3.10/site-packages/torch/_inductor/compile_fx.py:322: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+----- generated xml file: ${XDIT_WORK}/logs/pytest-gpu-single.xml -----
+=========================== short test summary info ============================
+FAILED tests/integration/accelerator/core/attention/test_strided_kv_backends.py::test_strided_kv_gives_what_contiguous_kv_gives[SAGE-pad-dropped-batch1]
+FAILED tests/integration/accelerator/core/attention/test_strided_kv_backends.py::test_strided_kv_gives_what_contiguous_kv_gives[SAGE-transposed-cross-attention-batch1]
+FAILED tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py::test_an_all_zero_activation_gives_the_bias_rather_than_nan
+FAILED tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py::test_the_floor_is_what_prevents_it
+FAILED tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py::test_ordinary_activations_are_untouched_by_the_floor
+= 5 failed, 78 passed, 133 skipped, 1850 deselected, 23 warnings in 148.91s (0:02:28) =

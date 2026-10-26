@@ -1,0 +1,1546 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-9.1.1, pluggy-1.7.0
+rootdir: ${REPO}
+configfile: pytest.ini
+plugins: anyio-4.15.1, timeout-2.4.0
+collected 52 items / 3 deselected / 49 selected
+
+tests/integration/cpu/core/distributed/test_group_broadcast.py ..        [  4%]
+tests/integration/cpu/core/distributed/test_model_replica_group.py .     [  6%]
+tests/integration/cpu/core/distributed/test_pipeline_shape_handshake.py . [  8%]
+                                                                         [  8%]
+tests/integration/cpu/core/distributed/test_runtime_state_default_config.py . [ 10%]
+..                                                                       [ 14%]
+tests/integration/cpu/core/distributed/test_ssta_ulysses.py .            [ 16%]
+tests/integration/cpu/core/utils/test_video_utils.py .                   [ 18%]
+tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py . [ 20%]
+FFF
+
+=================================== FAILURES ===================================
+____________ test_usp_matches_attention_over_the_real_tokens[ring] _____________
+
+tmp_path = PosixPath('${TMP}/pytest-of-${USER}/pytest-2/test_usp_matches_attention_ove1')
+mode = 'ring'
+
+    @pytest.mark.parametrize("mode", MODES)
+    def test_usp_matches_attention_over_the_real_tokens(tmp_path, mode):
+        torch = pytest.importorskip("torch")
+        pytest.importorskip("yunchang", reason="yunchang builds the Ulysses and ring process groups")
+        if not torch.distributed.is_gloo_available():
+            pytest.skip("torch.distributed gloo backend is unavailable")
+        ulysses, ring = MODES[mode]
+        world_size = ulysses * ring
+        compile_backends = _compile_backends()
+    
+        exit_codes, results = _run_spawned(
+            torch, f"file://{tmp_path / 'usp-init'}", world_size, (ulysses, ring, compile_backends, CASES), timeout=900
+        )
+    
+        errors = [result for result in results if result[0] == "error"]
+>       assert not errors, "\n".join(result[2] for result in errors)
+E       AssertionError: Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 735, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E         Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 735, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E       assert not [('error', 0, 'Traceback (most recent call last):\n  File "${REPO}/tests/integration/cpu/model_...his especially if you\'re reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"\n\n')]
+
+tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py:244: AssertionError
+----------------------------- Captured stderr call -----------------------------
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+___________ test_usp_matches_attention_over_the_real_tokens[hybrid] ____________
+
+tmp_path = PosixPath('${TMP}/pytest-of-${USER}/pytest-2/test_usp_matches_attention_ove2')
+mode = 'hybrid'
+
+    @pytest.mark.parametrize("mode", MODES)
+    def test_usp_matches_attention_over_the_real_tokens(tmp_path, mode):
+        torch = pytest.importorskip("torch")
+        pytest.importorskip("yunchang", reason="yunchang builds the Ulysses and ring process groups")
+        if not torch.distributed.is_gloo_available():
+            pytest.skip("torch.distributed gloo backend is unavailable")
+        ulysses, ring = MODES[mode]
+        world_size = ulysses * ring
+        compile_backends = _compile_backends()
+    
+        exit_codes, results = _run_spawned(
+            torch, f"file://{tmp_path / 'usp-init'}", world_size, (ulysses, ring, compile_backends, CASES), timeout=900
+        )
+    
+        errors = [result for result in results if result[0] == "error"]
+>       assert not errors, "\n".join(result[2] for result in errors)
+E       AssertionError: Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 758, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E         Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 758, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E         Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 758, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E         Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 758, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E       assert not [('error', 0, 'Traceback (most recent call last):\n  File "${REPO}/tests/integration/cpu/model_...his especially if you\'re reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"\n\n')]
+
+tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py:244: AssertionError
+----------------------------- Captured stderr call -----------------------------
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+____________ test_usp_matches_attention_over_the_real_tokens[ring4] ____________
+
+tmp_path = PosixPath('${TMP}/pytest-of-${USER}/pytest-2/test_usp_matches_attention_ove3')
+mode = 'ring4'
+
+    @pytest.mark.parametrize("mode", MODES)
+    def test_usp_matches_attention_over_the_real_tokens(tmp_path, mode):
+        torch = pytest.importorskip("torch")
+        pytest.importorskip("yunchang", reason="yunchang builds the Ulysses and ring process groups")
+        if not torch.distributed.is_gloo_available():
+            pytest.skip("torch.distributed gloo backend is unavailable")
+        ulysses, ring = MODES[mode]
+        world_size = ulysses * ring
+        compile_backends = _compile_backends()
+    
+        exit_codes, results = _run_spawned(
+            torch, f"file://{tmp_path / 'usp-init'}", world_size, (ulysses, ring, compile_backends, CASES), timeout=900
+        )
+    
+        errors = [result for result in results if result[0] == "error"]
+>       assert not errors, "\n".join(result[2] for result in errors)
+E       AssertionError: Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 735, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E         Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 735, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E         Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 735, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E         Traceback (most recent call last):
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 185, in _worker
+E             report["errors"][backend] = _run_cases(torch, usp, rank, world_size, compiled, cases)
+E           File "${REPO}/tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py", line 148, in _run_cases
+E             output = attention(*local, is_causal=case.get("causal", False), attention_kwargs=attention_kwargs, **joint)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 1024, in compile_wrapper
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2316, in __call__
+E             result = self._torchdynamo_orig_backend(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 2052, in __call__
+E             result = self._inner_convert(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 729, in __call__
+E             result = _compile(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1890, in _compile
+E             raise InternalTorchDynamoError(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1827, in _compile
+E             guarded_code, tracer_output = compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_utils_internal.py", line 96, in wrapper_function
+E             return function(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1500, in compile_inner
+E             return _compile_inner(code, one_graph, hooks)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1534, in _compile_inner
+E             dynamo_output = compile_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1408, in compile_frame
+E             bytecode, tracer_output = transform_code_object(code, transform)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/bytecode_transformation.py", line 1608, in transform_code_object
+E             tracer_output = transformations(instructions, code_options)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 1380, in transform
+E             tracer_output = trace_frame(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 341, in _fn
+E             return fn(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 863, in trace_frame
+E             run_tracer()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/convert_frame.py", line 844, in run_tracer
+E             tracer.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2808, in CALL_FUNCTION_KW
+E             self.call_function(fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2724, in CALL_FUNCTION
+E             self.call_function(fn, args, {})
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/lazy.py", line 294, in realize_and_forward
+E             return getattr(self.realize(), name)(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/user_defined.py", line 962, in call_function
+E             return tx.inline_user_function_return(
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1001, in wrapper
+E             return inner_fn(self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2792, in CALL_FUNCTION_EX
+E             self.call_function(fn, argsvars.items, kwargsvars)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1360, in call_function
+E             self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 1510, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 691, in call_function
+E             return super().call_function(tx, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py", line 403, in call_function
+E             return tx.inline_user_function_return(self, [*self.self_args(), *args], kwargs)  # type: ignore[attr-defined]
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1387, in inline_user_function_return
+E             return InliningInstructionTranslator.inline_call(self, fn, args, kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5668, in inline_call
+E             return tracer.inline_call_()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 5882, in inline_call_
+E             self.run()
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1794, in run
+E             while self.step():
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 1459, in step
+E             self.dispatch_table[inst.opcode](self, inst)
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/symbolic_convert.py", line 2357, in RAISE_VARARGS
+E             curr_exc.call_setattr(self, ConstantVariable("__cause__"), cause)  # type: ignore[arg-type, union-attr, assignment]
+E         torch._dynamo.exc.InternalTorchDynamoError: AttributeError: 'UserDefinedExceptionObjectVariable' object has no attribute 'call_setattr'
+E         
+E         from user code:
+E            File "${REPO}/xfuser/model_executor/layers/usp.py", line 735, in USP
+E             out = ring_attn(
+E           File "${REPO}/xfuser/model_executor/layers/usp.py", line 85, in ring_attn
+E             if version_at_least(torch.__version__, "2.6.0"):
+E           File "${REPO}/xfuser/compat.py", line 70, in version_at_least
+E             return Version(installed).release >= Version(floor).release
+E           File "${ENV}/lib/python3.10/site-packages/torch/_dynamo/polyfills/__init__.py", line 410, in instantiate_user_defined_class_object
+E             obj.__init__(*args, **kwargs)
+E           File "${ENV}/lib/python3.10/site-packages/packaging/version.py", line 421, in __init__
+E             raise InvalidVersion(f"Invalid version: {version!r}") from None
+E         
+E         Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+E         
+E         
+E       assert not [('error', 2, 'Traceback (most recent call last):\n  File "${REPO}/tests/integration/cpu/model_...his especially if you\'re reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"\n\n')]
+
+tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py:244: AssertionError
+----------------------------- Captured stderr call -----------------------------
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+-- generated xml file: ${XDIT_WORK}/logs/pytest-integration-cpu.xml ---
+=========================== short test summary info ============================
+FAILED tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py::test_usp_matches_attention_over_the_real_tokens[ring]
+FAILED tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py::test_usp_matches_attention_over_the_real_tokens[hybrid]
+FAILED tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py::test_usp_matches_attention_over_the_real_tokens[ring4]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+${ENV}/lib/python3.10/multiprocessing/connection.py:379: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+=========== 3 failed, 10 passed, 3 deselected in 1165.43s (0:19:25) ============

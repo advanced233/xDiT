@@ -1,0 +1,58 @@
+[
+  {
+    "selector": "unit",
+    "command": "python -m pytest tests/unit -m \"not accelerator\"",
+    "source_commit": "256cd1941973d8678b1b21ae033627d163a89984",
+    "passed": 1618,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 6,
+    "deselected": 18,
+    "blocked": 0,
+    "failure_cases": []
+  },
+  {
+    "selector": "integration-cpu",
+    "command": "python -m pytest tests/integration/cpu -m \"not accelerator\"",
+    "source_commit": "256cd1941973d8678b1b21ae033627d163a89984",
+    "passed": 40,
+    "failed": 3,
+    "errors": 0,
+    "skipped": 5,
+    "deselected": 3,
+    "blocked": 1,
+    "failure_cases": [
+      "tests.integration.cpu.model_executor.layers.test_usp_sequence_parallel_pad::test_usp_matches_attention_over_the_real_tokens[ring]",
+      "tests.integration.cpu.model_executor.layers.test_usp_sequence_parallel_pad::test_usp_matches_attention_over_the_real_tokens[hybrid]",
+      "tests.integration.cpu.model_executor.layers.test_usp_sequence_parallel_pad::test_usp_matches_attention_over_the_real_tokens[ring4]"
+    ]
+  },
+  {
+    "selector": "gpu-single",
+    "command": "python -m pytest -m \"accelerator and not rocm and not multi_gpu\"",
+    "source_commit": "256cd1941973d8678b1b21ae033627d163a89984",
+    "passed": 78,
+    "failed": 5,
+    "errors": 0,
+    "skipped": 133,
+    "deselected": 1850,
+    "blocked": 0,
+    "failure_cases": [
+      "tests.integration.accelerator.core.attention.test_strided_kv_backends::test_strided_kv_gives_what_contiguous_kv_gives[SAGE-pad-dropped-batch1]",
+      "tests.integration.accelerator.core.attention.test_strided_kv_backends::test_strided_kv_gives_what_contiguous_kv_gives[SAGE-transposed-cross-attention-batch1]",
+      "tests.integration.accelerator.model_executor.layers.test_fp8_zero_activation::test_an_all_zero_activation_gives_the_bias_rather_than_nan",
+      "tests.integration.accelerator.model_executor.layers.test_fp8_zero_activation::test_the_floor_is_what_prevents_it",
+      "tests.integration.accelerator.model_executor.layers.test_fp8_zero_activation::test_ordinary_activations_are_untouched_by_the_floor"
+    ]
+  },
+  {
+    "selector": "gpu-multi",
+    "command": "python -m pytest -m \"accelerator and multi_gpu and not rocm\"",
+    "status": "未完成",
+    "passed": null,
+    "failed": null,
+    "skipped": null,
+    "deselected": null,
+    "reason": "验证时只有一张空闲卡；本次整理时八张卡均占用，不等待或占用其他人的 GPU。"
+  }
+]

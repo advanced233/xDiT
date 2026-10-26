@@ -1,0 +1,263 @@
+[
+  {
+    "file": "assets/performance.png",
+    "status": "CACHED",
+    "size": 306535
+  },
+  {
+    "file": ".gitattributes",
+    "status": "CACHED",
+    "size": 1860
+  },
+  {
+    "file": "assets/logo.png",
+    "status": "CACHED",
+    "size": 56322
+  },
+  {
+    "file": "README.md",
+    "status": "CACHED",
+    "size": 18747
+  },
+  {
+    "file": "assets/moe_arch.png",
+    "status": "CACHED",
+    "size": 74900
+  },
+  {
+    "file": "assets/vae.png",
+    "status": "CACHED",
+    "size": 165486
+  },
+  {
+    "file": "assets/comp_effic.png",
+    "status": "CACHED",
+    "size": 202156
+  },
+  {
+    "file": "model_index.json",
+    "status": "CACHED",
+    "size": 498
+  },
+  {
+    "file": "text_encoder/model.safetensors.index.json",
+    "status": "CACHED",
+    "size": 22476
+  },
+  {
+    "file": "tokenizer/special_tokens_map.json",
+    "status": "CACHED",
+    "size": 7079
+  },
+  {
+    "file": "scheduler/scheduler_config.json",
+    "status": "CACHED",
+    "size": 820
+  },
+  {
+    "file": "text_encoder/config.json",
+    "status": "CACHED",
+    "size": 855
+  },
+  {
+    "file": "tokenizer/spiece.model",
+    "status": "CACHED",
+    "size": 4548313
+  },
+  {
+    "file": "assets/moe_2.png",
+    "status": "CACHED",
+    "size": 527914
+  },
+  {
+    "file": "transformer/config.json",
+    "status": "CACHED",
+    "size": 495
+  },
+  {
+    "file": "tokenizer/tokenizer_config.json",
+    "status": "CACHED",
+    "size": 61758
+  },
+  {
+    "file": "tokenizer/tokenizer.json",
+    "status": "CACHED",
+    "size": 16837459
+  },
+  {
+    "file": "text_encoder/model-00003-of-00003.safetensors",
+    "status": "VERIFIED",
+    "size": 1442935480
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00003-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465128
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00002-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594456
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00005-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465224
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00004-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594536
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00001-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4863171808
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00008-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594552
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00007-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465224
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model.safetensors.index.json",
+    "status": "VERIFIED",
+    "size": 97307
+  },
+  {
+    "file": "transformer_2/config.json",
+    "status": "VERIFIED",
+    "size": 495
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00010-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594552
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00011-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465224
+  },
+  {
+    "file": "text_encoder/model-00001-of-00003.safetensors",
+    "status": "VERIFIED",
+    "size": 4935812536
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00001-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4863171808
+  },
+  {
+    "file": "text_encoder/model-00002-of-00003.safetensors",
+    "status": "VERIFIED",
+    "size": 4983103192
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00002-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594456
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00006-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594552
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00004-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594536
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00005-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465224
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00006-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594552
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00007-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465224
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00012-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 3095607280
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model.safetensors.index.json",
+    "status": "VERIFIED",
+    "size": 97307
+  },
+  {
+    "file": "vae/config.json",
+    "status": "VERIFIED",
+    "size": 724
+  },
+  {
+    "file": "vae/diffusion_pytorch_model.safetensors",
+    "status": "VERIFIED",
+    "size": 507591892
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00008-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594552
+  },
+  {
+    "file": "transformer/diffusion_pytorch_model-00009-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465224
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00010-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919594552
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00012-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 3095607280
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00003-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465128
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00009-of-00012.safetensors",
+    "status": "VERIFIED",
+    "size": 4919465224
+  },
+  {
+    "file": "transformer_2/diffusion_pytorch_model-00011-of-00012.safetensors",
+    "status": "FAILED",
+    "errors": [
+      {
+        "source": 0,
+        "returncode": 92,
+        "downloaded": 251658240
+      },
+      {
+        "source": 1,
+        "returncode": 18,
+        "downloaded": 3941713751
+      },
+      {
+        "source": 2,
+        "returncode": 92,
+        "downloaded": 4261953505
+      }
+    ]
+  }
+]

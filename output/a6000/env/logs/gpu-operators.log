@@ -1,0 +1,13 @@
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+flash_attn intentionally skipped by user; experiments use SDPA
+torch 2.11.0+cu128 cuda 12.8 hip None
+devices ['NVIDIA RTX A6000']
+diffusers 0.41.0
+transformers 5.20.2
+torchao 0.17.0+cu128
+yunchang 0.6.4
+sageattention ok
+lpips ok
+xfuser ok
+int_mm torch.int32
+sageattn torch.Size([1, 8, 4096, 128])

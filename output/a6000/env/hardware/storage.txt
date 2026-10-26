@@ -1,0 +1,4 @@
+2026-10-26T15:30:19+08:00
+Filesystem      Size  Used Avail Use% Mounted on
+${LOCAL_PATH}         15T   12T  2.0T  86% ${LOCAL_PATH}
+176G	${XDIT_WORK}

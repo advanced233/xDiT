@@ -1,0 +1,10 @@
+torch {'version': '2.11.0+cu128', 'file': '${ENV}/lib/python3.10/site-packages/torch/__init__.py', 'status': 'OK'}
+torchvision {'version': '0.26.0+cu128', 'file': '${ENV}/lib/python3.10/site-packages/torchvision/__init__.py', 'status': 'OK'}
+diffusers {'version': '0.41.0', 'file': '${ENV}/lib/python3.10/site-packages/diffusers/__init__.py', 'status': 'OK'}
+transformers {'version': '5.20.2', 'file': '${ENV}/lib/python3.10/site-packages/transformers/__init__.py', 'status': 'OK'}
+torchao {'version': '0.17.0+cu128', 'file': '${ENV}/lib/python3.10/site-packages/torchao/__init__.py', 'status': 'OK'}
+yunchang {'version': '0.6.4', 'file': '${ENV}/lib/python3.10/site-packages/yunchang/__init__.py', 'status': 'OK'}
+sageattention {'version': '1.0.6', 'file': '${ENV}/lib/python3.10/site-packages/sageattention/__init__.py', 'status': 'OK'}
+lpips {'version': '0.1.4', 'file': '${ENV}/lib/python3.10/site-packages/lpips/__init__.py', 'status': 'OK'}
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+xfuser {'version': '0.0.0.dev1+g256cd1941', 'file': '${REPO}/xfuser/__init__.py', 'status': 'OK'}

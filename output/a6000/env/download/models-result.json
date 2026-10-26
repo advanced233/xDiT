@@ -1,0 +1,22 @@
+[
+  {
+    "repo": "Wan-AI/Wan2.1-T2V-1.3B-Diffusers",
+    "status": "DOWNLOADED",
+    "revision": "0fad780a534b6463e45facd96134c9f345acfa5b",
+    "path": "${XDIT_WORK}/cache/hf/hub/models--Wan-AI--Wan2.1-T2V-1.3B-Diffusers/snapshots/0fad780a534b6463e45facd96134c9f345acfa5b",
+    "size_bytes": 28935653511,
+    "elapsed_seconds": 187.13409161567688,
+    "files": 31,
+    "source": "ModelScope for SHA256-identical LFS; official HF/mirror for other files"
+  },
+  {
+    "repo": "Wan-AI/Wan2.2-T2V-A14B-Diffusers",
+    "status": "FAILED",
+    "revision": "5be7df9619b54f4e2667b2755bc6a756675b5cd7",
+    "path": "${XDIT_WORK}/cache/hf/hub/models--Wan-AI--Wan2.2-T2V-A14B-Diffusers/snapshots/5be7df9619b54f4e2667b2755bc6a756675b5cd7",
+    "size_bytes": 126200628126,
+    "elapsed_seconds": 13158.392428398132,
+    "files": 49,
+    "source": "ModelScope for SHA256-identical LFS; official HF/mirror for other files"
+  }
+]
