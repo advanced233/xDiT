@@ -18,6 +18,12 @@ pytestmark = pytest.mark.skipif(not torch.cuda.is_available(), reason="FP8 quant
 
 def _quantized_linear(**overrides):
     pytest.importorskip("torchao")
+    from torchao import utils as torchao_utils
+
+    # torchao refuses FP8 dynamic activation quantization below sm_89 and before MI300, so Ampere
+    # (A100, A6000) has no FP8 path to test. Older torchao releases lack some of these helpers.
+    if not any(getattr(torchao_utils, name, lambda: False)() for name in ("is_sm_at_least_89", "is_MI300", "is_MI350")):
+        pytest.skip("FP8 dynamic activation quantization needs CUDA capability 8.9+ or MI300+")
     from torchao.quantization.granularity import PerTensor
     from torchao.quantization.quant_api import (
         Float8DynamicActivationFloat8WeightConfig,

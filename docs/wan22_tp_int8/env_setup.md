@@ -35,6 +35,13 @@
 
 **不修改 `~/.bashrc`**：环境变量写进 `$XDIT_WORK/env.sh`，需要时手动 `source`。
 
+**两台服务器共用一个分支**（`claude/keen-bardeen-ntp7zr`）
+- 源码只由 Claude 修改，agent 不改、不提交源码。
+- 结果放在 `output/<设备>/<时间戳>/` 下（`a100` 或 `a6000`），只往自己设备的目录里加文件，不改、不删别的目录。`output/` 下已有的无设备前缀的目录是早期的 A100 结果，保持不动。
+- 运行前先 `git pull`，确认 `git log -1` 是消息里指定的 commit。推送前先 `git pull --rebase`，不要强推。
+- 发布前脱敏：主机名、用户名、本地绝对路径、GPU UUID。
+- 多卡运行只用同一个 NUMA 组里的卡（A6000 服务器是 0–3 或 4–7，跨组走 SYS），并在报告里写明用的是哪几张。
+
 **无人值守执行**：用户不在场，整个流程不需要等确认，从头跑到尾。遇到阻塞时按下表处理，绝不为了绕过阻塞而越过上面的规则：
 
 | 情况 | 处理 |
@@ -164,10 +171,12 @@ which python pip             # 两者都必须指向 $XDIT_WORK/envs/xdit/bin
 
 `nvidia-smi` 右上角的 CUDA Version 是驱动原生支持的最高版本，并不是 wheel 的硬上限。CUDA 12 有次版本兼容（minor version compatibility）：驱动 ≥ 525.60.13，就能运行任何用 CUDA 12.x 编译的程序。PyTorch wheel 自带 sm_80 / sm_86 的 SASS，不依赖驱动 JIT。
 
-所以只要驱动 ≥ 525.60.13，就选仍然提供 cu126 或 cu128 wheel 的最新稳定版 PyTorch（例如 2.8 / 2.9），不要因为驱动显示 12.4 就退回 torch 2.6 + cu124。那样会连带把 torchao 和 diffusers 都卡在旧版本。不要尝试升级驱动。
+所以只要驱动 ≥ 525.60.13，就能装 cu126 的 wheel，不要因为驱动显示 12.4 就退回 torch 2.6 + cu124。不要尝试升级驱动。
+
+两台服务器统一用 A100 上验证过的版本：torch 2.14.1（cu126）、torchao 0.18.0、diffusers 0.41.0、transformers 5.20.2。版本不同，INT8 和 torch.compile 的行为就不同，两台机器的结果没法放在一起比。另外，torch 2.11 的 TorchDynamo 有问题：`test_usp_sequence_parallel_pad` 报 `InternalTorchDynamoError`，`hybrid-ring4` 卡死；这些在 2.14.1 上都能通过。
 
 ```bash
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+pip install torch==2.14.1 torchvision --index-url https://download.pytorch.org/whl/cu126
 python -c "import torch; print(torch.__version__, torch.version.cuda, torch.version.hip, torch.cuda.is_available(), torch.cuda.device_count())"
 # 在 GPU 上验证 Triton 编译链路
 python -c "import torch; f = torch.compile(lambda x: (x * 2).sin()); print(f(torch.randn(1024, device='cuda')).sum())"
@@ -185,12 +194,13 @@ cd "$XDIT_WORK/src"
 git clone https://github.com/advanced233/xDiT.git   # 已经有自己的克隆就改为 git fetch
 cd xDiT && git checkout claude/keen-bardeen-ntp7zr
 pip install -e ".[test,torchao]"
+pip install torchao==0.18.0 --index-url https://download.pytorch.org/whl/cu126   # 与 A100 一致
 python -c "import diffusers; print(diffusers.__version__)"   # 必须 ≥ 0.35.2，否则执行：pip install -U "diffusers>=0.35.2"
 pip install lpips
 pip install pre-commit && pre-commit install                 # 可选；hook 只写入本克隆的 .git
 ```
 
-安装 torchao 后要核对版本是否匹配：查 torchao README 的兼容性表，确认它和当前 torch 版本对应；不对应就安装匹配的版本。
+装完核对 `torch`、`torchao`、`diffusers`、`transformers` 四个版本与上面一致，不一致就按上面的版本重装。
 
 ### 步骤 6：需要编译的扩展（SageAttention，flash-attn 可选）
 
@@ -212,10 +222,10 @@ nvcc --version   # 应指向 $CONDA_PREFIX/bin/nvcc
 timeout 900 pip install "flash-attn>=2.7.0" --no-build-isolation || echo "flash-attn skipped"
 # 编译 SageAttention2 时如果缺 CUDA 头文件，再补装：conda install -y -c nvidia "cuda-libraries-dev=${CUDA_MM}"
 
-# SageAttention2：必须在能看到 GPU 的节点上编译
+# SageAttention2：只有 A100 需要（M7），A6000 不装。必须在能看到 GPU 的节点上编译
 git clone https://github.com/thu-ml/SageAttention.git "$XDIT_WORK/src/SageAttention"
 cd "$XDIT_WORK/src/SageAttention" && pip install -e . --no-build-isolation
-# 编译失败时的退路（Triton 版 v1，同样走 INT8 QK + FP16 PV）：pip install sageattention==1.0.6
+# 编译失败就跳过，不要退回 sageattention 1.0.6：它不支持 return_lse，xDiT 的 SAGE 后端会报错
 ```
 
 编译中间文件都落在 `$TMPDIR` 和 `$XDIT_WORK/src` 下。
