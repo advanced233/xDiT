@@ -1,0 +1,16 @@
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Obtaining file://${PUBLISH_REPO}
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'error'
+  error: subprocess-exited-with-error
+  
+  × installing build dependencies did not run successfully.
+  │ exit code: 1
+  ╰─> [3 lines of output]
+      Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+      ERROR: Could not find a version that satisfies the requirement setuptools>=61 (from versions: none)
+      ERROR: No matching distribution found for setuptools>=61
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+ERROR: Failed to build 'file://${PUBLISH_REPO}' when installing build dependencies

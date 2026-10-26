@@ -1,0 +1,276 @@
+{
+  "source_commit": "03e8d05118e964e49ad8382de05015340f95e0f5",
+  "jobs": {
+    "pytest-unit": {
+      "status": "COMPLETED",
+      "start": "2026-10-26T16:50:51.889776+08:00",
+      "source_commit": "03e8d05118e964e49ad8382de05015340f95e0f5",
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit",
+        "-m",
+        "not accelerator",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-unit",
+        "--junitxml=${RUN}/results/pytest-unit.xml"
+      ],
+      "master_port": 52838,
+      "gpu_indices": [],
+      "numa_group": null,
+      "returncode": 0,
+      "elapsed_seconds": 16.018350877799094,
+      "end": "2026-10-26T16:51:07.908532+08:00",
+      "tests": {
+        "passed": 1640,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 6,
+        "deselected": 18,
+        "failure_cases": []
+      }
+    },
+    "pytest-integration-cpu": {
+      "status": "COMPLETED",
+      "start": "2026-10-26T16:51:07.943110+08:00",
+      "source_commit": "03e8d05118e964e49ad8382de05015340f95e0f5",
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "tests/integration/cpu",
+        "-m",
+        "not accelerator",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-integration-cpu",
+        "--junitxml=${RUN}/results/pytest-integration-cpu.xml"
+      ],
+      "master_port": 22009,
+      "gpu_indices": [],
+      "numa_group": null,
+      "returncode": 0,
+      "elapsed_seconds": 294.30938424821943,
+      "end": "2026-10-26T16:56:02.253238+08:00",
+      "tests": {
+        "passed": 44,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 5,
+        "deselected": 3,
+        "failure_cases": []
+      }
+    },
+    "nccl-bandwidth": {
+      "status": "PENDING",
+      "required_gpus": 2,
+      "command": [
+        "torchrun",
+        "--nproc_per_node",
+        "2",
+        "--master_port",
+        "{PORT}",
+        "${RUN}/scripts/nccl_bw.py"
+      ]
+    },
+    "pytest-gpu-multi": {
+      "status": "PENDING",
+      "required_gpus": 2,
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "-m",
+        "accelerator and multi_gpu and not rocm",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-gpu-multi",
+        "--junitxml=${RUN}/results/pytest-gpu-multi.xml"
+      ]
+    },
+    "smoke-ulysses2": {
+      "status": "PENDING",
+      "required_gpus": 2,
+      "command": [
+        "xdit",
+        "--model",
+        "Wan2.1-T2V-1.3B",
+        "--prompt",
+        "a cat walking on grass",
+        "--height",
+        "480",
+        "--width",
+        "832",
+        "--num_frames",
+        "17",
+        "--num_inference_steps",
+        "4",
+        "--ulysses_degree",
+        "2",
+        "--master_port",
+        "{PORT}",
+        "--output_directory",
+        "${RUN}/results/smoke"
+      ]
+    },
+    "pytest-gpu-single": {
+      "status": "PENDING",
+      "required_gpus": 1,
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "-m",
+        "accelerator and not rocm and not multi_gpu",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-gpu-single",
+        "--junitxml=${RUN}/results/pytest-gpu-single.xml"
+      ]
+    },
+    "attention": {
+      "status": "PENDING",
+      "required_gpus": 1,
+      "command": [
+        "${ENV}/bin/python",
+        "benchmarks/wan22/attention_bench.py",
+        "--json",
+        "${RUN}/results/attention.json"
+      ]
+    },
+    "int8_linear": {
+      "status": "PENDING",
+      "required_gpus": 1,
+      "command": [
+        "${ENV}/bin/python",
+        "benchmarks/wan22/int8_linear_bench.py",
+        "--tokens",
+        "14040",
+        "32760",
+        "--json",
+        "${RUN}/results/int8_linear.json"
+      ]
+    }
+  },
+  "phase": "GPU_WAITING",
+  "setup_note": "Initial CPU validation was interrupted to retry editable installation after a build-index failure. Final selectors run after successful editable installation; earlier attempt retained separately.",
+  "wait_started": "2026-10-26T17:05:53.744350+08:00",
+  "deadline_epoch": 1793048753.7443752,
+  "deadline": "2026-10-27T05:05:53.744375+08:00",
+  "latest_probe": {
+    "time": "2026-10-26T17:05:54.995033+08:00",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 34614542336,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 0,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      },
+      {
+        "index": 1,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 50362056704,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 0,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      },
+      {
+        "index": 2,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 34495004672,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 0,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      },
+      {
+        "index": 3,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 50362056704,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 0,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      },
+      {
+        "index": 4,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 49690968064,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 1,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      },
+      {
+        "index": 5,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 49690968064,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 1,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      },
+      {
+        "index": 6,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 632291328,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 1,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      },
+      {
+        "index": 7,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 50362056704,
+        "query_valid": true,
+        "eligible": false,
+        "numa_group": 1,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ]
+      }
+    ],
+    "idle": []
+  }
+}

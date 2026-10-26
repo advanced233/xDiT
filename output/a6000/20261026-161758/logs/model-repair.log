@@ -1,0 +1,25 @@
+{
+  "repo": "Wan-AI/Wan2.2-T2V-A14B-Diffusers",
+  "revision": "5be7df9619b54f4e2667b2755bc6a756675b5cd7",
+  "file": "transformer_2/diffusion_pytorch_model-00011-of-00012.safetensors",
+  "expected_sha256": "11fdb612135d52ac770304261f5e1a846882b72a5e81be15970c051edf20b518",
+  "expected_bytes": 4919465224,
+  "started": "2026-10-26T16:21:19.271707+08:00",
+  "initial_partial_bytes": 4261953505,
+  "attempts": [
+    {
+      "attempt": 1,
+      "source": 0,
+      "returncode": 0,
+      "before_bytes": 4261953505,
+      "after_bytes": 4919465224
+    }
+  ],
+  "actual_sha256": "11fdb612135d52ac770304261f5e1a846882b72a5e81be15970c051edf20b518",
+  "status": "PASS",
+  "snapshot_path": "${XDIT_WORK}/cache/hf/hub/models--Wan-AI--Wan2.2-T2V-A14B-Diffusers/snapshots/5be7df9619b54f4e2667b2755bc6a756675b5cd7",
+  "offline_local_files_only": true,
+  "file_count": 49,
+  "total_bytes": 126200628126,
+  "finished": "2026-10-26T16:23:16.621375+08:00"
+}

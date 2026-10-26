@@ -1,0 +1,5 @@
+{
+  "official_route": "stopped during download, before package mutation",
+  "reason": "Only ~37.7 MB in over 9 minutes",
+  "fallback": "SJTU cu126 wheel mirror with Tsinghua dependencies"
+}

@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "checks": [
+    "graphics process is busy",
+    "compute process is busy",
+    "strict 1 GB threshold",
+    "unknown memory/process query fails closed",
+    "no cross-NUMA pairs",
+    "same-NUMA pair selection",
+    "random high port",
+    "separate-session rank descendants recognized",
+    "only owned task descendants cleaned up"
+  ],
+  "gpu_allocations": 0
+}

@@ -1,0 +1,60 @@
+{
+  "source_commit": "03e8d05118e964e49ad8382de05015340f95e0f5",
+  "jobs": {
+    "pytest-unit": {
+      "status": "COMPLETED",
+      "start": "2026-10-26T16:42:39.590924+08:00",
+      "source_commit": "03e8d05118e964e49ad8382de05015340f95e0f5",
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit",
+        "-m",
+        "not accelerator",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-unit",
+        "--junitxml=${RUN}/results/pytest-unit.xml"
+      ],
+      "master_port": 31497,
+      "gpu_indices": [],
+      "numa_group": null,
+      "returncode": 0,
+      "elapsed_seconds": 60.063327921554446,
+      "end": "2026-10-26T16:43:39.654935+08:00",
+      "tests": {
+        "passed": 1640,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 6,
+        "deselected": 18,
+        "failure_cases": []
+      }
+    },
+    "pytest-integration-cpu": {
+      "status": "RUNNING",
+      "start": "2026-10-26T16:43:39.688809+08:00",
+      "source_commit": "03e8d05118e964e49ad8382de05015340f95e0f5",
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "tests/integration/cpu",
+        "-m",
+        "not accelerator",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-integration-cpu",
+        "--junitxml=${RUN}/results/pytest-integration-cpu.xml"
+      ],
+      "master_port": 41730,
+      "gpu_indices": [],
+      "numa_group": null
+    }
+  },
+  "phase": "INTERRUPTED",
+  "interrupted_at": "2026-10-26T16:44:58.673881+08:00"
+}

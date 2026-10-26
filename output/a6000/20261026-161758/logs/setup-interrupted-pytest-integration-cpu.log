@@ -1,0 +1,20 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-9.1.1, pluggy-1.7.0
+cachedir: ${RUN}/cache/pytest-integration-cpu
+rootdir: ${REPO}
+configfile: pytest.ini
+plugins: anyio-4.15.1, timeout-2.4.0
+timeout: 960.0s
+timeout method: signal
+timeout func_only: False
+collected 52 items / 3 deselected / 49 selected
+
+tests/integration/cpu/core/distributed/test_group_broadcast.py ..        [  4%]
+tests/integration/cpu/core/distributed/test_model_replica_group.py .     [  6%]
+tests/integration/cpu/core/distributed/test_pipeline_shape_handshake.py . [  8%]
+                                                                         [  8%]
+tests/integration/cpu/core/distributed/test_runtime_state_default_config.py . [ 10%]
+..                                                                       [ 14%]
+tests/integration/cpu/core/distributed/test_ssta_ulysses.py .            [ 16%]
+tests/integration/cpu/core/utils/test_video_utils.py .                   [ 18%]
+tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py 

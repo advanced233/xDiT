@@ -1,0 +1,102 @@
+Obtaining file://${PUBLISH_REPO}
+  Installing build dependencies: started
+  Installing build dependencies: still running...
+  Installing build dependencies: still running...
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: torch>=2.4.1 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (2.14.1+cu126)
+Requirement already satisfied: accelerate>=0.33.0 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (1.15.0)
+Requirement already satisfied: transformers>=4.39.1 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (5.20.2)
+Requirement already satisfied: sentencepiece>=0.1.99 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.2.2)
+Requirement already satisfied: beautifulsoup4>=4.12.3 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (4.15.0)
+Requirement already satisfied: distvae>=0.1.0 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.1.0)
+Requirement already satisfied: yunchang>=0.6.0 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.6.4)
+Requirement already satisfied: einops in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.8.2)
+Requirement already satisfied: diffusers>=0.33.0 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.41.0)
+Requirement already satisfied: av in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (17.1.0)
+Requirement already satisfied: peft in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.21.2)
+Requirement already satisfied: numpy in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (2.2.6)
+Requirement already satisfied: PyYAML>=6.0 in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (6.0.3)
+Requirement already satisfied: torchao in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.18.0+cu126)
+Requirement already satisfied: pytest in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (9.1.1)
+Requirement already satisfied: pytest-timeout in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (2.4.0)
+Requirement already satisfied: imageio in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (2.38.0)
+Requirement already satisfied: imageio-ffmpeg in .${LOCAL_PATH} (from xfuser==0.0.0.dev18+g03e8d0511) (0.6.0)
+Requirement already satisfied: packaging>=20.0 in .${LOCAL_PATH} (from accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (26.3)
+Requirement already satisfied: psutil in .${LOCAL_PATH} (from accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (7.2.2)
+Requirement already satisfied: huggingface_hub>=0.21.0 in .${LOCAL_PATH} (from accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (1.33.0)
+Requirement already satisfied: safetensors>=0.4.3 in .${LOCAL_PATH} (from accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (0.8.0)
+Requirement already satisfied: soupsieve>=1.6.1 in .${LOCAL_PATH} (from beautifulsoup4>=4.12.3->xfuser==0.0.0.dev18+g03e8d0511) (2.10)
+Requirement already satisfied: typing-extensions>=4.0.0 in .${LOCAL_PATH} (from beautifulsoup4>=4.12.3->xfuser==0.0.0.dev18+g03e8d0511) (4.16.0)
+Requirement already satisfied: importlib_metadata in .${LOCAL_PATH} (from diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (9.0.1)
+Requirement already satisfied: filelock in .${LOCAL_PATH} (from diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (4.1.0)
+Requirement already satisfied: regex!=2019.12.17 in .${LOCAL_PATH} (from diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (2026.9.29)
+Requirement already satisfied: requests in .${LOCAL_PATH} (from diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (2.34.2)
+Requirement already satisfied: Pillow in .${LOCAL_PATH} (from diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (12.3.0)
+Requirement already satisfied: click<9.0.0,>=8.4.2 in .${LOCAL_PATH} (from huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (8.5.0)
+Requirement already satisfied: fsspec>=2023.5.0 in .${LOCAL_PATH} (from huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (2026.9.0)
+Requirement already satisfied: hf-xet<2.0.0,>=1.6.0 in .${LOCAL_PATH} (from huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (1.7.0)
+Requirement already satisfied: httpx<1,>=0.23.0 in .${LOCAL_PATH} (from huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (0.28.1)
+Requirement already satisfied: tomli>=1.1.0 in .${LOCAL_PATH} (from huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (2.5.0)
+Requirement already satisfied: tqdm>=4.42.1 in .${LOCAL_PATH} (from huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (4.70.1)
+Requirement already satisfied: anyio in .${LOCAL_PATH} (from httpx<1,>=0.23.0->huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (4.15.1)
+Requirement already satisfied: certifi in .${LOCAL_PATH} (from httpx<1,>=0.23.0->huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (2026.10.23)
+Requirement already satisfied: httpcore==1.* in .${LOCAL_PATH} (from httpx<1,>=0.23.0->huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (1.0.9)
+Requirement already satisfied: idna in .${LOCAL_PATH} (from httpx<1,>=0.23.0->huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (3.20)
+Requirement already satisfied: h11>=0.16 in .${LOCAL_PATH} (from httpcore==1.*->httpx<1,>=0.23.0->huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (0.16.0)
+Requirement already satisfied: setuptools>=77.0.3 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (81.0.0)
+Requirement already satisfied: sympy>=1.13.3 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (1.14.0)
+Requirement already satisfied: networkx>=2.5.1 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (3.4.2)
+Requirement already satisfied: jinja2 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (3.1.6)
+Requirement already satisfied: cuda-toolkit==12.6.3 in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.6.3)
+Requirement already satisfied: cuda-bindings<13,>=12.9.4 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.9.10)
+Requirement already satisfied: nvidia-cudnn-cu12==9.10.2.21 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (9.10.2.21)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (0.7.1)
+Requirement already satisfied: nvidia-nccl-cu12==2.29.3 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (2.29.3)
+Requirement already satisfied: nvidia-nvshmem-cu12==3.4.5 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (3.4.5)
+Requirement already satisfied: nvidia-nvjitlink-cu12<13,>=12.6.85 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.8.93)
+Requirement already satisfied: triton~=3.8.0 in .${LOCAL_PATH} (from torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (3.8.0)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.0.4.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (11.3.0.4)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.4.2.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.5.4.2)
+Requirement already satisfied: nvidia-cublas-cu12==12.6.4.1.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.6.4.1)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.6.77.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.6.77)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.6.80.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.6.80)
+Requirement already satisfied: nvidia-nvtx-cu12==12.6.77.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.6.77)
+Requirement already satisfied: nvidia-curand-cu12==10.3.7.77.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (10.3.7.77)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.1.2.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (11.7.1.2)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.6.85.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (12.6.85)
+Requirement already satisfied: nvidia-cufile-cu12==1.11.1.6.* in .${LOCAL_PATH} (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (1.11.1.6)
+Requirement already satisfied: cuda-pathfinder~=1.1 in .${LOCAL_PATH} (from cuda-bindings<13,>=12.9.4->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (1.8.3)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in .${LOCAL_PATH} (from sympy>=1.13.3->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (1.3.0)
+Requirement already satisfied: tokenizers<0.24.0,>=0.23.1 in .${LOCAL_PATH} (from transformers>=4.39.1->xfuser==0.0.0.dev18+g03e8d0511) (0.23.3)
+Requirement already satisfied: typer in .${LOCAL_PATH} (from transformers>=4.39.1->xfuser==0.0.0.dev18+g03e8d0511) (0.27.3)
+Requirement already satisfied: exceptiongroup>=1.0.2 in .${LOCAL_PATH} (from anyio->httpx<1,>=0.23.0->huggingface_hub>=0.21.0->accelerate>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (1.3.1)
+Requirement already satisfied: zipp>=3.20 in .${LOCAL_PATH} (from importlib_metadata->diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (4.1.2)
+Requirement already satisfied: MarkupSafe>=2.0 in .${LOCAL_PATH} (from jinja2->torch>=2.4.1->xfuser==0.0.0.dev18+g03e8d0511) (3.0.4)
+Requirement already satisfied: iniconfig>=1.0.1 in .${LOCAL_PATH} (from pytest->xfuser==0.0.0.dev18+g03e8d0511) (2.3.1)
+Requirement already satisfied: pluggy<2,>=1.5 in .${LOCAL_PATH} (from pytest->xfuser==0.0.0.dev18+g03e8d0511) (1.7.0)
+Requirement already satisfied: pygments>=2.7.2 in .${LOCAL_PATH} (from pytest->xfuser==0.0.0.dev18+g03e8d0511) (2.21.0)
+Requirement already satisfied: charset_normalizer<4,>=2 in .${LOCAL_PATH} (from requests->diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (3.5.2)
+Requirement already satisfied: urllib3<3,>=1.26 in .${LOCAL_PATH} (from requests->diffusers>=0.33.0->xfuser==0.0.0.dev18+g03e8d0511) (2.8.0)
+Requirement already satisfied: shellingham>=1.3.0 in .${LOCAL_PATH} (from typer->transformers>=4.39.1->xfuser==0.0.0.dev18+g03e8d0511) (1.5.4)
+Requirement already satisfied: rich>=13.8.0 in .${LOCAL_PATH} (from typer->transformers>=4.39.1->xfuser==0.0.0.dev18+g03e8d0511) (15.0.0)
+Requirement already satisfied: annotated-doc>=0.0.2 in .${LOCAL_PATH} (from typer->transformers>=4.39.1->xfuser==0.0.0.dev18+g03e8d0511) (0.0.5)
+Requirement already satisfied: markdown-it-py>=2.2.0 in .${LOCAL_PATH} (from rich>=13.8.0->typer->transformers>=4.39.1->xfuser==0.0.0.dev18+g03e8d0511) (4.2.0)
+Requirement already satisfied: mdurl~=0.1 in .${LOCAL_PATH} (from markdown-it-py>=2.2.0->rich>=13.8.0->typer->transformers>=4.39.1->xfuser==0.0.0.dev18+g03e8d0511) (0.1.2)
+Building wheels for collected packages: xfuser
+  Building editable for xfuser (pyproject.toml): started
+  Building editable for xfuser (pyproject.toml): finished with status 'done'
+  Created wheel for xfuser: filename=xfuser-0.0.0.dev18+g03e8d0511-0.editable-py3-none-any.whl size=20492 sha256=8edba580fd703ec61e1eaa4db442de794f94772b3ba25f05f9aa25fceffbff7a
+  Stored in directory: ${TMP}/pip-ephem-wheel-cache-_1zo_hfg/wheels/5c/d4/43/f6189caf8c629a5aa561742790851d3de099754895d0ddb053
+Successfully built xfuser
+Installing collected packages: xfuser
+  Attempting uninstall: xfuser
+    Found existing installation: xfuser 0.0.0.dev1+g256cd1941
+    Uninstalling xfuser-0.0.0.dev1+g256cd1941:
+      Successfully uninstalled xfuser-0.0.0.dev1+g256cd1941
+Successfully installed xfuser-0.0.0.dev18+g03e8d0511

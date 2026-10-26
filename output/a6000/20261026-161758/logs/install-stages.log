@@ -1,0 +1,14 @@
+2026-10-26T16:20:16+08:00 START uninstall-sage
+2026-10-26T16:20:38+08:00 END uninstall-sage rc=0
+2026-10-26T16:20:38+08:00 START install-cu126
+2026-10-26T16:30:12+08:00 END install-cu126 rc=143
+2026-10-26T16:30:12+08:00 START install-cu126-mirror
+2026-10-26T16:38:40+08:00 END install-cu126-mirror rc=0
+2026-10-26T16:38:40+08:00 START install-editable
+2026-10-26T16:38:44+08:00 END install-editable rc=1
+2026-10-26T16:38:44+08:00 START pin-hf-versions
+2026-10-26T16:38:45+08:00 END pin-hf-versions rc=0
+2026-10-26T16:38:45+08:00 START pip-check
+2026-10-26T16:38:51+08:00 END pip-check rc=0
+2026-10-26T16:38:51+08:00 START pip-freeze
+2026-10-26T16:38:52+08:00 END pip-freeze rc=0

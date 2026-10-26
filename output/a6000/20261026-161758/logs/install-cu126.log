@@ -1,0 +1,20 @@
+Looking in indexes: https://download.pytorch.org/whl/cu126, https://pypi.tuna.tsinghua.edu.cn/simple
+Collecting torch==2.14.1+cu126
+  Downloading torch-2.14.1%2Bcu126-cp310-cp310-manylinux_2_28_x86_64.whl.metadata (37 kB)
+Requirement already satisfied: torchvision in .${LOCAL_PATH} (0.26.0+cu128)
+Collecting torchvision
+  Downloading torchvision-0.29.1%2Bcu126-cp310-cp310-manylinux_2_28_x86_64.whl.metadata (5.7 kB)
+Collecting torchao==0.18.0
+  Downloading torchao-0.18.0%2Bcu126-cp310-abi3-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (21 kB)
+Requirement already satisfied: filelock in .${LOCAL_PATH} (from torch==2.14.1+cu126) (4.1.0)
+Requirement already satisfied: typing-extensions>=4.10.0 in .${LOCAL_PATH} (from torch==2.14.1+cu126) (4.16.0)
+Requirement already satisfied: setuptools>=77.0.3 in .${LOCAL_PATH} (from torch==2.14.1+cu126) (81.0.0)
+Requirement already satisfied: sympy>=1.13.3 in .${LOCAL_PATH} (from torch==2.14.1+cu126) (1.14.0)
+Requirement already satisfied: networkx>=2.5.1 in .${LOCAL_PATH} (from torch==2.14.1+cu126) (3.4.2)
+Requirement already satisfied: jinja2 in .${LOCAL_PATH} (from torch==2.14.1+cu126) (3.1.6)
+Requirement already satisfied: fsspec>=0.8.5 in .${LOCAL_PATH} (from torch==2.14.1+cu126) (2026.9.0)
+Collecting cuda-toolkit==12.6.3 (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvrtc,nvtx]==12.6.3; platform_system == "Linux"->torch==2.14.1+cu126)
+  Downloading cuda_toolkit-12.6.3-py2.py3-none-any.whl (2.3 kB)
+Requirement already satisfied: cuda-bindings<13,>=12.9.4 in .${LOCAL_PATH} (from torch==2.14.1+cu126) (12.9.10)
+Collecting nvidia-cudnn-cu12==9.10.2.21 (from torch==2.14.1+cu126)
+  Downloading nvidia_cudnn_cu12-9.10.2.21-py3-none-manylinux_2_27_x86_64.whl (706.8 MB)

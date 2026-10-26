@@ -1,0 +1,62 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-9.1.1, pluggy-1.7.0
+cachedir: ${RUN}/cache/pytest-integration-cpu
+rootdir: ${REPO}
+configfile: pytest.ini
+plugins: anyio-4.15.1, timeout-2.4.0
+timeout: 960.0s
+timeout method: signal
+timeout func_only: False
+collected 52 items / 3 deselected / 49 selected
+
+tests/integration/cpu/core/distributed/test_group_broadcast.py ..        [  4%]
+tests/integration/cpu/core/distributed/test_model_replica_group.py .     [  6%]
+tests/integration/cpu/core/distributed/test_pipeline_shape_handshake.py . [  8%]
+                                                                         [  8%]
+tests/integration/cpu/core/distributed/test_runtime_state_default_config.py . [ 10%]
+..                                                                       [ 14%]
+tests/integration/cpu/core/distributed/test_ssta_ulysses.py .            [ 16%]
+tests/integration/cpu/core/utils/test_video_utils.py .                   [ 18%]
+tests/integration/cpu/model_executor/layers/test_usp_sequence_parallel_pad.py . [ 20%]
+.......                                                                  [ 34%]
+tests/integration/cpu/model_executor/loading/test_multirank.py .....     [ 44%]
+tests/integration/cpu/model_executor/loading/test_offline_checkpoint.py . [ 46%]
+.                                                                        [ 48%]
+tests/integration/cpu/model_executor/models/test_chroma_transformer_parity.py . [ 51%]
+...                                                                      [ 57%]
+tests/integration/cpu/model_executor/patch/test_unet_cfg_parallel.py .   [ 59%]
+tests/integration/cpu/model_executor/pipelines/test_dp_last_group.py .   [ 61%]
+tests/integration/cpu/model_executor/pipelines/test_flux2_klein_guidance.py . [ 63%]
+                                                                         [ 63%]
+tests/integration/cpu/model_executor/pipelines/test_hunyuandit_parallel_path.py . [ 65%]
+                                                                         [ 65%]
+tests/integration/cpu/model_executor/pipelines/test_naive_forward_scheduler.py . [ 67%]
+s                                                                        [ 69%]
+tests/integration/cpu/model_executor/pipelines/test_parallel_vae_latent_gather.py . [ 71%]
+                                                                         [ 71%]
+tests/integration/cpu/model_executor/pipelines/test_pipelines_without_cfg.py . [ 73%]
+.....                                                                    [ 83%]
+tests/integration/cpu/model_executor/pipelines/test_sana_sprint_precision.py . [ 85%]
+                                                                         [ 85%]
+tests/integration/cpu/model_executor/pipelines/test_sd3_call_arguments.py . [ 87%]
+                                                                         [ 87%]
+tests/integration/cpu/model_executor/runner_models/test_wan_vace_flow_shift.py s [ 89%]
+sss                                                                      [ 95%]
+tests/integration/cpu/model_executor/test_flux_lora_loading.py ..        [100%]
+
+=============================== warnings summary ===============================
+tests/integration/cpu/model_executor/loading/test_offline_checkpoint.py::test_cached_shards_load_with_offline_checkpoint_request[bare]
+tests/integration/cpu/model_executor/loading/test_offline_checkpoint.py::test_cached_shards_load_with_offline_checkpoint_request[explicit-online]
+  ${ENV}/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+    warnings.warn(
+
+tests/integration/cpu/model_executor/models/test_chroma_transformer_parity.py::test_wrapper_matches_diffusers_on_one_rank[True-dtype0]
+tests/integration/cpu/model_executor/models/test_chroma_transformer_parity.py::test_wrapper_matches_diffusers_on_one_rank[True-dtype1]
+tests/integration/cpu/model_executor/models/test_chroma_transformer_parity.py::test_wrapper_matches_diffusers_on_one_rank[False-dtype0]
+tests/integration/cpu/model_executor/models/test_chroma_transformer_parity.py::test_wrapper_matches_diffusers_on_one_rank[False-dtype1]
+  ${ENV}/lib/python3.10/site-packages/diffusers/models/embeddings.py:2382: FutureWarning: `FluxPosEmbed` is deprecated and will be removed in version 1.0.0. Importing and using `FluxPosEmbed` from `diffusers.models.embeddings` is deprecated. Please import it from `diffusers.models.transformers.transformer_flux`.
+    deprecate("FluxPosEmbed", "1.0.0", deprecation_message)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: ${RUN}/results/pytest-integration-cpu.xml -
+===== 44 passed, 5 skipped, 3 deselected, 6 warnings in 291.93s (0:04:51) ======

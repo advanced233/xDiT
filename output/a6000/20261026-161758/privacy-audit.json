@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "source_commit": "03e8d05118e964e49ad8382de05015340f95e0f5",
+  "scope": "output/a6000/20261026-161758",
+  "redacted": [
+    "hostname",
+    "username",
+    "absolute local paths",
+    "GPU UUID"
+  ],
+  "raw_logs_preserved_privately": true,
+  "no_source_edits": true
+}

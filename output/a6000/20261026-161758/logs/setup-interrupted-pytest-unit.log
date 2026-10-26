@@ -1,0 +1,251 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-9.1.1, pluggy-1.7.0
+cachedir: ${RUN}/cache/pytest-unit
+rootdir: ${REPO}
+configfile: pytest.ini
+plugins: anyio-4.15.1, timeout-2.4.0
+timeout: 960.0s
+timeout method: signal
+timeout func_only: False
+collected 1664 items / 18 deselected / 1646 selected
+
+tests/unit/compile/test_cudagraph_steps.py .....                         [  0%]
+tests/unit/config/test_cli.py .........                                  [  0%]
+tests/unit/config/test_gemm.py ......................................... [  3%]
+...............                                                          [  4%]
+tests/unit/core/attention/test_aiter_flydsl_selection.py ............... [  5%]
+..........                                                               [  5%]
+tests/unit/core/attention/test_aiter_sage_spec.py .                      [  5%]
+tests/unit/core/attention/test_framework.py ............................ [  7%]
+.......................................................                  [ 10%]
+tests/unit/core/attention/test_sol_attn.py ....s                         [ 11%]
+tests/unit/core/distributed/test_fp8_comms.py ................           [ 12%]
+tests/unit/core/distributed/test_runtime_state.py ..                     [ 12%]
+tests/unit/core/distributed/test_runtime_state_backend_selection.py .    [ 12%]
+tests/unit/core/distributed/test_runtime_state_input_size.py ....        [ 12%]
+tests/unit/core/distributed/test_runtime_state_skip_buffer.py ......     [ 12%]
+tests/unit/core/distributed/test_ssta.py ....                            [ 13%]
+tests/unit/core/distributed/test_ssta_sequence_parallel.py ....          [ 13%]
+tests/unit/core/long_ctx_attention/hybrid/test_attn_layer.py ......      [ 13%]
+tests/unit/core/long_ctx_attention/ring/test_ring_npu_flash_attn.py ...  [ 13%]
+tests/unit/core/sparge_attention/test_gilbert.py ....                    [ 14%]
+tests/unit/core/test_aiter_sparge_contracts.py .............             [ 15%]
+tests/unit/core/test_cache_manager.py ....                               [ 15%]
+tests/unit/core/test_sparge_sp_pad.py .........                          [ 15%]
+tests/unit/core/test_vsa_attention.py .............                      [ 16%]
+tests/unit/core/test_vsa_h3_attention.py .......................         [ 17%]
+tests/unit/core/utils/test_checkpoint_io.py ...........                  [ 18%]
+tests/unit/core/utils/test_checkpoint_request_contract.py .............. [ 19%]
+.....                                                                    [ 19%]
+tests/unit/core/utils/test_determinism_check.py ........................ [ 21%]
+...................................................                      [ 24%]
+tests/unit/core/utils/test_dtype_policy.py ....................          [ 25%]
+tests/unit/core/utils/test_measurement.py .........                      [ 26%]
+tests/unit/model_executor/cache/adapters/cache_dit/test_package.py ..... [ 26%]
+                                                                         [ 26%]
+tests/unit/model_executor/cache/adapters/test_flux2_fbcache.py .         [ 26%]
+tests/unit/model_executor/cache/test_cache_per_request.py ......         [ 26%]
+tests/unit/model_executor/cache/test_cache_shape_change.py ..            [ 26%]
+tests/unit/model_executor/layers/ltx2/test_na3d_mfma_flash.py .          [ 27%]
+tests/unit/model_executor/layers/ltx2/test_tile_assignment.py ......     [ 27%]
+tests/unit/model_executor/layers/test_attention_mask.py ......           [ 27%]
+tests/unit/model_executor/layers/test_fp8_linear_operand_placement.py .. [ 27%]
+....                                                                     [ 28%]
+tests/unit/model_executor/layers/test_fp8_linear_sentinel.py .......s    [ 28%]
+tests/unit/model_executor/layers/test_mixed_mxfp_linear.py ....          [ 28%]
+tests/unit/model_executor/layers/test_mxfp4_linear_registration.py ..... [ 29%]
+..                                                                       [ 29%]
+tests/unit/model_executor/layers/test_mxfp6.py ..............            [ 30%]
+tests/unit/model_executor/layers/test_sd3_text_sequence_parallel.py .... [ 30%]
+..                                                                       [ 30%]
+tests/unit/model_executor/layers/test_usp.py ........................... [ 32%]
+                                                                         [ 32%]
+tests/unit/model_executor/loading/test_contracts.py .................... [ 33%]
+...................                                                      [ 34%]
+tests/unit/model_executor/loading/test_derived_tensor_fill.py .......    [ 34%]
+tests/unit/model_executor/loading/test_format_backend_adapters.py ...... [ 35%]
+...........................................                              [ 37%]
+tests/unit/model_executor/loading/test_fp8_backend_adapters.py ......... [ 38%]
+........................                                                 [ 39%]
+tests/unit/model_executor/loading/test_fp8_blockwise_routing.py ........ [ 40%]
+...........................................                              [ 43%]
+tests/unit/model_executor/loading/test_fp8_plan.py ............          [ 43%]
+tests/unit/model_executor/loading/test_int8_plan.py ..........           [ 44%]
+tests/unit/model_executor/loading/test_meta_load_safety.py ............. [ 45%]
+........................................                                 [ 47%]
+tests/unit/model_executor/loading/test_offload_placement.py ............ [ 48%]
+.                                                                        [ 48%]
+tests/unit/model_executor/loading/test_per_model_contracts.py .....      [ 48%]
+tests/unit/model_executor/loading/test_replicated_load.py .............. [ 49%]
+.............................                                            [ 51%]
+tests/unit/model_executor/loading/test_targeted_fsdp.py ..               [ 51%]
+tests/unit/model_executor/loading/test_text_encoder_blockwise_fill.py .. [ 51%]
+..........                                                               [ 52%]
+tests/unit/model_executor/loading/test_text_encoder_framework.py ....... [ 52%]
+.....                                                                    [ 52%]
+tests/unit/model_executor/loading/test_text_encoder_manifest.py ........ [ 53%]
+........                                                                 [ 53%]
+tests/unit/model_executor/models/transformers/test_chroma_attention_bias.py . [ 53%]
+.......                                                                  [ 54%]
+tests/unit/model_executor/models/transformers/test_cosmos3_sp_pad_rows.py . [ 54%]
+                                                                         [ 54%]
+tests/unit/model_executor/models/transformers/test_flux2_sp_pad_rows.py . [ 54%]
+......                                                                   [ 54%]
+tests/unit/model_executor/models/transformers/test_hunyuan_video15_sp_padding.py . [ 54%]
+........                                                                 [ 55%]
+tests/unit/model_executor/models/transformers/test_lingbot_video_sp_pad_rows.py . [ 55%]
+..                                                                       [ 55%]
+tests/unit/model_executor/models/transformers/test_ltx2_masked_cross_attention.py . [ 55%]
+.                                                                        [ 55%]
+tests/unit/model_executor/models/transformers/test_ltx2_sp_pad_rows.py . [ 55%]
+.....                                                                    [ 56%]
+tests/unit/model_executor/models/transformers/test_qwen_sp_padding.py .. [ 56%]
+..                                                                       [ 56%]
+tests/unit/model_executor/models/transformers/test_transformer_cosmos3.py . [ 56%]
+.                                                                        [ 56%]
+tests/unit/model_executor/models/transformers/test_transformer_flux2_guidance_embeds.py . [ 56%]
+..                                                                       [ 56%]
+tests/unit/model_executor/models/transformers/test_transformer_flux2_pipefusion.py . [ 56%]
+                                                                         [ 56%]
+tests/unit/model_executor/models/transformers/test_transformer_ltx_video.py . [ 56%]
+......                                                                   [ 57%]
+tests/unit/model_executor/models/transformers/test_transformer_mask_cache.py . [ 57%]
+.                                                                        [ 57%]
+tests/unit/model_executor/models/transformers/test_transformer_skyreels_v2.py . [ 57%]
+.....                                                                    [ 57%]
+tests/unit/model_executor/models/transformers/test_transformer_wan.py .. [ 57%]
+                                                                         [ 57%]
+tests/unit/model_executor/models/transformers/test_transformers_utils.py . [ 57%]
+........                                                                 [ 58%]
+tests/unit/model_executor/models/transformers/test_wan_sp_pad_rows.py .. [ 58%]
+.......                                                                  [ 58%]
+tests/unit/model_executor/models/transformers/test_z_image_sp_pad_rows.py . [ 58%]
+                                                                         [ 58%]
+tests/unit/model_executor/pipelines/test_async_step_callback.py ....     [ 59%]
+tests/unit/model_executor/pipelines/test_cogvideox_family_guidance.py .. [ 59%]
+ss                                                                       [ 59%]
+tests/unit/model_executor/pipelines/test_pipeline_flux2.py ..            [ 59%]
+tests/unit/model_executor/pipelines/test_pipeline_flux2_availability.py . [ 59%]
+.                                                                        [ 59%]
+tests/unit/model_executor/pipelines/test_pipeline_flux2_text_encoder_layers.py . [ 59%]
+.                                                                        [ 59%]
+tests/unit/model_executor/pipelines/test_pipeline_hunyuandit.py ..ss     [ 59%]
+tests/unit/model_executor/pipelines/test_pipeline_hunyuandit_guidance.py . [ 59%]
+.....                                                                    [ 60%]
+tests/unit/model_executor/pipelines/test_warmup_generator_device.py .... [ 60%]
+                                                                         [ 60%]
+tests/unit/model_executor/runner_models/test_base_model.py ............. [ 61%]
+...                                                                      [ 61%]
+tests/unit/model_executor/runner_models/test_chroma_runner.py .......... [ 62%]
+....                                                                     [ 62%]
+tests/unit/model_executor/runner_models/test_distvae.py ................ [ 63%]
+.......................                                                  [ 64%]
+tests/unit/model_executor/runner_models/test_flux.py ....                [ 64%]
+tests/unit/model_executor/runner_models/test_flux_lora.py .......        [ 65%]
+tests/unit/model_executor/runner_models/test_hunyuan.py ...............  [ 66%]
+tests/unit/model_executor/runner_models/test_ideogram4.py .......        [ 66%]
+tests/unit/model_executor/runner_models/test_image_postprocess.py ...... [ 67%]
+....                                                                     [ 67%]
+tests/unit/model_executor/runner_models/test_input_image_resize.py ..... [ 67%]
+.....                                                                    [ 67%]
+tests/unit/model_executor/runner_models/test_krea2.py ..                 [ 68%]
+tests/unit/model_executor/runner_models/test_load_failures.py .........  [ 68%]
+tests/unit/model_executor/runner_models/test_ltx_video.py .............. [ 69%]
+.                                                                        [ 69%]
+tests/unit/model_executor/runner_models/test_minimax_h3.py ............. [ 70%]
+......................................                                   [ 72%]
+tests/unit/model_executor/runner_models/test_prism_runner.py ........... [ 73%]
+.....................                                                    [ 74%]
+tests/unit/model_executor/runner_models/test_qwen_image21_runner.py .... [ 74%]
+......                                                                   [ 75%]
+tests/unit/model_executor/runner_models/test_qwen_image_edit.py .......  [ 75%]
+tests/unit/model_executor/runner_models/test_run_timings.py ........     [ 76%]
+tests/unit/model_executor/runner_models/test_skyreels_v2.py ............ [ 76%]
+                                                                         [ 76%]
+tests/unit/model_executor/runner_models/test_step_cache_compile.py ..... [ 77%]
+.                                                                        [ 77%]
+tests/unit/model_executor/runner_models/test_triton_bsa_gate.py ...      [ 77%]
+tests/unit/model_executor/runner_models/test_ulysses_heads.py .......... [ 77%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 91%]
+......................................                                   [ 93%]
+tests/unit/model_executor/runner_models/test_vae_lifecycle.py ...        [ 93%]
+tests/unit/model_executor/runner_models/test_wan.py .......              [ 93%]
+tests/unit/model_executor/runner_models/test_wan_distilled.py .......... [ 94%]
+................................                                         [ 96%]
+tests/unit/model_executor/runner_models/test_wan_ulysses_heads.py ...... [ 96%]
+.                                                                        [ 96%]
+tests/unit/model_executor/runner_models/test_wan_vace.py ..              [ 97%]
+tests/unit/model_executor/schedulers/test_ddpm_pipefusion_patches.py ... [ 97%]
+.....                                                                    [ 97%]
+tests/unit/model_executor/schedulers/test_flow_match_euler_discrete.py . [ 97%]
+.                                                                        [ 97%]
+tests/unit/model_executor/transformers/test_qwen_image21_attention.py .. [ 97%]
+..                                                                       [ 97%]
+tests/unit/test_compat.py .......................                        [ 99%]
+tests/unit/test_envs.py ......                                           [ 99%]
+tests/unit/test_suite_layout.py .....                                    [100%]
+
+=============================== warnings summary ===============================
+tests/unit/config/test_gemm.py::test_args_reject_generic_fp8_and_fp4_without_hybrid_owner
+tests/unit/config/test_gemm.py::test_args_allow_explicit_hybrid_schedule_to_own_fp8_inside_fp4[True]
+tests/unit/config/test_gemm.py::test_base_model_validation_rejects_generic_fp8_and_fp4_early
+  ${REPO}/xfuser/config/args.py:441: FutureWarning: Deprecated GEMM option(s) used: --use_fp8_gemms, --use_fp4_gemms; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_formats)
+
+tests/unit/config/test_gemm.py::test_args_reject_int8_combined_with_fp8_or_fp4[flags0]
+tests/unit/config/test_gemm.py::test_base_model_uses_central_int8_conflict_validation
+  ${REPO}/xfuser/config/args.py:441: FutureWarning: Deprecated GEMM option(s) used: --use_fp8_gemms, --use_int8_gemms; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_formats)
+
+tests/unit/config/test_gemm.py::test_args_reject_int8_combined_with_fp8_or_fp4[flags1]
+  ${REPO}/xfuser/config/args.py:441: FutureWarning: Deprecated GEMM option(s) used: --use_fp4_gemms, --use_int8_gemms; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_formats)
+
+tests/unit/config/test_gemm.py::test_args_reject_int8_combined_with_fp8_or_fp4[flags2]
+  ${REPO}/xfuser/config/args.py:441: FutureWarning: Deprecated GEMM option(s) used: --use_fp8_gemms, --use_fp4_gemms, --use_int8_gemms; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_formats)
+
+tests/unit/config/test_gemm.py::test_args_allow_explicit_hybrid_schedule_to_own_fp8_inside_fp4[False]
+tests/unit/config/test_gemm.py::test_legacy_fp4_profile_still_accepts_override_patterns
+  ${REPO}/xfuser/config/args.py:441: FutureWarning: Deprecated GEMM option(s) used: --use_fp4_gemms; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_formats)
+
+tests/unit/config/test_gemm.py::test_unsupported_runner_rejects_fp8_text_encoder_via_capability_validation
+tests/unit/config/test_gemm.py::test_supported_runner_logs_when_text_encoder_targets_remain_bf16
+  ${REPO}/xfuser/config/args.py:441: FutureWarning: Deprecated GEMM option(s) used: --use_fp8_gemms; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_formats)
+
+tests/unit/config/test_gemm.py: 10 warnings
+  ${REPO}/xfuser/config/args.py:463: FutureWarning: Deprecated GEMM option(s) used: --fp8_precision_override_prefix_patterns; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_patterns)
+
+tests/unit/config/test_gemm.py: 10 warnings
+  ${REPO}/xfuser/config/args.py:463: FutureWarning: Deprecated GEMM option(s) used: --fp8_precision_override_suffix_patterns; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_patterns)
+
+tests/unit/config/test_gemm.py::test_legacy_fp4_profile_still_accepts_override_patterns
+  ${REPO}/xfuser/config/args.py:463: FutureWarning: Deprecated GEMM option(s) used: --fp8_precision_override_prefix_patterns, --fp8_precision_override_suffix_patterns; use --gemm_quantization and --gemm_config
+    self._warn_deprecated_gemm_options(legacy_patterns)
+
+tests/unit/model_executor/models/transformers/test_qwen_sp_padding.py::test_a_prompt_that_does_not_split_evenly_is_declared_replicated_with_its_length
+tests/unit/model_executor/models/transformers/test_qwen_sp_padding.py::test_a_sharded_prompt_is_declared_with_no_replicated_tokens
+tests/unit/model_executor/models/transformers/test_transformer_mask_cache.py::test_krea2_second_request_is_not_served_the_first_requests_mask
+  ${ENV}/lib/python3.10/site-packages/diffusers/models/transformers/transformer_2d.py:35: FutureWarning: `Transformer2DModelOutput` is deprecated and will be removed in version 1.0.0. Importing `Transformer2DModelOutput` from `diffusers.models.transformer_2d` is deprecated and this will be removed in a future version. Please use `from diffusers.models.modeling_outputs import Transformer2DModelOutput`, instead.
+    deprecate("Transformer2DModelOutput", "1.0.0", deprecation_message)
+
+tests/unit/model_executor/transformers/test_qwen_image21_attention.py::test_decode_runs_on_xfuser_backend_and_matches_diffusers[xFuserQwenImage21FlexAttnProcessor]
+  ${ENV}/lib/python3.10/site-packages/torch/nn/attention/flex_attention.py:2596: UserWarning: flex_attention called without torch.compile() - this will use an unfused implementation that materializes the full scores matrix instead of generating a fused kernel.
+  
+  SOLUTION: Use torch.compile(flex_attention)(...)
+  
+  If you want to debug your score_mod/mask_mod, you can set:
+  torch.nn.attention.flex_attention._FLEX_ATTENTION_DISABLE_COMPILE_DEBUG = True
+  
+  This will allow you to use print statements or breakpoints. Note: This doesn't work with the backwards pass and may produce incorrect results.
+    _warn_once(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: ${RUN}/results/pytest-unit.xml -
+========= 1640 passed, 6 skipped, 18 deselected, 36 warnings in 41.59s =========

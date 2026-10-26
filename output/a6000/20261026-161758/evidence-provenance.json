@@ -1,0 +1,128 @@
+[
+  {
+    "file": "logs/install-cu126-mirror.log",
+    "original_sha256": "6ac5cc099af532cf0f71e17369c08a13687befa156398eb0c90edb21ee0602ea",
+    "original_bytes": 13525,
+    "published_sha256": "076f2af39b99fa2cd7b2bc43ed8bd5fa20734bf60f773ff49d1887a56e9ec6b9",
+    "published_bytes": 12913
+  },
+  {
+    "file": "logs/install-cu126.log",
+    "original_sha256": "1a1b26777b9b937af8b0279298f4e149a44f818be97bdf65d5ec511fbe564444",
+    "original_bytes": 2091,
+    "published_sha256": "78ca4931897e5a59d7cbfda7a21b0e59a0e108810cebbd5a4237971201b07885",
+    "published_bytes": 1767
+  },
+  {
+    "file": "logs/install-editable-retry.log",
+    "original_sha256": "ea032b667f14618c312d52e8c5998e5c7ec2804f826ad3035eab79efb32c742c",
+    "original_bytes": 16301,
+    "published_sha256": "8435797d2385526a7304590c7f5998d3f3a4cf98fa11c9a8a72112b771386739",
+    "published_bytes": 13423
+  },
+  {
+    "file": "logs/install-editable.log",
+    "original_sha256": "b9dd4048a71c77660a65a3e085d53dbe247e296c464482dff7bb0947ca2b1d26",
+    "original_bytes": 809,
+    "published_sha256": "7ea2800bbbb1a5e2941908924fd381bd1fc2ec43875fe605e38d99ec37b02d6b",
+    "published_bytes": 779
+  },
+  {
+    "file": "logs/install-stages.log",
+    "original_sha256": "56a98b2787f62760f4b966ce5a39bd7c19c25fa40e27ed9ec6c047e28e7f9aef",
+    "original_bytes": 679,
+    "published_sha256": "56a98b2787f62760f4b966ce5a39bd7c19c25fa40e27ed9ec6c047e28e7f9aef",
+    "published_bytes": 679
+  },
+  {
+    "file": "logs/model-curl.log",
+    "original_sha256": "fb12d32c828d80478554771a4d9efd8d112acfd696b22ea141f9973bca47695e",
+    "original_bytes": 6026,
+    "published_sha256": "fb12d32c828d80478554771a4d9efd8d112acfd696b22ea141f9973bca47695e",
+    "published_bytes": 6026
+  },
+  {
+    "file": "logs/model-repair.log",
+    "original_sha256": "f0f18cb345f87df77ba1f8e005a10401ef17ece6bef84c03ab33f216f918b564",
+    "original_bytes": 949,
+    "published_sha256": "82c03fbf021c0763ad0f74c5fdc3864fab34532d6c418c5844189c98a8f617cf",
+    "published_bytes": 940
+  },
+  {
+    "file": "logs/monitor-validation.log",
+    "original_sha256": "4c6647d681c096ee981ca383f66db7c3eb74bf20def62f4a6f646b5c86298484",
+    "original_bytes": 387,
+    "published_sha256": "4c6647d681c096ee981ca383f66db7c3eb74bf20def62f4a6f646b5c86298484",
+    "published_bytes": 387
+  },
+  {
+    "file": "logs/pin-hf-versions.log",
+    "original_sha256": "a68da2844d4b32e33afa3b7b3426641f7089cae13da4f96d91cbdd49e2c6a614",
+    "original_bytes": 5521,
+    "published_sha256": "39d1c1d524aecd3f04eb7deb6f1cb4a7abffa3c53727b895379f6fcce95e75df",
+    "published_bytes": 4225
+  },
+  {
+    "file": "logs/pip-check-final.log",
+    "original_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "original_bytes": 30,
+    "published_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "published_bytes": 30
+  },
+  {
+    "file": "logs/pip-check.log",
+    "original_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "original_bytes": 30,
+    "published_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "published_bytes": 30
+  },
+  {
+    "file": "logs/pip-freeze.log",
+    "original_sha256": "09e5e3ddd783b3ba1bf2182a2e370292e80fcb554f8352f11e779bc55258a136",
+    "original_bytes": 1832,
+    "published_sha256": "f4f4f9d30416086cfa8e5c0755ed6128a5f366933a1004ef0328d9a0825ca3c2",
+    "published_bytes": 1759
+  },
+  {
+    "file": "logs/pytest-integration-cpu.log",
+    "original_sha256": "9903e47c497686e9f1195466b1ea2da79852da110cc606da6bc865c341a4f833",
+    "original_bytes": 5116,
+    "published_sha256": "a52ae70b4ee2990867279aa51e953a2baae62e01d987ac91e76199b5067619ef",
+    "published_bytes": 4937
+  },
+  {
+    "file": "logs/pytest-unit.log",
+    "original_sha256": "30b3ab341a20e86b70cca489aa24dd72cfc6e58ca80cc83faf1a06c01df008de",
+    "original_bytes": 20411,
+    "published_sha256": "56d44e10f94684a8ca283c302e7341406b078e9a3b09fa8052b3febb74a8806b",
+    "published_bytes": 19827
+  },
+  {
+    "file": "logs/setup-interrupted-pytest-integration-cpu.log",
+    "original_sha256": "7ee4dd7bb7a1251987549c293acae9cd7fdebe06d5c1b3f471c4b257b2754207",
+    "original_bytes": 1189,
+    "published_sha256": "4e43c48f96ae3a59f52119bc039df850bd644dc116552984de70b1706f5095ad",
+    "published_bytes": 1102
+  },
+  {
+    "file": "logs/setup-interrupted-pytest-unit.log",
+    "original_sha256": "94db657896c180e702a5f6777331947d4c619e27242cc507e9468e45501ff273",
+    "original_bytes": 20411,
+    "published_sha256": "aa57252a5048cd92d06f03bdb3e9bdc742a3f400fc616281cb97705b139ce1d5",
+    "published_bytes": 19827
+  },
+  {
+    "file": "logs/uninstall-sage.log",
+    "original_sha256": "525ea782191a5ea88def851cacfa23abe2b9c7f2cf05e15299ed5ffa481ff9ac",
+    "original_bytes": 130,
+    "published_sha256": "525ea782191a5ea88def851cacfa23abe2b9c7f2cf05e15299ed5ffa481ff9ac",
+    "published_bytes": 130
+  },
+  {
+    "file": "logs/version-check.log",
+    "original_sha256": "3d69a72737db1c941b6770d21d892ba380890a42010627537a55b50c172992a1",
+    "original_bytes": 554,
+    "published_sha256": "3d69a72737db1c941b6770d21d892ba380890a42010627537a55b50c172992a1",
+    "published_bytes": 554
+  }
+]
