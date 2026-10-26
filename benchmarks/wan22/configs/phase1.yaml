@@ -30,10 +30,9 @@ seeds: [42]
 repeats: 1
 warmup: 0
 cases:
-  - {name: 480p_33f, height: 480, width: 832, num_frames: 33, num_inference_steps: 40, save_videos: first_repeat}
-  # Speed only, for runs that do not need the 40-step videos (the torch.compile pairs). Selected with
-  # --case and without 480p_33f, it is the first case, so the compile warmup that replays the first
-  # case runs 10 steps rather than 40.
+  # Speed only. Listed first so that, whenever it is selected, it is the first case: the compile
+  # warmup replays the first case (10 steps rather than 40), and the timing runs right after that
+  # warmup, at the same GPU temperature as every other speed run (the A100 PCIe throttles when hot).
   - name: 480p_33f_speed
     height: 480
     width: 832
@@ -42,6 +41,7 @@ cases:
     save_videos: none
     prompts:
       - A cute happy Corgi playing in park, sunset, featuring a steady and smooth perspective
+  - {name: 480p_33f, height: 480, width: 832, num_frames: 33, num_inference_steps: 40, save_videos: first_repeat}
   - name: 480p_81f
     height: 480
     width: 832

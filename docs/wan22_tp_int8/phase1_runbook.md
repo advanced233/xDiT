@@ -9,9 +9,9 @@
 
 用到的代码：
 - `benchmarks/wan22/bench.py`：加载一次模型，循环跑配置里的各个 case；按专家分别统计每步 DiT 时间、显存和 GPU 状态。
-- `benchmarks/wan22/configs/phase1.yaml`：三个 case，每条命令都用 `--case` 指定要跑哪些。
+- `benchmarks/wan22/configs/phase1.yaml`：三个 case，每条命令都用 `--case` 指定要跑哪些；同一进程内按配置文件里的顺序执行。
+  - `480p_33f_speed`：1 个 prompt，10 步，只测速，给 compile 对照用。排在最前面，所以选中时总是第一个跑。
   - `480p_33f`：10 个 prompt，完整 40 步，保存视频。
-  - `480p_33f_speed`：1 个 prompt，10 步，只测速，给第 5 节的 compile 对照用。
   - `480p_81f`：1 个 prompt，10 步，只测速。
 - `benchmarks/wan22/int8_linear_bench.py`：Wan block 线性层形状上的 BF16 / INT8 单层计时，见第 5 节。
 - `benchmarks/wan22/compare_videos.py`：与同 seed 的参考视频对比 LPIPS / PSNR / SSIM。
@@ -42,10 +42,9 @@ GPU 任务继续通过你自己的 `scripts/run_gpu_job.py`（或等效方式）
 
 （表中的 `...` 即 `python benchmarks/wan22/bench.py --config $C`。）
 
-状态（2026-10-25）：四行和第 5 节的单层计时、compile 对照都已完成，结果在仓库 `output/20261025-235940/`，结论记在 `plan.md` M2。还剩三件事：
-- 第 2 节的偏离度：先按第 2 节下好 LPIPS 权重。
-- 第 2 节的 VBench。
-- 第 3 节最后一行的 `attention_bench.py`。注意力已经占单步时间约 35%，需要确认 CUDNN 是否是最快的 dense 后端，并测出 SAGE 的单核加速，用来决定 M7 做不做。
+状态（2026-10-26）：除 VBench 的 `motion_smoothness` 外都已完成，结果在仓库 `output/20261026-023757/`，结论记在 `plan.md` M2。剩下的：
+- 按第 2 节补跑 VBench 的 `motion_smoothness`（4 组，约 10 分钟）。
+- 第 6 节的 INT8 + SageAttention（1 个进程，约 1 小时）。
 
 ## 2. 读数
 
@@ -76,18 +75,21 @@ sha256sum "$F"    # 前 8 位必须是 7be5be79；不是的话删掉重下
 
 如果实在下不下来，先给 `compare_videos.py` 加 `--no-lpips`，只出 PSNR / SSIM，报告里注明。
 
-**画质（VBench，在 `envs/vbench` 环境里运行，4 组 × 6 个维度，约半小时）：**
+**画质（VBench，在 `envs/vbench` 环境里运行，2 个维度）：**
+
+只用 `imaging_quality` 和 `motion_smoothness`。另外 4 个维度的权重放在 GitHub、Dropbox 和 OpenAI 上，在这台服务器上 30 分钟内都下不下来，所以不再用。
 
 ```bash
-# 参数名以所装 VBench 版本的 `vbench evaluate --help` 为准
+# motion_smoothness 的 AMT 权重（VBench 官方提供）里含 typing.OrderedDict。torch>=2.6 的 torch.load
+# 默认 weights_only=True，会拒绝加载，所以只对这条命令放开。
 for c in bf16 int8_both int8_high int8_low; do
-  for d in subject_consistency background_consistency motion_smoothness dynamic_degree aesthetic_quality imaging_quality; do
-    vbench evaluate --videos_path $R/$c/$V --dimension $d --mode custom_input --output_path $R/vbench_$c/
-  done
+  vbench evaluate --videos_path $R/$c/$V --dimension imaging_quality --mode custom_input --output_path $R/vbench_$c/
+  TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1 vbench evaluate --videos_path $R/$c/$V --dimension motion_smoothness \
+      --mode custom_input --output_path $R/vbench_$c/
 done
 ```
 
-每个维度第一次运行时，VBench 会把各自的权重（DINO、CLIP、RAFT、AMT、MUSIQ、LAION 美学头）下载到 `$VBENCH_CACHE_DIR`，来源包括 GitHub、Dropbox、OpenAI 和 HuggingFace。下载中断时，按报错里的 URL 和目标路径，用上面同样的 curl 断点续传循环手动下好，再重跑。某个维度 30 分钟内拿不到权重就跳过，报告里写明。
+`imaging_quality` 的 4 组已经跑完，补跑时只需要第二条命令。
 
 解读时要注意：量化高噪声专家可能会改变构图，导致 LPIPS 升高，但 VBench 不一定下降。两类指标要一起看。
 
@@ -96,6 +98,7 @@ done
 | 现象 | 补做 | 耗时 |
 |---|---|---|
 | INT8 加速明显低于上限 | 已触发，见第 5 节 | — |
+| 同 seed 偏离大（LPIPS 0.19），想知道多少是轨迹本身的混沌 | BF16 加 `--runner-arg use_torch_compile=true --case 480p_33f` 重跑，与 eager BF16 比 LPIPS：compile 只改变舍入位置 | 约 50 分钟 |
 | INT8 的 LPIPS 很小，分不清是量化误差还是编码误差 | BF16 加 `--case 480p_33f --repeats 2` 重跑，测噪声底 | 约 1 小时 |
 | 想换注意力基线 | `python benchmarks/wan22/attention_bench.py --json $R/attention.json` | 约 5 分钟 |
 
@@ -143,4 +146,18 @@ python benchmarks/wan22/int8_linear_bench.py --tokens 14040 32760 --json $R/int8
 
 ### 5.3 剩余的画质实验
 
-第 1 节后两行（只高噪声、只低噪声）和第 2 节的对比、VBench 照原样用 eager 跑，不加 compile。这样能和已有的 bf16、int8_both 视频保持同一条数值路径：compile 不改变量化算法，但会改变舍入的位置，40 步去噪会把这种微小差异放大成可见的细节差异，混用会干扰专家敏感度的比较。eager INT8 慢，这两组合计约 3 小时，可以放到夜里跑。
+第 1 节后两行（只高噪声、只低噪声）和第 2 节的对比、VBench 照原样用 eager 跑，不加 compile。（已完成。）这样能和已有的 bf16、int8_both 视频保持同一条数值路径：compile 不改变量化算法，但会改变舍入的位置，40 步去噪会把这种微小差异放大成可见的细节差异，混用会干扰专家敏感度的比较。eager INT8 慢，这两组合计约 3 小时，可以放到夜里跑。
+
+## 6. M7：INT8 + SageAttention（1 个进程，约 1 小时）
+
+`attention_bench.py` 在 A100 上测得：SAGE 217～225 TFLOPS，是 CUDNN（173）的 1.25×、SDPA_FLASH（188）的约 1.2×，相对误差 1.2e-2，与 INT8 线性层的 1.0e-2 同量级。按第 5 节的时间拆解推算，INT8 + SAGE 单步约 4.2 s，相对 BF16 + compile 约 1.27×。不用改代码，跑一个进程就能验证：
+
+```bash
+python benchmarks/wan22/bench.py --config $C --output-dir $R/int8_sage_compile --case 480p_33f_speed --case 480p_33f \
+    --runner-arg use_torch_compile=true --runner-arg gemm_quantization=int8 --runner-arg attention_backend=SAGE
+```
+
+- 开跑前确认 GPU 温度在 65°C 以下，和第 5 节的 compile 对照保持同样的起点。
+- 速度：`480p_33f_speed` 先跑，它的单步中位数与第 5 节的 `bf16_compile`、`int8_compile` 对比。
+- 画质：`480p_33f` 的 10 个视频，按第 2 节和 bf16 做偏离度对比，再跑 VBench 的两个维度。注意：这组视频是 compile 下生成的，和 eager 的 bf16 参考之间多了一份轨迹差异，所以 VBench 比 LPIPS 更说明问题。
+- 如果 SAGE 在 compile 下报错，把完整日志发回来，不要改代码。
