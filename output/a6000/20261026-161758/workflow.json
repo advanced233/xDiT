@@ -66,7 +66,7 @@
       }
     },
     "nccl-bandwidth": {
-      "status": "PENDING",
+      "status": "UNCOMPLETED",
       "required_gpus": 2,
       "command": [
         "torchrun",
@@ -75,10 +75,11 @@
         "--master_port",
         "{PORT}",
         "${RUN}/scripts/nccl_bw.py"
-      ]
+      ],
+      "reason": "12-hour deadline reached; no eligible GPU allocation for this task."
     },
     "pytest-gpu-multi": {
-      "status": "PENDING",
+      "status": "UNCOMPLETED",
       "required_gpus": 2,
       "command": [
         "${ENV}/bin/python",
@@ -91,10 +92,11 @@
         "-o",
         "cache_dir=${RUN}/cache/pytest-gpu-multi",
         "--junitxml=${RUN}/results/pytest-gpu-multi.xml"
-      ]
+      ],
+      "reason": "12-hour deadline reached; no eligible GPU allocation for this task."
     },
     "smoke-ulysses2": {
-      "status": "PENDING",
+      "status": "UNCOMPLETED",
       "required_gpus": 2,
       "command": [
         "xdit",
@@ -116,10 +118,11 @@
         "{PORT}",
         "--output_directory",
         "${RUN}/results/smoke"
-      ]
+      ],
+      "reason": "12-hour deadline reached; no eligible GPU allocation for this task."
     },
     "pytest-gpu-single": {
-      "status": "PENDING",
+      "status": "UNCOMPLETED",
       "required_gpus": 1,
       "command": [
         "${ENV}/bin/python",
@@ -132,20 +135,22 @@
         "-o",
         "cache_dir=${RUN}/cache/pytest-gpu-single",
         "--junitxml=${RUN}/results/pytest-gpu-single.xml"
-      ]
+      ],
+      "reason": "12-hour deadline reached; no eligible GPU allocation for this task."
     },
     "attention": {
-      "status": "PENDING",
+      "status": "UNCOMPLETED",
       "required_gpus": 1,
       "command": [
         "${ENV}/bin/python",
         "benchmarks/wan22/attention_bench.py",
         "--json",
         "${RUN}/results/attention.json"
-      ]
+      ],
+      "reason": "12-hour deadline reached; no eligible GPU allocation for this task."
     },
     "int8_linear": {
-      "status": "PENDING",
+      "status": "UNCOMPLETED",
       "required_gpus": 1,
       "command": [
         "${ENV}/bin/python",
@@ -155,16 +160,17 @@
         "32760",
         "--json",
         "${RUN}/results/int8_linear.json"
-      ]
+      ],
+      "reason": "12-hour deadline reached; no eligible GPU allocation for this task."
     }
   },
-  "phase": "GPU_WAITING",
+  "phase": "FINISHED",
   "setup_note": "Initial CPU validation was interrupted to retry editable installation after a build-index failure. Final selectors run after successful editable installation; earlier attempt retained separately.",
   "wait_started": "2026-10-26T17:05:53.744350+08:00",
   "deadline_epoch": 1793048753.7443752,
   "deadline": "2026-10-27T05:05:53.744375+08:00",
   "latest_probe": {
-    "time": "2026-10-26T17:05:54.995033+08:00",
+    "time": "2026-10-27T04:52:23.184544+08:00",
     "gpus": [
       {
         "index": 0,
@@ -182,7 +188,7 @@
       {
         "index": 1,
         "name": "NVIDIA RTX A6000",
-        "memory_bytes": 50362056704,
+        "memory_bytes": 20200816640,
         "query_valid": true,
         "eligible": false,
         "numa_group": 0,
@@ -221,7 +227,7 @@
       {
         "index": 4,
         "name": "NVIDIA RTX A6000",
-        "memory_bytes": 49690968064,
+        "memory_bytes": 3427794944,
         "query_valid": true,
         "eligible": false,
         "numa_group": 1,
@@ -234,7 +240,7 @@
       {
         "index": 5,
         "name": "NVIDIA RTX A6000",
-        "memory_bytes": 49690968064,
+        "memory_bytes": 48954867712,
         "query_valid": true,
         "eligible": false,
         "numa_group": 1,
@@ -247,7 +253,7 @@
       {
         "index": 6,
         "name": "NVIDIA RTX A6000",
-        "memory_bytes": 632291328,
+        "memory_bytes": 653262848,
         "query_valid": true,
         "eligible": false,
         "numa_group": 1,
@@ -272,5 +278,10 @@
       }
     ],
     "idle": []
-  }
+  },
+  "last_publish": {
+    "time": "2026-10-26T17:06:17.794406+08:00",
+    "returncode": 0
+  },
+  "finished": "2026-10-27T05:05:53.874585+08:00"
 }
