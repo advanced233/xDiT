@@ -1,0 +1,60 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-9.1.1, pluggy-1.7.0
+cachedir: ${RUN}/cache/pytest-gpu-single
+rootdir: ${REPO}
+configfile: pytest.ini
+testpaths: tests/unit, tests/integration/cpu, tests/integration/accelerator
+plugins: anyio-4.15.1, timeout-2.4.0
+timeout: 960.0s
+timeout method: signal
+timeout func_only: False
+collected 2088 items / 1872 deselected / 216 selected
+
+tests/unit/core/test_vsa_h3_attention.py .........                       [  4%]
+tests/unit/model_executor/layers/test_mxfp4_linear_registration.py .     [  4%]
+tests/unit/model_executor/loading/test_format_backend_adapters.py .s     [  5%]
+tests/unit/model_executor/loading/test_fp8_backend_adapters.py s         [  6%]
+tests/unit/model_executor/runner_models/test_minimax_h3.py ...           [  7%]
+tests/integration/accelerator/core/attention/test_aiter_sage_v1_stride_canary.py s [  7%]
+ss                                                                       [  8%]
+tests/integration/accelerator/core/attention/test_sdpa_key_mask.py ..... [ 11%]
+...                                                                      [ 12%]
+tests/integration/accelerator/core/attention/test_sdpa_ring_lse.py ..... [ 14%]
+.......                                                                  [ 18%]
+tests/integration/accelerator/core/attention/test_sol_attn_kernel.py s   [ 18%]
+tests/integration/accelerator/core/attention/test_sparse_backends_sp_pad.py s [ 18%]
+sssssssssssssssssssssssssss                                              [ 31%]
+tests/integration/accelerator/core/attention/test_strided_kv_backends.py . [ 31%]
+...............ssss....sssssssssssssssssssssssssssssssssssssssssssssssss [ 65%]
+sssssssssssssssssssssssssssssssssssssssssssss                            [ 86%]
+tests/integration/accelerator/core/attention/test_triton_bsa.py .......  [ 89%]
+tests/integration/accelerator/core/distributed/test_sharding.py ...      [ 90%]
+tests/integration/accelerator/core/test_cudnn_attention_precision.py ... [ 92%]
+                                                                         [ 92%]
+tests/integration/accelerator/model_executor/layers/test_fp8_zero_activation.py s [ 92%]
+ss                                                                       [ 93%]
+tests/integration/accelerator/model_executor/layers/test_usp_accelerator.py s [ 93%]
+.s.sss..                                                                 [ 97%]
+tests/integration/accelerator/model_executor/loading/test_sharded_text_encoder_outputs.py . [ 98%]
+..                                                                       [ 99%]
+tests/integration/accelerator/model_executor/models/transformers/test_krea2_cudnn.py . [ 99%]
+                                                                         [ 99%]
+tests/integration/accelerator/model_executor/models/transformers/test_ltx2_cross_attention_cudnn.py . [100%]
+
+=============================== warnings summary ===============================
+../../envs/xdit/lib/python3.10/site-packages/torch/jit/_script.py:1491
+  ${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/integration/accelerator/core/attention/test_triton_bsa.py::test_keeping_every_block_is_dense_attention[whole-blocks]
+tests/integration/accelerator/core/attention/test_triton_bsa.py::test_keeping_every_block_is_dense_attention[padded]
+tests/integration/accelerator/core/attention/test_triton_bsa.py::test_sparse_selection_drops_blocks
+tests/integration/accelerator/core/attention/test_triton_bsa.py::test_top_k_keeps_at_least_one_block
+tests/integration/accelerator/core/attention/test_triton_bsa.py::test_top_k_keeps_at_least_one_block
+tests/integration/accelerator/core/attention/test_triton_bsa.py::test_compiled_callers_run_the_same_kernel_launch
+  ${ENV}/lib/python3.10/site-packages/triton/language/core.py:2625: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+    warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: ${RUN}/results/pytest-gpu-single.xml -
+=== 76 passed, 140 skipped, 1872 deselected, 7 warnings in 135.40s (0:02:15) ===

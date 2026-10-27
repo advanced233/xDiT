@@ -5,5 +5,19 @@
     "original_bytes": 457,
     "published_sha256": "99c1e54730de0b5c67d40aacd13153c395d5d84320b979cfb6772701c73d4f87",
     "published_bytes": 457
+  },
+  {
+    "file": "logs/preflight-6.log",
+    "original_sha256": "63e0cd3da359f2d06f4bf134ab5799bc925de86ccb757afc4ded65dc46100042",
+    "original_bytes": 120,
+    "published_sha256": "63e0cd3da359f2d06f4bf134ab5799bc925de86ccb757afc4ded65dc46100042",
+    "published_bytes": 120
+  },
+  {
+    "file": "logs/pytest-gpu-single.log",
+    "original_sha256": "4fcf88582f63661f73507e92f14b8fd270796a13160b74fb5de0e1f010c5bccf",
+    "original_bytes": 4614,
+    "published_sha256": "b77bbfdb06317199ede76cbe5daa2336dcac00621ce0b30b37d059a65ed92e02",
+    "published_bytes": 4435
   }
 ]
