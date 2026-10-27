@@ -1,0 +1,25 @@
+{
+  "id": "20261027-140300",
+  "commit": "8b6a767302edd6c00fdba44c5f9d057f2af684db",
+  "branch": "claude/keen-bardeen-ntp7zr",
+  "gpu_interval_seconds": 900,
+  "gpu_wait_seconds": 86400,
+  "memory_limit_bytes": 1000000000,
+  "empty_gpu": "memory < 1,000,000,000 bytes AND zero compute processes; type G graphics ignored",
+  "numa_groups": [
+    [
+      0,
+      1,
+      2,
+      3
+    ],
+    [
+      4,
+      5,
+      6,
+      7
+    ]
+  ],
+  "no_gpu_hold_between_tasks": true,
+  "source_pinned": true
+}

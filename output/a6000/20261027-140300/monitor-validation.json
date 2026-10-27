@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "gpu_allocations": 0,
+  "checks": [
+    "G graphics ignored for eligibility and active monitoring",
+    "C and C+G count as busy",
+    "compute-apps catches a process absent from earlier XML",
+    "strict memory threshold",
+    "unknown data/query failure fails closed",
+    "same-NUMA pairing only",
+    "foreign compute cancels only our synthetic child",
+    "torchrun-style separate-session children identified and cleaned"
+  ]
+}

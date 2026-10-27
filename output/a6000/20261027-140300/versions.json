@@ -1,0 +1,10 @@
+{
+  "torch": "2.14.1+cu126",
+  "cuda": "12.6",
+  "torchao": "0.18.0+cu126",
+  "diffusers": "0.41.0",
+  "transformers": "5.20.2",
+  "torchvision": "0.29.1+cu126",
+  "sageattention": "NOT_INSTALLED",
+  "match": true
+}

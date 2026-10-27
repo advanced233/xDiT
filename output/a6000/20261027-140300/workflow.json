@@ -1,0 +1,221 @@
+{
+  "source_commit": "8b6a767302edd6c00fdba44c5f9d057f2af684db",
+  "phase": "GPU_WAITING",
+  "jobs": {
+    "pytest-gpu-single": {
+      "status": "PENDING",
+      "required_gpus": 1,
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "-m",
+        "accelerator and not rocm and not multi_gpu",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-gpu-single",
+        "--junitxml=${RUN}/results/pytest-gpu-single.xml"
+      ]
+    },
+    "attention": {
+      "status": "PENDING",
+      "required_gpus": 1,
+      "command": [
+        "${ENV}/bin/python",
+        "benchmarks/wan22/attention_bench.py",
+        "--json",
+        "${RUN}/results/attention.json"
+      ]
+    },
+    "int8_linear": {
+      "status": "PENDING",
+      "required_gpus": 1,
+      "command": [
+        "${ENV}/bin/python",
+        "benchmarks/wan22/int8_linear_bench.py",
+        "--tokens",
+        "14040",
+        "32760",
+        "--json",
+        "${RUN}/results/int8_linear.json"
+      ]
+    },
+    "nccl-bandwidth": {
+      "status": "PENDING",
+      "required_gpus": 2,
+      "command": [
+        "torchrun",
+        "--nproc_per_node",
+        "2",
+        "--master_port",
+        "{PORT}",
+        "${RUN}/scripts/nccl_bw.py"
+      ]
+    },
+    "pytest-gpu-multi": {
+      "status": "PENDING",
+      "required_gpus": 2,
+      "command": [
+        "${ENV}/bin/python",
+        "-m",
+        "pytest",
+        "-m",
+        "accelerator and multi_gpu and not rocm",
+        "--timeout=960",
+        "--timeout-method=signal",
+        "-o",
+        "cache_dir=${RUN}/cache/pytest-gpu-multi",
+        "--junitxml=${RUN}/results/pytest-gpu-multi.xml"
+      ]
+    },
+    "smoke-ulysses2": {
+      "status": "PENDING",
+      "required_gpus": 2,
+      "command": [
+        "xdit",
+        "--model",
+        "Wan2.1-T2V-1.3B",
+        "--prompt",
+        "a cat walking on grass",
+        "--height",
+        "480",
+        "--width",
+        "832",
+        "--num_frames",
+        "17",
+        "--num_inference_steps",
+        "4",
+        "--ulysses_degree",
+        "2",
+        "--master_port",
+        "{PORT}",
+        "--output_directory",
+        "${RUN}/results/smoke"
+      ]
+    }
+  },
+  "previous_run": "20261026-161758",
+  "wait_started": "2026-10-27T14:11:34.964789+08:00",
+  "deadline_epoch": 1793167894.964811,
+  "deadline": "2026-10-28T14:11:34.964811+08:00",
+  "latest_probe": {
+    "time": "2026-10-27T14:11:36.383898+08:00",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 34614542336,
+        "query_valid": true,
+        "numa_group": 0,
+        "eligible": false,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ],
+        "compute_process_count": 1
+      },
+      {
+        "index": 1,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 300941312,
+        "query_valid": true,
+        "numa_group": 0,
+        "eligible": false,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ],
+        "compute_process_count": 1
+      },
+      {
+        "index": 2,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 34495004672,
+        "query_valid": true,
+        "numa_group": 0,
+        "eligible": false,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ],
+        "compute_process_count": 1
+      },
+      {
+        "index": 3,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 50261393408,
+        "query_valid": true,
+        "numa_group": 0,
+        "eligible": false,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ],
+        "compute_process_count": 1
+      },
+      {
+        "index": 4,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 3427794944,
+        "query_valid": true,
+        "numa_group": 1,
+        "eligible": false,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ],
+        "compute_process_count": 1
+      },
+      {
+        "index": 5,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 50496274432,
+        "query_valid": true,
+        "numa_group": 1,
+        "eligible": false,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ],
+        "compute_process_count": 1
+      },
+      {
+        "index": 6,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 150994944,
+        "query_valid": true,
+        "numa_group": 1,
+        "eligible": true,
+        "process_count": 1,
+        "process_types": [
+          "G"
+        ],
+        "compute_process_count": 0
+      },
+      {
+        "index": 7,
+        "name": "NVIDIA RTX A6000",
+        "memory_bytes": 50362056704,
+        "query_valid": true,
+        "numa_group": 1,
+        "eligible": false,
+        "process_count": 2,
+        "process_types": [
+          "G",
+          "C"
+        ],
+        "compute_process_count": 1
+      }
+    ],
+    "idle": [
+      6
+    ]
+  }
+}
