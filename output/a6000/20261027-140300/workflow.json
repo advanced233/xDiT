@@ -60,8 +60,9 @@
       }
     },
     "int8_linear": {
-      "status": "PENDING",
-      "required_gpus": 1,
+      "status": "COMPLETED",
+      "start": "2026-10-27T14:18:14.885733+08:00",
+      "source_commit": "8b6a767302edd6c00fdba44c5f9d057f2af684db",
       "command": [
         "${ENV}/bin/python",
         "benchmarks/wan22/int8_linear_bench.py",
@@ -70,7 +71,20 @@
         "32760",
         "--json",
         "${RUN}/results/int8_linear.json"
-      ]
+      ],
+      "master_port": 26807,
+      "gpu_indices": [
+        6
+      ],
+      "numa_group": 1,
+      "returncode": 0,
+      "elapsed_seconds": 47.53299441002309,
+      "end": "2026-10-27T14:19:02.420720+08:00",
+      "benchmark_counts": {
+        "ok": 30,
+        "failed": 0,
+        "unavailable": 0
+      }
     },
     "nccl-bandwidth": {
       "status": "PENDING",
@@ -160,6 +174,24 @@
       "returncode": 0,
       "elapsed_seconds": 11.420524413697422,
       "end": "2026-10-27T14:17:05.763152+08:00"
+    },
+    "preflight-8": {
+      "status": "COMPLETED",
+      "start": "2026-10-27T14:18:02.292250+08:00",
+      "source_commit": "8b6a767302edd6c00fdba44c5f9d057f2af684db",
+      "command": [
+        "${ENV}/bin/python",
+        "-c",
+        "import torch,importlib.metadata as m; print(torch.__version__,torch.version.cuda,torch.version.hip); print([torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]); assert torch.__version__==\"2.14.1+cu126\" and torch.version.cuda==\"12.6\" and torch.version.hip is None; assert m.version(\"torchao\").split(\"+\")[0]==\"0.18.0\"; assert m.version(\"diffusers\")==\"0.41.0\" and m.version(\"transformers\")==\"5.20.2\"; f=torch.compile(lambda x:(x*2).sin()); print(\"compile\",f(torch.randn(1024,device=\"cuda\")).sum()); a=torch.randint(-128,127,(256,256),device=\"cuda\",dtype=torch.int8);print(\"int_mm\",torch._int_mm(a,a.t()).dtype); print(\"p2p\",torch.cuda.can_device_access_peer(0,1) if torch.cuda.device_count()>1 else \"not tested\")"
+      ],
+      "master_port": 51776,
+      "gpu_indices": [
+        6
+      ],
+      "numa_group": 1,
+      "returncode": 0,
+      "elapsed_seconds": 11.30257183406502,
+      "end": "2026-10-27T14:18:13.596231+08:00"
     }
   },
   "previous_run": "20261026-161758",
@@ -167,7 +199,7 @@
   "deadline_epoch": 1793167894.964811,
   "deadline": "2026-10-28T14:11:34.964811+08:00",
   "latest_probe": {
-    "time": "2026-10-27T14:16:52.951429+08:00",
+    "time": "2026-10-27T14:18:00.842069+08:00",
     "gpus": [
       {
         "index": 0,
@@ -288,7 +320,7 @@
     ]
   },
   "last_publish": {
-    "time": "2026-10-27T14:16:51.652774+08:00",
+    "time": "2026-10-27T14:17:59.514475+08:00",
     "returncode": 0
   }
 }
