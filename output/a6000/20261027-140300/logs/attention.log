@@ -1,0 +1,15 @@
+W1027 14:17:10.344000 4146926 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1027 14:17:10.384000 4146926 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+FLASH: unavailable (flash_attn.flash_attn_func is unavailable -- flash_attn is not installed)
+SAGE: unavailable (sageattention.sageattn is unavailable -- sageattention is not installed)
+L= 14040 H= 40 CUDNN           35.94 ms   112.3 TFLOPS  rel_l2 vs SDPA_FLASH 3.08e-03
+L= 14040 H= 40 SDPA_FLASH      34.58 ms   116.7 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00
+L= 14040 H= 20 CUDNN           18.08 ms   111.7 TFLOPS  rel_l2 vs SDPA_FLASH 3.07e-03
+L= 14040 H= 20 SDPA_FLASH      17.64 ms   114.4 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00
+L= 32760 H= 40 CUDNN          195.27 ms   112.6 TFLOPS  rel_l2 vs SDPA_FLASH 3.10e-03
+L= 32760 H= 40 SDPA_FLASH     188.09 ms   116.9 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00
+L= 32760 H= 20 CUDNN           98.14 ms   112.0 TFLOPS  rel_l2 vs SDPA_FLASH 3.11e-03
+L= 32760 H= 20 SDPA_FLASH      93.90 ms   117.0 TFLOPS  rel_l2 vs SDPA_FLASH 0.00e+00

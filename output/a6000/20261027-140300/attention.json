@@ -1,0 +1,240 @@
+{
+  "device": "NVIDIA RTX A6000",
+  "torch": "2.14.1+cu126",
+  "cuda": "12.6",
+  "args": {
+    "backends": [
+      "CUDNN",
+      "SDPA_FLASH",
+      "FLASH",
+      "SAGE"
+    ],
+    "reference": "SDPA_FLASH",
+    "heads": [
+      40,
+      20
+    ],
+    "seq_lens": [
+      14040,
+      32760
+    ],
+    "head_dim": 128,
+    "batch": 1,
+    "dtype": "bf16",
+    "warmup": 3,
+    "iters": 10,
+    "repeats": 3,
+    "seed": 0,
+    "json": "${RUN}/results/attention.json"
+  },
+  "results": [
+    {
+      "backend": "CUDNN",
+      "seq_len": 14040,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 35.943014526367186,
+      "samples_ms": [
+        35.73985290527344,
+        35.943014526367186,
+        36.420904541015624
+      ],
+      "tflops": 112.31807963793601,
+      "relative_l2": 0.0030809652525931597,
+      "cosine": 0.999995231628418,
+      "max_abs": 0.00048828125
+    },
+    {
+      "backend": "SDPA_FLASH",
+      "seq_len": 14040,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 34.579559326171875,
+      "samples_ms": [
+        34.551397705078124,
+        34.579559326171875,
+        35.26584167480469
+      ],
+      "tflops": 116.746726871806,
+      "relative_l2": 0.0,
+      "cosine": 1.0,
+      "max_abs": 0.0
+    },
+    {
+      "backend": "FLASH",
+      "seq_len": 14040,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: flash_attn.flash_attn_func is unavailable -- flash_attn is not installed"
+    },
+    {
+      "backend": "SAGE",
+      "seq_len": 14040,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: sageattention.sageattn is unavailable -- sageattention is not installed"
+    },
+    {
+      "backend": "CUDNN",
+      "seq_len": 14040,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 18.078105163574218,
+      "samples_ms": [
+        18.157769775390626,
+        18.078105163574218,
+        17.983993530273438
+      ],
+      "tflops": 111.65579388636091,
+      "relative_l2": 0.003067409386858344,
+      "cosine": 0.9999952912330627,
+      "max_abs": 0.00048828125
+    },
+    {
+      "backend": "SDPA_FLASH",
+      "seq_len": 14040,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 17.644134521484375,
+      "samples_ms": [
+        17.572352600097656,
+        17.951231384277342,
+        17.644134521484375
+      ],
+      "tflops": 114.40205137532494,
+      "relative_l2": 0.0,
+      "cosine": 1.0,
+      "max_abs": 0.0
+    },
+    {
+      "backend": "FLASH",
+      "seq_len": 14040,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: flash_attn.flash_attn_func is unavailable -- flash_attn is not installed"
+    },
+    {
+      "backend": "SAGE",
+      "seq_len": 14040,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: sageattention.sageattn is unavailable -- sageattention is not installed"
+    },
+    {
+      "backend": "CUDNN",
+      "seq_len": 32760,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 195.27445068359376,
+      "samples_ms": [
+        195.1142822265625,
+        195.27445068359376,
+        195.37530517578125
+      ],
+      "tflops": 112.55694931444832,
+      "relative_l2": 0.003098519053310156,
+      "cosine": 0.9999951720237732,
+      "max_abs": 0.000244140625
+    },
+    {
+      "backend": "SDPA_FLASH",
+      "seq_len": 32760,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 188.09466552734375,
+      "samples_ms": [
+        188.09466552734375,
+        187.91240234375,
+        188.2957763671875
+      ],
+      "tflops": 116.8533747960268,
+      "relative_l2": 0.0,
+      "cosine": 1.0,
+      "max_abs": 0.0
+    },
+    {
+      "backend": "FLASH",
+      "seq_len": 32760,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: flash_attn.flash_attn_func is unavailable -- flash_attn is not installed"
+    },
+    {
+      "backend": "SAGE",
+      "seq_len": 32760,
+      "heads": 40,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: sageattention.sageattn is unavailable -- sageattention is not installed"
+    },
+    {
+      "backend": "CUDNN",
+      "seq_len": 32760,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 98.13565673828126,
+      "samples_ms": [
+        98.12879638671875,
+        98.13565673828126,
+        98.18736572265625
+      ],
+      "tflops": 111.98527211478948,
+      "relative_l2": 0.003113650484010577,
+      "cosine": 0.9999951124191284,
+      "max_abs": 0.000244140625
+    },
+    {
+      "backend": "SDPA_FLASH",
+      "seq_len": 32760,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "ok",
+      "ms": 93.90499877929688,
+      "samples_ms": [
+        94.5776611328125,
+        93.78468017578125,
+        93.90499877929688
+      ],
+      "tflops": 117.03049216611988,
+      "relative_l2": 0.0,
+      "cosine": 1.0000001192092896,
+      "max_abs": 0.0
+    },
+    {
+      "backend": "FLASH",
+      "seq_len": 32760,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: flash_attn.flash_attn_func is unavailable -- flash_attn is not installed"
+    },
+    {
+      "backend": "SAGE",
+      "seq_len": 32760,
+      "heads": 20,
+      "head_dim": 128,
+      "dtype": "bf16",
+      "status": "unavailable: sageattention.sageattn is unavailable -- sageattention is not installed"
+    }
+  ]
+}
