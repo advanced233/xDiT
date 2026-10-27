@@ -25,6 +25,7 @@
 
 **使用 GPU**
 - 每次运行前先用 `nvidia-smi` 查看占用情况，用 `CUDA_VISIBLE_DEVICES` 只选空闲的卡。
+- 空闲卡的定义：这张卡上没有计算进程（`nvidia-smi --query-compute-apps` 里没有它），并且显存占用低于 1 GB。Xorg、gnome-shell 这类图形进程（`nvidia-smi` 进程表里类型为 `G`）只占几十 MB，不算占用。
 - 不要 kill 别人的进程，不改 GPU 时钟、persistence mode、MIG 或 ECC。
 - 如果服务器有**正在运行**的 Slurm 之类的调度器（`sinfo` 能列出分区），就通过调度器申请 GPU，不要直接在登录节点上跑。只装了客户端、没有配置文件也没有服务进程，不算有调度器，按上面两条直接使用空闲的卡。
 - 如果用沙箱（例如 bwrap）包装命令，GPU 相关的步骤必须把 `/dev/nvidia*`（含 `nvidiactl`、`nvidia-uvm`、`nvidia-uvm-tools`）透传进去，否则 CUDA 不可见。多进程运行时所有 rank 要在同一个沙箱里，以便共享 `/dev/shm`（NCCL 在无 P2P 时依赖它）。
