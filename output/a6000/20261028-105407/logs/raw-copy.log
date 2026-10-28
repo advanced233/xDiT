@@ -1,0 +1,4 @@
+cuda:0 -> cuda:1: 11.3 GB/s
+cuda:1 -> cuda:0: 13.2 GB/s
+cpu -> cuda:0: 23.6 GB/s
+cuda:0 -> cpu: 20.8 GB/s

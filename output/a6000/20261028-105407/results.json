@@ -1,0 +1,73 @@
+[
+  {
+    "name": "nccl-default",
+    "gpu_indices": [
+      0,
+      2
+    ],
+    "port": 37125,
+    "command": [
+      "${ENV}/bin/python",
+      "-m",
+      "torch.distributed.run",
+      "--nproc_per_node",
+      "2",
+      "--master_port",
+      "37125",
+      "${RUN}/nccl_bw.py"
+    ],
+    "environment": {
+      "NCCL_DEBUG": "INFO"
+    },
+    "started": "2026-10-28T10:54:47.659636+08:00",
+    "returncode": 0,
+    "elapsed_seconds": 22.182808400131762,
+    "status": "COMPLETED",
+    "reason": null
+  },
+  {
+    "name": "nccl-no-p2p",
+    "gpu_indices": [
+      0,
+      2
+    ],
+    "port": 46017,
+    "command": [
+      "${ENV}/bin/python",
+      "-m",
+      "torch.distributed.run",
+      "--nproc_per_node",
+      "2",
+      "--master_port",
+      "46017",
+      "${RUN}/nccl_bw.py"
+    ],
+    "environment": {
+      "NCCL_DEBUG": "INFO",
+      "NCCL_P2P_DISABLE": "1"
+    },
+    "started": "2026-10-28T10:55:10.057434+08:00",
+    "returncode": 0,
+    "elapsed_seconds": 15.669480490498245,
+    "status": "COMPLETED",
+    "reason": null
+  },
+  {
+    "name": "raw-copy",
+    "gpu_indices": [
+      0,
+      2
+    ],
+    "port": 56677,
+    "command": [
+      "${ENV}/bin/python",
+      "${RUN}/copy_bw.py"
+    ],
+    "environment": {},
+    "started": "2026-10-28T10:55:25.952392+08:00",
+    "returncode": 0,
+    "elapsed_seconds": 8.08208268508315,
+    "status": "COMPLETED",
+    "reason": null
+  }
+]

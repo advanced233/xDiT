@@ -1,0 +1,70 @@
+2026-10-28T10:55:26.087237+08:00
+index, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, 2, 4, 16, 16
+1, 4, 4, 16, 16
+2, 2, 4, 8, 16
+3, 1, 4, 16, 16
+4, 1, 4, 16, 16
+5, 1, 4, 16, 16
+6, 1, 4, 16, 16
+7, 1, 4, 16, 16
+2026-10-28T10:55:27.116657+08:00
+index, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, 2, 4, 16, 16
+1, 4, 4, 16, 16
+2, 1, 4, 8, 16
+3, 1, 4, 16, 16
+4, 1, 4, 16, 16
+5, 1, 4, 16, 16
+6, 1, 4, 16, 16
+7, 1, 4, 16, 16
+2026-10-28T10:55:28.220051+08:00
+index, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, 4, 4, 16, 16
+1, 4, 4, 16, 16
+2, 4, 4, 8, 16
+3, 1, 4, 16, 16
+4, 1, 4, 16, 16
+5, 1, 4, 16, 16
+6, 1, 4, 16, 16
+7, 1, 4, 16, 16
+2026-10-28T10:55:29.296841+08:00
+index, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, 4, 4, 16, 16
+1, 4, 4, 16, 16
+2, 4, 4, 8, 16
+3, 1, 4, 16, 16
+4, 1, 4, 16, 16
+5, 1, 4, 16, 16
+6, 1, 4, 16, 16
+7, 1, 4, 16, 16
+2026-10-28T10:55:30.332853+08:00
+index, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, 4, 4, 16, 16
+1, 4, 4, 16, 16
+2, 4, 4, 8, 16
+3, 1, 4, 16, 16
+4, 1, 4, 16, 16
+5, 1, 4, 16, 16
+6, 1, 4, 16, 16
+7, 1, 4, 16, 16
+2026-10-28T10:55:31.368732+08:00
+index, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, 4, 4, 16, 16
+1, 4, 4, 16, 16
+2, 4, 4, 8, 16
+3, 1, 4, 16, 16
+4, 1, 4, 16, 16
+5, 1, 4, 16, 16
+6, 1, 4, 16, 16
+7, 1, 4, 16, 16
+2026-10-28T10:55:32.360777+08:00
+index, pcie.link.gen.current, pcie.link.gen.max, pcie.link.width.current, pcie.link.width.max
+0, 4, 4, 16, 16
+1, 4, 4, 16, 16
+2, 4, 4, 8, 16
+3, 1, 4, 16, 16
+4, 1, 4, 16, 16
+5, 1, 4, 16, 16
+6, 1, 4, 16, 16
+7, 1, 4, 16, 16
