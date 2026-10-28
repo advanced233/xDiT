@@ -1,0 +1,186 @@
+W1028 10:01:13.798000 213051 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 10:01:13.829000 213051 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+W1028 10:01:27.309000 214090 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 10:01:27.341000 214090 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 10:01:27.348000 214089 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 10:01:27.379000 214089 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DEBUG 10-28 10:01:29 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+DEBUG 10-28 10:01:29 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+WARNING 10-28 10:01:29 [args.py:1494] Distributed environment is not initialized. Initializing...
+DEBUG 10-28 10:01:29 [parallel_state.py:247] world_size=-1 rank=-1 local_rank=-1 distributed_init_method=env:// backend=nccl
+WARNING 10-28 10:01:29 [args.py:1494] Distributed environment is not initialized. Initializing...
+DEBUG 10-28 10:01:29 [parallel_state.py:247] world_size=-1 rank=-1 local_rank=-1 distributed_init_method=env:// backend=nccl
+INFO 10-28 10:01:30 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-28 10:01:30 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-28 10:01:30 [runner_utils.py:30] Model Runner Arguments:
+INFO 10-28 10:01:30 [runner_utils.py:30]   model: Wan2.1-T2V-1.3B
+INFO 10-28 10:01:30 [runner_utils.py:30]   lora_path: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   lora_weight_name: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   lora_scale: 1.0
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_parallel_vae: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_torch_compile: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   attention_backend: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   cross_attention_backend: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_cfg_parallel: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   data_parallel_degree: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   ulysses_degree: 2
+INFO 10-28 10:01:30 [runner_utils.py:30]   ring_degree: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   pipefusion_parallel_degree: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   tensor_parallel_degree: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   text_encoder_tp_degree: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   fully_shard_degree: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   fully_shard_components: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   reshard_after_forward: True
+INFO 10-28 10:01:30 [runner_utils.py:30]   memory_efficient_sharding: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   memory_efficient_replicated_load: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   height: 480
+INFO 10-28 10:01:30 [runner_utils.py:30]   width: 832
+INFO 10-28 10:01:30 [runner_utils.py:30]   num_frames: 17
+INFO 10-28 10:01:30 [runner_utils.py:30]   prompt: ['a cat walking on grass']
+INFO 10-28 10:01:30 [runner_utils.py:30]   negative_prompt: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   num_inference_steps: 4
+INFO 10-28 10:01:30 [runner_utils.py:30]   max_sequence_length: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   seed: 42
+INFO 10-28 10:01:30 [runner_utils.py:30]   guidance_scale: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   guidance_scale_2: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   flow_shift: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   enable_sequential_cpu_offload: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   enable_model_cpu_offload: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   enable_group_cpu_offload: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   group_offload_low_cpu_mem: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   enable_tiling: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   enable_slicing: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   vae_tile_size_height: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   vae_tile_size_width: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   vae_tile_overlap_height: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   vae_tile_overlap_width: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   gemm_quantization: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   gemm_config: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   int8_gemm_modules: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_int8_gemms: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_fp8_gemms: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_fp8_text_encoder: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_fp4_gemms: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   fp8_precision_override_prefix_patterns: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   fp8_precision_override_suffix_patterns: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_fp8_comms: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   fp8_comms_scale: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   fp8_comms_safety_factor: 0.85
+INFO 10-28 10:01:30 [runner_utils.py:30]   num_iterations: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   determinism_check: 0
+INFO 10-28 10:01:30 [runner_utils.py:30]   determinism_check_report_ranks: last
+INFO 10-28 10:01:30 [runner_utils.py:30]   profile: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   profile_wait: 2
+INFO 10-28 10:01:30 [runner_utils.py:30]   profile_warmup: 2
+INFO 10-28 10:01:30 [runner_utils.py:30]   profile_active: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   profile_capture_phase: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   profile_with_stack: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   warmup_calls: 0
+INFO 10-28 10:01:30 [runner_utils.py:30]   output_directory: ${RUN}/results/smoke
+INFO 10-28 10:01:30 [runner_utils.py:30]   input_images: []
+INFO 10-28 10:01:30 [runner_utils.py:30]   resize_input_images: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   task: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   batch_size: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   dataset_path: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_hybrid_attn_schedule: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   hybrid_attn_low_precision_backend: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   hybrid_attn_high_precision_backend: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   num_hybrid_attn_high_precision_steps: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   hybrid_attn_schedule: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_hybrid_gemm_schedule: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   num_hybrid_gemm_high_precision_steps: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_vae_channels_last_format: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_ssta_sparse_text_to_image: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   spargeattn_simthreshold: 0.3
+INFO 10-28 10:01:30 [runner_utils.py:30]   spargeattn_cdfthreshold: 0.92
+INFO 10-28 10:01:30 [runner_utils.py:30]   spargeattn_reorder_sequence: True
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_spargeattn_static_block_mask: True
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_spargeattn_head_balance: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   sol_attn_tau: 0.2
+INFO 10-28 10:01:30 [runner_utils.py:30]   sol_attn_thresh_type: exact
+INFO 10-28 10:01:30 [runner_utils.py:30]   sol_attn_kv_splits: auto
+INFO 10-28 10:01:30 [runner_utils.py:30]   sol_attn_sink_tokens: 0
+INFO 10-28 10:01:30 [runner_utils.py:30]   sol_attn_sink_start: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   vsa_block_size: 128
+INFO 10-28 10:01:30 [runner_utils.py:30]   vsa_top_k: 1
+INFO 10-28 10:01:30 [runner_utils.py:30]   vsa_top_k_ratio: 0.0
+INFO 10-28 10:01:30 [runner_utils.py:30]   vsa_drop_rates: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   vsa_prob_threshold: 0.9
+INFO 10-28 10:01:30 [runner_utils.py:30]   bsa_sparsity: 0.75
+INFO 10-28 10:01:30 [runner_utils.py:30]   bsa_cdf_threshold: 0.2
+INFO 10-28 10:01:30 [runner_utils.py:30]   vsa_reorder_sequence: True
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_vsa_static_block_mask: True
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_vsa_first_frame_mask: True
+INFO 10-28 10:01:30 [runner_utils.py:30]   vsa_collect_density: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   distilled_transformer_path: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   distilled_transformer_2_path: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   audio_prompt: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_teacache: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   use_fbcache: False
+INFO 10-28 10:01:30 [runner_utils.py:30]   cache_method: None
+INFO 10-28 10:01:30 [runner_utils.py:30]   cache_config: None
+INFO 10-28 10:01:30 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-28 10:01:30 [runner_utils.py:30] Parameter 'guidance_scale' not specified. Using model-specific default value: 5.0
+INFO 10-28 10:01:30 [runner_utils.py:30] Parameter 'flow_shift' not specified. Using model-specific default value: 3.0
+INFO 10-28 10:01:30 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-28 10:01:30 [runner_utils.py:30] Initializing model: Wan2.1-T2V-1.3B
+INFO 10-28 10:01:30 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-28 10:01:30 [runner_utils.py:30] Loading model pipeline...
+INFO 10-28 10:01:30 [config.py:207] Pipeline patch number not set, using default value 1
+${ENV}/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+${ENV}/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  2.61it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  4.62it/s]
+${ENV}/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+${ENV}/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+WARNING:huggingface_hub.hf_api:Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+WARNING:huggingface_hub.hf_api:Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+Couldn't connect to the Hub: Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers/revision/main: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable..
+Will try to load from local cache.
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]Loading weights:   0%|          | 0/242 [00:00<?, ?it/s]Loading weights:  15%|█▌        | 37/242 [00:00<00:00, 342.60it/s]Loading weights:  32%|███▏      | 77/242 [00:00<00:00, 356.45it/s]Loading weights:  49%|████▉     | 118/242 [00:00<00:00, 373.25it/s]Loading weights:  65%|██████▌   | 158/242 [00:00<00:00, 375.07it/s]Loading weights:  81%|████████▏ | 197/242 [00:00<00:00, 375.86it/s]Loading weights:  98%|█████████▊| 237/242 [00:00<00:00, 381.82it/s]Loading weights: 100%|██████████| 242/242 [00:01<00:00, 222.11it/s]
+Loading pipeline components...:  40%|████      | 2/5 [00:02<00:03,  1.21s/it]
+Loading weights:   0%|          | 0/242 [00:00<?, ?it/s]
+Loading weights:  12%|█▏        | 28/242 [00:00<00:00, 275.69it/s]
+Loading weights:  23%|██▎       | 56/242 [00:00<00:00, 189.96it/s]
+Loading weights:  32%|███▏      | 77/242 [00:00<00:01, 136.60it/s]
+Loading weights:  38%|███▊      | 93/242 [00:00<00:01, 138.81it/s]
+Loading weights:  45%|████▌     | 109/242 [00:00<00:00, 135.27it/s]
+Loading weights:  52%|█████▏    | 125/242 [00:00<00:00, 140.83it/s]
+Loading weights:  59%|█████▊    | 142/242 [00:00<00:00, 143.71it/s]
+Loading weights:  65%|██████▌   | 158/242 [00:01<00:00, 140.66it/s]
+Loading weights:  73%|███████▎  | 177/242 [00:01<00:00, 148.95it/s]
+Loading weights:  81%|████████▏ | 197/242 [00:01<00:00, 152.40it/s]
+Loading weights:  90%|████████▉ | 217/242 [00:01<00:00, 147.62it/s]
+Loading weights:  97%|█████████▋| 235/242 [00:01<00:00, 149.66it/s]Loading weights: 100%|██████████| 242/242 [00:02<00:00, 100.41it/s]
+Loading pipeline components...:  80%|████████  | 4/5 [00:05<00:01,  1.46s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:05<00:00,  1.14s/it]
+WARNING 10-28 10:01:36 [logger.py:126] Model parallel is not initialized, initializing...
+INFO 10-28 10:01:37 [runner_utils.py:30] Initializing runtime state...
+WARNING 10-28 10:01:37 [logger.py:126] Using CUDNN as attention backend.
+INFO 10-28 10:01:41 [runner_utils.py:30] Model initialization complete.
+INFO 10-28 10:01:41 [runner_utils.py:30] Running model...
+INFO 10-28 10:01:41 [runner_utils.py:30] Running iteration 1/1
+  0%|          | 0/4 [00:00<?, ?it/s]${ENV}/lib/python3.10/site-packages/torch/distributed/c10d_logger.py:83: FutureWarning: `torch.distributed.all_gather_into_tensor` is deprecated. Please use `torch.distributed.all_gather_single` instead.
+  return func(*args, **kwargs)
+${ENV}/lib/python3.10/site-packages/torch/distributed/c10d_logger.py:83: FutureWarning: `torch.distributed.all_gather_into_tensor` is deprecated. Please use `torch.distributed.all_gather_single` instead.
+  return func(*args, **kwargs)
+ 25%|██▌       | 1/4 [00:08<00:24,  8.07s/it] 50%|█████     | 2/4 [00:08<00:07,  3.73s/it] 75%|███████▌  | 3/4 [00:10<00:02,  2.88s/it]100%|██████████| 4/4 [00:11<00:00,  2.02s/it]100%|██████████| 4/4 [00:11<00:00,  2.83s/it]
+INFO 10-28 10:02:40 [runner_utils.py:30] Iteration 1 completed in 59.17s
+INFO 10-28 10:02:40 [runner_utils.py:30] Average time over 1 runs: 59.17s
+INFO 10-28 10:02:40 [runner_utils.py:30] Total time spent: 59.66s
+INFO 10-28 10:02:44 [runner_utils.py:30] Output video saved to ${RUN}/results/smoke/wan2.1_t2v_1.3b_u2r1_tc_False_480x832_0.mp4
+INFO 10-28 10:02:44 [runner_utils.py:30] Timings saved to ${RUN}/results/smoke/timings.json
+INFO 10-28 10:02:49 [runner_utils.py:30] Cleaned up resources.

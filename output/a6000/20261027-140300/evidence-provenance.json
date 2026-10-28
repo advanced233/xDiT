@@ -42,6 +42,13 @@
     "published_bytes": 132
   },
   {
+    "file": "logs/preflight-12.log",
+    "original_sha256": "9164455bb967ad34babfd7d0a3ae3f3bcee6e47f7ed013b0da6e23936e90c8a3",
+    "original_bytes": 133,
+    "published_sha256": "9164455bb967ad34babfd7d0a3ae3f3bcee6e47f7ed013b0da6e23936e90c8a3",
+    "published_bytes": 133
+  },
+  {
     "file": "logs/preflight-6.log",
     "original_sha256": "63e0cd3da359f2d06f4bf134ab5799bc925de86ccb757afc4ded65dc46100042",
     "original_bytes": 120,
@@ -89,5 +96,12 @@
     "original_bytes": 28640,
     "published_sha256": "65f7ddb4d3d65cf5e3c4f13328bcb5680f015dbd3207d624642e0f7d89e1bdbc",
     "published_bytes": 27801
+  },
+  {
+    "file": "logs/smoke-ulysses2.log",
+    "original_sha256": "cc2c4732ee9328b80b480e74041fb2f6e6f8895238238fe86d7b2614e84281db",
+    "original_bytes": 19299,
+    "published_sha256": "f47d50acab99aceb8e39b13bfa9f25c52822905c9728fd5a058f272538705ac1",
+    "published_bytes": 18909
   }
 ]

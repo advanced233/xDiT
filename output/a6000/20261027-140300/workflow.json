@@ -143,8 +143,9 @@
       }
     },
     "smoke-ulysses2": {
-      "status": "PENDING",
-      "required_gpus": 2,
+      "status": "COMPLETED",
+      "start": "2026-10-28T10:01:08.900311+08:00",
+      "source_commit": "8b6a767302edd6c00fdba44c5f9d057f2af684db",
       "command": [
         "xdit",
         "--model",
@@ -162,12 +163,22 @@
         "--ulysses_degree",
         "2",
         "--master_port",
-        "{PORT}",
+        "26385",
         "--output_directory",
         "${RUN}/results/smoke"
       ],
-      "not_before": 1793152817.9340706,
-      "last_deferred_reason": "GPU_QUERY_FAILED"
+      "master_port": 26385,
+      "gpu_indices": [
+        0,
+        2
+      ],
+      "numa_group": 0,
+      "returncode": 0,
+      "elapsed_seconds": 114.54383450746536,
+      "end": "2026-10-28T10:03:03.446146+08:00",
+      "outputs": [
+        "${RUN}/results/smoke/wan2.1_t2v_1.3b_u2r1_tc_False_480x832_0.mp4"
+      ]
     },
     "preflight-6": {
       "status": "COMPLETED",
@@ -279,6 +290,25 @@
       "returncode": 0,
       "elapsed_seconds": 12.707003110088408,
       "end": "2026-10-28T09:38:24.223636+08:00"
+    },
+    "preflight-12": {
+      "status": "COMPLETED",
+      "start": "2026-10-28T10:00:51.956913+08:00",
+      "source_commit": "8b6a767302edd6c00fdba44c5f9d057f2af684db",
+      "command": [
+        "${ENV}/bin/python",
+        "-c",
+        "import torch,importlib.metadata as m; print(torch.__version__,torch.version.cuda,torch.version.hip); print([torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]); assert torch.__version__==\"2.14.1+cu126\" and torch.version.cuda==\"12.6\" and torch.version.hip is None; assert m.version(\"torchao\").split(\"+\")[0]==\"0.18.0\"; assert m.version(\"diffusers\")==\"0.41.0\" and m.version(\"transformers\")==\"5.20.2\"; f=torch.compile(lambda x:(x*2).sin()); print(\"compile\",f(torch.randn(1024,device=\"cuda\")).sum()); a=torch.randint(-128,127,(256,256),device=\"cuda\",dtype=torch.int8);print(\"int_mm\",torch._int_mm(a,a.t()).dtype); print(\"p2p\",torch.cuda.can_device_access_peer(0,1) if torch.cuda.device_count()>1 else \"not tested\")"
+      ],
+      "master_port": 26546,
+      "gpu_indices": [
+        0,
+        2
+      ],
+      "numa_group": 0,
+      "returncode": 0,
+      "elapsed_seconds": 15.20837482996285,
+      "end": "2026-10-28T10:01:07.167503+08:00"
     }
   },
   "previous_run": "20261026-161758",
@@ -286,7 +316,7 @@
   "deadline_epoch": 1793167894.964811,
   "deadline": "2026-10-28T14:11:34.964811+08:00",
   "latest_probe": {
-    "time": "2026-10-28T09:38:10.231779+08:00",
+    "time": "2026-10-28T10:00:50.323074+08:00",
     "gpus": [
       {
         "index": 0,
@@ -304,7 +334,7 @@
       {
         "index": 1,
         "name": "NVIDIA RTX A6000",
-        "memory_bytes": 44689260544,
+        "memory_bytes": 44691357696,
         "query_valid": true,
         "numa_group": 0,
         "eligible": false,
@@ -405,7 +435,7 @@
     ]
   },
   "last_publish": {
-    "time": "2026-10-28T09:38:08.949755+08:00",
+    "time": "2026-10-28T09:45:47.352514+08:00",
     "returncode": 0
   },
   "interrupted_attempts": {
