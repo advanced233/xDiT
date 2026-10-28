@@ -1,0 +1,16 @@
+{
+  "source_commit": "7d97a9f6f44e80c10762121a56e346c460d8314e",
+  "started": "2026-10-28T11:04:14.364326+08:00",
+  "deadline": "2026-10-28T12:04:14.364318+08:00",
+  "phase": "WAITING",
+  "pid": 471330,
+  "tasks": {
+    "x16": {
+      "status": "PENDING"
+    },
+    "x8": {
+      "status": "PENDING",
+      "reason": "optional GPU 0/2 PHB"
+    }
+  }
+}
