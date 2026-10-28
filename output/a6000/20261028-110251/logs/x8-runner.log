@@ -1,0 +1,3 @@
+START nccl-phb
+END {'name': 'nccl-phb', 'gpu_indices': [0, 2], 'port': 39549, 'command': ['${ENV}/bin/python', '-m', 'torch.distributed.run', '--nproc_per_node', '2', '--master_port', '39549', '${RUN}/x8/nccl_bw.py'], 'environment': {'NCCL_DEBUG': 'INFO', 'NCCL_P2P_LEVEL': 'PHB'}, 'started': '2026-10-28T11:04:28.707772+08:00', 'returncode': 0, 'elapsed_seconds': 12.642823668196797, 'status': 'COMPLETED', 'reason': None}
+DONE, released
