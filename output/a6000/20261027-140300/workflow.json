@@ -1,6 +1,6 @@
 {
   "source_commit": "8b6a767302edd6c00fdba44c5f9d057f2af684db",
-  "phase": "GPU_WAITING",
+  "phase": "FINISHED",
   "jobs": {
     "pytest-gpu-single": {
       "status": "COMPLETED",
@@ -435,7 +435,7 @@
     ]
   },
   "last_publish": {
-    "time": "2026-10-28T09:45:47.352514+08:00",
+    "time": "2026-10-28T10:03:37.906327+08:00",
     "returncode": 0
   },
   "interrupted_attempts": {
@@ -478,5 +478,6 @@
         "reason": "GPU_QUERY_FAILED"
       }
     ]
-  }
+  },
+  "finished": "2026-10-28T10:03:37.908951+08:00"
 }
