@@ -90,6 +90,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 > 诊断（`output/a6000/20261028-105407/`）：
 > - NCCL 默认走的是 SHM（经主机内存中转），关掉 P2P 后带宽也不变。原因是 NCCL 在 Intel CPU 上默认只在 PXB 以内用 P2P，而 0、2 号卡之间要经过 CPU 根复合体。
 > - 2 号卡的链路只有 Gen4 x8。0↔2 的裸 P2P 拷贝是 11.3 / 13.2 GB/s；锁页内存↔0 号卡是 23.6 / 20.8 GB/s。
+> - 0、2 号卡加 `NCCL_P2P_LEVEL=PHB` 后改走 P2P（CUMEM），1 GiB 下 all_reduce 9.3 GB/s、all_to_all 9.8 GB/s，比默认的 SHM 高约 30%，约为这对卡裸 P2P 拷贝的 75～80%。
 > - 还没测：两张 x16 卡之间加 `NCCL_P2P_LEVEL=PHB` 时的 NCCL 带宽。TP2 值不值得做，取决于这个数：按第 3.5 节的粗估，12 GB/s 时 TP2 约 1.1×，20 GB/s 时约 1.3×。
 
 ### 3.4 计算时间（A6000 按实效 100 TFLOPS、A100 按实效 200 TFLOPS 估算）
