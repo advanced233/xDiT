@@ -1,0 +1,6 @@
+all_reduce 64 MiB: 9.60 ms, busbw 7.0 GB/s
+all_to_all 64 MiB: 4.67 ms, busbw 7.2 GB/s
+all_reduce 256 MiB: 37.90 ms, busbw 7.1 GB/s
+all_to_all 256 MiB: 18.48 ms, busbw 7.3 GB/s
+all_reduce 1024 MiB: 136.12 ms, busbw 7.9 GB/s
+all_to_all 1024 MiB: 71.40 ms, busbw 7.5 GB/s

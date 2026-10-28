@@ -1,0 +1,5 @@
+2.14.1+cu126 12.6 None
+['NVIDIA RTX A6000', 'NVIDIA RTX A6000']
+compile tensor(-34.5480, device='cuda:0')
+int_mm torch.int32
+p2p True
