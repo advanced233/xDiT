@@ -28,6 +28,13 @@
     "published_bytes": 269
   },
   {
+    "file": "logs/preflight-10.log",
+    "original_sha256": "6bcd44feec95c4895600b54096ce31af69e240737dd274a83d8a90fdff3f3244",
+    "original_bytes": 134,
+    "published_sha256": "6bcd44feec95c4895600b54096ce31af69e240737dd274a83d8a90fdff3f3244",
+    "published_bytes": 134
+  },
+  {
     "file": "logs/preflight-6.log",
     "original_sha256": "63e0cd3da359f2d06f4bf134ab5799bc925de86ccb757afc4ded65dc46100042",
     "original_bytes": 120,
@@ -54,6 +61,13 @@
     "original_bytes": 134,
     "published_sha256": "2ea1a022431fa9a0926428a8f91f36994dde0680fab28c193f30d273194f5f5d",
     "published_bytes": 134
+  },
+  {
+    "file": "logs/pytest-gpu-multi.log",
+    "original_sha256": "ba1889546602a2bc4633146db8227d1867e57cb83c836b1082ba168224987212",
+    "original_bytes": 4734,
+    "published_sha256": "7a8cc24dc5a767472725348a68f40134b5353576c43af9d96bc49512dd65e5bd",
+    "published_bytes": 4580
   },
   {
     "file": "logs/pytest-gpu-single.log",

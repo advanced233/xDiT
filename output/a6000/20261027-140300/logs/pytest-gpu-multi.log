@@ -1,0 +1,63 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-9.1.1, pluggy-1.7.0
+cachedir: ${RUN}/cache/pytest-gpu-multi
+rootdir: ${REPO}
+configfile: pytest.ini
+testpaths: tests/unit, tests/integration/cpu, tests/integration/accelerator
+plugins: anyio-4.15.1, timeout-2.4.0
+timeout: 960.0s
+timeout method: signal
+timeout func_only: False
+collected 2088 items / 1986 deselected / 102 selected
+
+tests/integration/cpu/core/distributed/test_model_replica_group.py s     [  0%]
+tests/integration/cpu/model_executor/loading/test_multirank.py ..        [  2%]
+tests/integration/accelerator/core/attention/test_sdpa_ring_lse.py ..    [  4%]
+tests/integration/accelerator/core/distributed/test_group_gather.py ...  [  7%]
+tests/integration/accelerator/core/distributed/test_runtime_state_sequence_parallel.py . [  8%]
+.                                                                        [  9%]
+tests/integration/accelerator/core/long_ctx_attention/test_ring_flash_attn.py s [ 10%]
+ss                                                                       [ 12%]
+tests/integration/accelerator/core/long_ctx_attention/test_xfuser_attn.py s [ 13%]
+s                                                                        [ 14%]
+tests/integration/accelerator/core/long_ctx_attention/test_xfuser_attn_without_flash_attn.py . [ 15%]
+.                                                                        [ 16%]
+tests/integration/accelerator/model_executor/layers/test_attention_processor.py s [ 17%]
+                                                                         [ 17%]
+tests/integration/accelerator/model_executor/layers/test_feedforward.py . [ 18%]
+                                                                         [ 18%]
+tests/integration/accelerator/model_executor/models/test_sequence_parallel_padding.py . [ 19%]
+..s......s..s.s.s..s.........ssss                                        [ 51%]
+tests/integration/accelerator/model_executor/models/transformers/test_flux2_pipefusion_kv_cache.py . [ 52%]
+                                                                         [ 52%]
+tests/integration/accelerator/model_executor/models/transformers/test_krea2_cudnn.py . [ 53%]
+                                                                         [ 53%]
+tests/integration/accelerator/model_executor/models/transformers/test_ltx2_interleaved_rope.py . [ 54%]
+.                                                                        [ 55%]
+tests/integration/accelerator/model_executor/pipelines/test_pipefusion_hunyuandit.py . [ 56%]
+                                                                         [ 56%]
+tests/integration/accelerator/model_executor/pipelines/test_pipefusion_pixart_float32.py . [ 57%]
+                                                                         [ 57%]
+tests/integration/accelerator/model_executor/pipelines/test_sana_sprint_sequence_parallel.py . [ 58%]
+.                                                                        [ 59%]
+tests/integration/accelerator/model_executor/schedulers/test_scheduling_ddpm.py . [ 60%]
+.                                                                        [ 61%]
+tests/integration/accelerator/model_executor/test_chroma_parallel.py .s. [ 64%]
+s                                                                        [ 65%]
+tests/integration/accelerator/model_executor/test_ltx_video_parallel.py . [ 66%]
+s                                                                        [ 67%]
+tests/integration/accelerator/model_executor/test_prism_parallel.py ..ss [ 71%]
+                                                                         [ 71%]
+tests/integration/accelerator/model_executor/test_qwen_image21_ulysses.py . [ 72%]
+ss                                                                       [ 74%]
+tests/integration/accelerator/model_executor/test_wan_sequence_parallel_pad.py . [ 75%]
+..s.sss.s.sss.s.sssssssss                                                [100%]
+
+=============================== warnings summary ===============================
+../../envs/xdit/lib/python3.10/site-packages/torch/jit/_script.py:1491
+  ${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: ${RUN}/results/pytest-gpu-multi.xml -
+==== 60 passed, 42 skipped, 1986 deselected, 1 warning in 860.56s (0:14:20) ====
