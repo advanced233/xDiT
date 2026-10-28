@@ -86,6 +86,11 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 | CFG2 | MB 级 | MB 级 | MB 级 | 每步只 all-gather 一次噪声预测 |
 
 > **实测（2×A6000，GPU 0 / 2，同一 NUMA 组，NODE，无 NVLink，P2P 可用）**：all_reduce busbw 7.0～7.9 GB/s，all_to_all 7.2～7.5 GB/s，从 64 MiB 到 1 GiB 基本不变，说明瓶颈是带宽而不是延迟。按这个带宽算，33 帧下 TP2 每次 L×d 的 AllReduce 约 20 ms，每次前向约 2.4 s，每步（CFG 两次前向）约 4.9 s。统计量 AllReduce 每次只有 L 个 fp32，每步合计只有几十 ms。
+>
+> 诊断（`output/a6000/20261028-105407/`）：
+> - NCCL 默认走的是 SHM（经主机内存中转），关掉 P2P 后带宽也不变。原因是 NCCL 在 Intel CPU 上默认只在 PXB 以内用 P2P，而 0、2 号卡之间要经过 CPU 根复合体。
+> - 2 号卡的链路只有 Gen4 x8。0↔2 的裸 P2P 拷贝是 11.3 / 13.2 GB/s；锁页内存↔0 号卡是 23.6 / 20.8 GB/s。
+> - 还没测：两张 x16 卡之间加 `NCCL_P2P_LEVEL=PHB` 时的 NCCL 带宽。TP2 值不值得做，取决于这个数：按第 3.5 节的粗估，12 GB/s 时 TP2 约 1.1×，20 GB/s 时约 1.3×。
 
 ### 3.4 计算时间（A6000 按实效 100 TFLOPS、A100 按实效 200 TFLOPS 估算）
 

@@ -41,7 +41,7 @@
 - 结果放在 `output/<设备>/<时间戳>/` 下（`a100` 或 `a6000`），只往自己设备的目录里加文件，不改、不删别的目录。`output/` 下已有的无设备前缀的目录是早期的 A100 结果，保持不动。
 - 运行前先 `git pull`，确认 `git log -1` 是消息里指定的 commit。推送前先 `git pull --rebase`，不要强推。
 - 发布前脱敏：主机名、用户名、本地绝对路径、GPU UUID。
-- 多卡运行只用同一个 NUMA 组里的卡（A6000 服务器是 0–3 或 4–7，跨组走 SYS），并在报告里写明用的是哪几张。
+- 多卡运行只用同一个 NUMA 组里的卡（A6000 服务器是 0–3 或 4–7，跨组走 SYS），并在报告里写明用的是哪几张。A6000 服务器的 2 号卡链路只有 Gen4 x8，其他卡都是 x16；多卡实验避开 2 号卡，只在凑不出 x16 的两张卡时才用它，并在报告里注明。
 
 **无人值守执行**：用户不在场，整个流程不需要等确认，从头跑到尾。遇到阻塞时按下表处理，绝不为了绕过阻塞而越过上面的规则：
 
@@ -332,6 +332,9 @@ nvidia-smi --query-gpu=index,pcie.link.gen.current,pcie.link.gen.max,pcie.link.w
 NCCL_DEBUG=INFO torchrun --nproc_per_node 2 --master_port "$PORT" "$XDIT_WORK/scripts/nccl_bw.py" 2>&1 | grep -E "via|busbw"
 # 关掉 P2P、改走主机内存，对比带宽
 NCCL_P2P_DISABLE=1 torchrun --nproc_per_node 2 --master_port "$PORT" "$XDIT_WORK/scripts/nccl_bw.py"
+# 在 Intel CPU 上，NCCL 默认只在 PXB 以内（经过 PCIe 交换机）用 P2P；经过 CPU 根复合体（nvidia-smi 显示 NODE）
+# 时会退回 SHM。把门槛放宽到 PHB，强制走 P2P，再对比一次
+NCCL_P2P_LEVEL=PHB NCCL_DEBUG=INFO torchrun --nproc_per_node 2 --master_port "$PORT" "$XDIT_WORK/scripts/nccl_bw.py" 2>&1 | grep -E "via|busbw"
 # 裸拷贝带宽：卡间 P2P，以及卡和锁页内存之间
 python - <<'EOF'
 import time, torch
