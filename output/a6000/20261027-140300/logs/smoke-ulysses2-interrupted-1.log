@@ -1,0 +1,276 @@
+W1028 09:38:28.902000 153740 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 09:38:28.925000 153740 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+W1028 09:38:35.150000 154058 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 09:38:35.174000 154058 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+W1028 09:38:35.761000 154057 site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1028 09:38:35.796000 154057 site-packages/torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DEBUG 10-28 09:38:37 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+WARNING 10-28 09:38:37 [args.py:1494] Distributed environment is not initialized. Initializing...
+DEBUG 10-28 09:38:37 [parallel_state.py:247] world_size=-1 rank=-1 local_rank=-1 distributed_init_method=env:// backend=nccl
+${ENV}/lib/python3.10/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DEBUG 10-28 09:38:37 [runner_utils.py:319] torchao Float8Tensor FSDP2 patches applied: ['aten.split.Tensor', 'aten.new_empty.default', 'aten.new_zeros.default', 'aten.copy_.default', 'aten.view.default', 'aten.as_strided.default', '__torch_dispatch__ fallthrough', 'fsdp_pre_all_gather', 'fsdp_post_all_gather']
+WARNING 10-28 09:38:37 [args.py:1494] Distributed environment is not initialized. Initializing...
+DEBUG 10-28 09:38:37 [parallel_state.py:247] world_size=-1 rank=-1 local_rank=-1 distributed_init_method=env:// backend=nccl
+INFO 10-28 09:38:38 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-28 09:38:38 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-28 09:38:38 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-28 09:38:38 [runner_utils.py:30] Model Runner Arguments:
+INFO 10-28 09:38:38 [runner_utils.py:30]   model: Wan2.1-T2V-1.3B
+INFO 10-28 09:38:38 [runner_utils.py:30]   lora_path: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   lora_weight_name: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   lora_scale: 1.0
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_parallel_vae: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_torch_compile: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   attention_backend: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   cross_attention_backend: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_cfg_parallel: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   data_parallel_degree: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   ulysses_degree: 2
+INFO 10-28 09:38:38 [runner_utils.py:30]   ring_degree: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   pipefusion_parallel_degree: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   tensor_parallel_degree: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   text_encoder_tp_degree: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   fully_shard_degree: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   fully_shard_components: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   reshard_after_forward: True
+INFO 10-28 09:38:38 [runner_utils.py:30]   memory_efficient_sharding: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   memory_efficient_replicated_load: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   height: 480
+INFO 10-28 09:38:38 [runner_utils.py:30]   width: 832
+INFO 10-28 09:38:38 [runner_utils.py:30]   num_frames: 17
+INFO 10-28 09:38:38 [runner_utils.py:30]   prompt: ['a cat walking on grass']
+INFO 10-28 09:38:38 [runner_utils.py:30]   negative_prompt: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   num_inference_steps: 4
+INFO 10-28 09:38:38 [runner_utils.py:30]   max_sequence_length: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   seed: 42
+INFO 10-28 09:38:38 [runner_utils.py:30]   guidance_scale: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   guidance_scale_2: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   flow_shift: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   enable_sequential_cpu_offload: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   enable_model_cpu_offload: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   enable_group_cpu_offload: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   group_offload_low_cpu_mem: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   enable_tiling: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   enable_slicing: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   vae_tile_size_height: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   vae_tile_size_width: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   vae_tile_overlap_height: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   vae_tile_overlap_width: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   gemm_quantization: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   gemm_config: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   int8_gemm_modules: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_int8_gemms: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_fp8_gemms: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_fp8_text_encoder: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_fp4_gemms: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   fp8_precision_override_prefix_patterns: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   fp8_precision_override_suffix_patterns: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_fp8_comms: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   fp8_comms_scale: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   fp8_comms_safety_factor: 0.85
+INFO 10-28 09:38:38 [runner_utils.py:30]   num_iterations: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   determinism_check: 0
+INFO 10-28 09:38:38 [runner_utils.py:30]   determinism_check_report_ranks: last
+INFO 10-28 09:38:38 [runner_utils.py:30]   profile: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   profile_wait: 2
+INFO 10-28 09:38:38 [runner_utils.py:30]   profile_warmup: 2
+INFO 10-28 09:38:38 [runner_utils.py:30]   profile_active: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   profile_capture_phase: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   profile_with_stack: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   warmup_calls: 0
+INFO 10-28 09:38:38 [runner_utils.py:30]   output_directory: ${RUN}/results/smoke
+INFO 10-28 09:38:38 [runner_utils.py:30]   input_images: []
+INFO 10-28 09:38:38 [runner_utils.py:30]   resize_input_images: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   task: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   batch_size: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   dataset_path: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_hybrid_attn_schedule: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   hybrid_attn_low_precision_backend: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   hybrid_attn_high_precision_backend: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   num_hybrid_attn_high_precision_steps: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   hybrid_attn_schedule: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_hybrid_gemm_schedule: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   num_hybrid_gemm_high_precision_steps: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_vae_channels_last_format: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_ssta_sparse_text_to_image: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   spargeattn_simthreshold: 0.3
+INFO 10-28 09:38:38 [runner_utils.py:30]   spargeattn_cdfthreshold: 0.92
+INFO 10-28 09:38:38 [runner_utils.py:30]   spargeattn_reorder_sequence: True
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_spargeattn_static_block_mask: True
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_spargeattn_head_balance: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   sol_attn_tau: 0.2
+INFO 10-28 09:38:38 [runner_utils.py:30]   sol_attn_thresh_type: exact
+INFO 10-28 09:38:38 [runner_utils.py:30]   sol_attn_kv_splits: auto
+INFO 10-28 09:38:38 [runner_utils.py:30]   sol_attn_sink_tokens: 0
+INFO 10-28 09:38:38 [runner_utils.py:30]   sol_attn_sink_start: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   vsa_block_size: 128
+INFO 10-28 09:38:38 [runner_utils.py:30]   vsa_top_k: 1
+INFO 10-28 09:38:38 [runner_utils.py:30]   vsa_top_k_ratio: 0.0
+INFO 10-28 09:38:38 [runner_utils.py:30]   vsa_drop_rates: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   vsa_prob_threshold: 0.9
+INFO 10-28 09:38:38 [runner_utils.py:30]   bsa_sparsity: 0.75
+INFO 10-28 09:38:38 [runner_utils.py:30]   bsa_cdf_threshold: 0.2
+INFO 10-28 09:38:38 [runner_utils.py:30]   vsa_reorder_sequence: True
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_vsa_static_block_mask: True
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_vsa_first_frame_mask: True
+INFO 10-28 09:38:38 [runner_utils.py:30]   vsa_collect_density: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   distilled_transformer_path: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   distilled_transformer_2_path: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   audio_prompt: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_teacache: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   use_fbcache: False
+INFO 10-28 09:38:38 [runner_utils.py:30]   cache_method: None
+INFO 10-28 09:38:38 [runner_utils.py:30]   cache_config: None
+INFO 10-28 09:38:38 [runner_utils.py:30] Parameter 'negative_prompt' not specified. Using model-specific default value: bright colors, overexposed, static, blurred details, subtitles, style, artwork, painting, picture, still, overall gray, worst quality, low quality, JPEG compression residue, ugly, incomplete, extra fingers, poorly drawn hands, poorly drawn faces, deformed, disfigured, malformed limbs, fused fingers, still picture, cluttered background, three legs, many people in the background, walking backwards
+INFO 10-28 09:38:38 [runner_utils.py:30] Parameter 'guidance_scale' not specified. Using model-specific default value: 5.0
+INFO 10-28 09:38:38 [runner_utils.py:30] Parameter 'flow_shift' not specified. Using model-specific default value: 3.0
+INFO 10-28 09:38:38 [runner_utils.py:30] Parameter 'num_hybrid_attn_high_precision_steps' not specified. Using model-specific default value: 5
+INFO 10-28 09:38:38 [runner_utils.py:30] Initializing model: Wan2.1-T2V-1.3B
+INFO 10-28 09:38:38 [config.py:207] Pipeline patch number not set, using default value 1
+INFO 10-28 09:38:38 [runner_utils.py:30] Loading model pipeline...
+${ENV}/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+${ENV}/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py:206: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:54<00:54, 54.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 27.10s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 31.21s/it]
+${ENV}/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+${ENV}/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+WARNING:huggingface_hub.hf_api:Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+Couldn't connect to the Hub: Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers/revision/main: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable..
+Will try to load from local cache.
+Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+WARNING:huggingface_hub.hf_api:Could not reach the Hub (Cannot reach https://hf-mirror.com/api/models/Wan-AI/Wan2.1-T2V-1.3B-Diffusers: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'Wan-AI/Wan2.1-T2V-1.3B-Diffusers'.
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/242 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/242 [00:02<11:10,  2.78s/it]
+Loading weights:   1%|          | 2/242 [00:04<09:23,  2.35s/it]
+Loading weights:   3%|▎         | 8/242 [00:09<04:11,  1.08s/it]
+Loading weights:   4%|▎         | 9/242 [00:13<05:53,  1.52s/it]
+Loading weights:   7%|▋         | 17/242 [00:14<02:21,  1.59it/s]
+Loading weights:   7%|▋         | 18/242 [00:14<02:08,  1.74it/s]
+Loading weights:   9%|▉         | 22/242 [00:18<02:41,  1.36it/s]
+Loading weights:  11%|█         | 27/242 [00:22<02:43,  1.32it/s]
+Loading weights:  13%|█▎        | 32/242 [00:28<03:00,  1.16it/s]
+Loading weights:  16%|█▌        | 38/242 [00:28<01:53,  1.79it/s]
+Loading weights:  17%|█▋        | 42/242 [00:32<02:18,  1.45it/s]
+Loading weights:  19%|█▉        | 47/242 [00:35<02:12,  1.47it/s]
+Loading weights:  20%|██        | 49/242 [00:37<02:18,  1.39it/s]
+Loading weights:  22%|██▏       | 53/242 [00:39<01:51,  1.70it/s]
+Loading weights:  23%|██▎       | 55/242 [00:39<01:31,  2.03it/s]
+Loading weights:  24%|██▎       | 57/242 [00:43<02:28,  1.25it/s]
+Loading weights:  24%|██▍       | 58/242 [00:47<04:01,  1.31s/it]
+Loading weights:  26%|██▌       | 63/242 [00:51<03:01,  1.01s/it]
+Loading weights:  26%|██▋       | 64/242 [00:51<02:47,  1.06it/s]
+Loading weights:  30%|██▉       | 72/242 [00:52<01:20,  2.12it/s]
+Loading weights:  30%|███       | 73/242 [00:55<01:51,  1.52it/s]
+Loading weights:  31%|███       | 75/242 [00:56<01:44,  1.59it/s]
+Loading weights:  32%|███▏      | 77/242 [01:00<02:33,  1.07it/s]
+Loading weights:  35%|███▌      | 85/242 [01:01<01:21,  1.92it/s]
+Loading weights:  36%|███▌      | 87/242 [01:08<02:30,  1.03it/s]
+Loading weights:  36%|███▋      | 88/242 [01:09<02:35,  1.01s/it]
+Loading weights:  37%|███▋      | 89/242 [01:10<02:36,  1.02s/it]
+Loading weights:  39%|███▉      | 95/242 [01:12<01:28,  1.66it/s]
+Loading weights:  40%|████      | 97/242 [01:15<01:56,  1.25it/s]
+Loading weights:  40%|████      | 98/242 [01:15<01:46,  1.35it/s]
+Loading weights:  41%|████      | 99/242 [01:16<02:00,  1.19it/s]
+Loading weights:  43%|████▎     | 105/242 [01:19<01:17,  1.78it/s]Loading weights:   0%|          | 0/242 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 47/242 [00:00<00:00, 460.76it/s]Loading weights:  39%|███▉      | 95/242 [00:00<00:00, 462.89it/s]
+Loading weights:  44%|████▍     | 107/242 [01:21<01:41,  1.33it/s]
+Loading weights:  45%|████▍     | 108/242 [01:24<02:20,  1.05s/it]
+Loading weights:  45%|████▌     | 109/242 [01:26<02:25,  1.09s/it]
+Loading weights:  48%|████▊     | 115/242 [01:27<01:17,  1.63it/s]
+Loading weights:  48%|████▊     | 117/242 [01:35<02:48,  1.35s/it]Loading weights:  39%|███▉      | 95/242 [00:16<00:00, 462.89it/s]Loading weights:  49%|████▉     | 119/242 [00:16<00:25,  4.77it/s]
+Loading weights:  49%|████▉     | 119/242 [01:38<02:38,  1.29s/it]Loading weights:  52%|█████▏    | 125/242 [00:17<00:22,  5.12it/s]
+Loading weights:  52%|█████▏    | 127/242 [01:43<01:44,  1.10it/s]
+Loading weights:  53%|█████▎    | 128/242 [01:47<02:25,  1.27s/it]
+Loading weights:  53%|█████▎    | 129/242 [01:50<02:34,  1.37s/it]
+Loading weights:  57%|█████▋    | 137/242 [01:53<01:24,  1.25it/s]Loading weights:  52%|█████▏    | 125/242 [00:36<00:22,  5.12it/s]
+Loading weights:  57%|█████▋    | 138/242 [00:36<00:50,  2.05it/s]Loading weights:  57%|█████▋    | 138/242 [01:57<01:55,  1.11s/it]
+Loading weights:  57%|█████▋    | 139/242 [00:36<00:50,  2.06it/s]Loading weights:  57%|█████▋    | 139/242 [01:57<01:46,  1.04s/it]
+Loading weights:  60%|█████▉    | 145/242 [01:59<01:05,  1.47it/s]
+Loading weights:  61%|██████    | 147/242 [02:03<01:31,  1.03it/s]
+Loading weights:  61%|██████    | 148/242 [02:07<01:59,  1.27s/it]
+Loading weights:  62%|██████▏   | 149/242 [02:07<01:42,  1.10s/it]
+Loading weights:  63%|██████▎   | 153/242 [02:11<01:36,  1.09s/it]Loading weights:  64%|██████▍   | 155/242 [00:51<00:54,  1.59it/s]
+Loading weights:  65%|██████▍   | 157/242 [00:58<01:08,  1.24it/s]Loading weights:  65%|██████▍   | 157/242 [02:18<01:55,  1.35s/it]
+Loading weights:  68%|██████▊   | 165/242 [02:19<00:51,  1.49it/s]
+Loading weights:  69%|██████▊   | 166/242 [02:20<00:51,  1.46it/s]
+Loading weights:  69%|██████▉   | 167/242 [02:31<02:15,  1.81s/it]Loading weights:  69%|██████▉   | 168/242 [01:10<01:06,  1.10it/s]
+Loading weights:  72%|███████▏  | 175/242 [01:12<00:52,  1.28it/s]Loading weights:  72%|███████▏  | 175/242 [02:33<01:05,  1.02it/s]
+Loading weights:  73%|███████▎  | 177/242 [02:36<01:08,  1.06s/it]
+Loading weights:  74%|███████▎  | 178/242 [02:44<01:57,  1.83s/it]Loading weights:  75%|███████▌  | 182/242 [01:24<00:59,  1.02it/s]
+Loading weights:  77%|███████▋  | 187/242 [01:28<00:52,  1.05it/s]Loading weights:  77%|███████▋  | 187/242 [02:49<00:56,  1.03s/it]
+Loading weights:  78%|███████▊  | 188/242 [02:56<01:24,  1.57s/it]Loading weights:  79%|███████▉  | 192/242 [01:35<00:53,  1.07s/it]
+Loading weights:  81%|████████▏ | 197/242 [01:42<00:50,  1.12s/it]Loading weights:  81%|████████▏ | 197/242 [03:02<00:50,  1.13s/it]
+Loading weights:  86%|████████▌ | 207/242 [03:08<00:29,  1.17it/s]Loading weights:  86%|████████▌ | 207/242 [01:47<00:30,  1.14it/s]
+Loading weights:  86%|████████▌ | 208/242 [03:09<00:30,  1.11it/s]
+Loading weights:  86%|████████▋ | 209/242 [01:50<00:30,  1.07it/s]Loading weights:  86%|████████▋ | 209/242 [03:10<00:30,  1.08it/s]
+Loading weights:  88%|████████▊ | 213/242 [03:13<00:24,  1.20it/s]Loading weights:  88%|████████▊ | 213/242 [01:52<00:25,  1.16it/s]
+Loading weights:  90%|████████▉ | 217/242 [01:57<00:23,  1.06it/s]Loading weights:  90%|████████▉ | 217/242 [03:18<00:23,  1.07it/s]
+Loading weights:  90%|█████████ | 218/242 [02:01<00:29,  1.21s/it]Loading weights:  90%|█████████ | 218/242 [03:22<00:30,  1.27s/it]
+Loading weights:  90%|█████████ | 219/242 [02:04<00:30,  1.33s/it]Loading weights:  90%|█████████ | 219/242 [03:24<00:32,  1.41s/it]
+Loading weights:  94%|█████████▍| 227/242 [02:08<00:13,  1.08it/s]Loading weights:  94%|█████████▍| 227/242 [03:29<00:13,  1.08it/s]
+Loading weights:  94%|█████████▍| 228/242 [03:29<00:11,  1.18it/s]Loading weights:  94%|█████████▍| 228/242 [02:08<00:11,  1.17it/s]
+Loading weights:  95%|█████████▍| 229/242 [02:09<00:10,  1.20it/s]Loading weights:  95%|█████████▍| 229/242 [03:30<00:10,  1.21it/s]
+Loading weights:  96%|█████████▋| 233/242 [02:13<00:08,  1.08it/s]Loading weights:  96%|█████████▋| 233/242 [03:34<00:08,  1.08it/s]
+Loading weights:  97%|█████████▋| 235/242 [03:34<00:05,  1.31it/s]Loading weights:  97%|█████████▋| 235/242 [02:14<00:05,  1.30it/s]
+Loading weights:  98%|█████████▊| 237/242 [02:20<00:06,  1.36s/it]Loading weights:  98%|█████████▊| 237/242 [03:41<00:06,  1.37s/it]Loading weights: 100%|██████████| 242/242 [03:20<00:00,  6.19s/it]Loading weights: 100%|██████████| 242/242 [03:20<00:00,  1.21it/s]
+
+Loading weights: 100%|██████████| 242/242 [04:40<00:00,  6.26s/it]Loading weights: 100%|██████████| 242/242 [04:40<00:00,  1.16s/it]
+INFO 10-28 09:44:23 [runner_utils.py:30] Initializing runtime state...
+Loading pipeline components...:  20%|██        | 1/5 [04:43<18:52, 283.12s/it]Loading pipeline components...:  40%|████      | 2/5 [04:44<05:52, 117.53s/it]Loading pipeline components...:  80%|████████  | 4/5 [04:45<00:44, 44.07s/it] Loading pipeline components...: 100%|██████████| 5/5 [04:45<00:00, 57.09s/it]
+WARNING 10-28 09:44:26 [logger.py:126] Model parallel is not initialized, initializing...
+WARNING 10-28 09:44:26 [logger.py:126] Using CUDNN as attention backend.
+INFO 10-28 09:44:31 [runner_utils.py:30] Model initialization complete.
+INFO 10-28 09:44:31 [runner_utils.py:30] Running model...
+INFO 10-28 09:44:31 [runner_utils.py:30] Running iteration 1/1
+  0%|          | 0/4 [00:00<?, ?it/s]${ENV}/lib/python3.10/site-packages/torch/distributed/c10d_logger.py:83: FutureWarning: `torch.distributed.all_gather_into_tensor` is deprecated. Please use `torch.distributed.all_gather_single` instead.
+  return func(*args, **kwargs)
+${ENV}/lib/python3.10/site-packages/torch/distributed/c10d_logger.py:83: FutureWarning: `torch.distributed.all_gather_into_tensor` is deprecated. Please use `torch.distributed.all_gather_single` instead.
+  return func(*args, **kwargs)
+ 25%|██▌       | 1/4 [00:03<00:09,  3.05s/it] 50%|█████     | 2/4 [00:03<00:03,  1.66s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.42s/it]100%|██████████| 4/4 [00:05<00:00,  1.13s/it]100%|██████████| 4/4 [00:05<00:00,  1.39s/it]
+
+Received interrupt signal, terminating all processes...
+W1028 09:45:13.814000 154009 site-packages/torch/distributed/elastic/agent/server/api.py:753] Received Signals.SIGTERM death signal, shutting down workers
+W1028 09:45:13.816000 154009 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 154057 closing signal SIGTERM
+W1028 09:45:13.819000 154009 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 154058 closing signal SIGTERM
+Traceback (most recent call last):
+  File "${ENV}/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "${ENV}/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/run.py", line 1142, in <module>
+    main()
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 380, in wrapper
+    return f(*args, **kwargs)
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/run.py", line 1138, in main
+    run(args)
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/run.py", line 1129, in run
+    elastic_launch(
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 197, in __call__
+    return launch_agent(
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 377, in launch_agent
+    result = agent.run()
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 134, in wrapper
+    result = f(*args, **kwargs)
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 745, in run
+    result = self._invoke_run(role)
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 923, in _invoke_run
+    time.sleep(monitor_interval)
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+  File "${ENV}/lib/python3.10/enum.py", line 764, in __format__
+    def __format__(self, format_spec):
+  File "${ENV}/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 154009 got signal: 15
