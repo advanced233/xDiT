@@ -85,6 +85,8 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 | FSDP2：all-gather 半个专家 | ~14.3 GB | ~14.3 GB | ~14.3 GB | 与序列长度无关，可以预取并与计算重叠 |
 | CFG2 | MB 级 | MB 级 | MB 级 | 每步只 all-gather 一次噪声预测 |
 
+> **实测（2×A6000，GPU 0 / 2，同一 NUMA 组，NODE，无 NVLink，P2P 可用）**：all_reduce busbw 7.0～7.9 GB/s，all_to_all 7.2～7.5 GB/s，从 64 MiB 到 1 GiB 基本不变，说明瓶颈是带宽而不是延迟。按这个带宽算，33 帧下 TP2 每次 L×d 的 AllReduce 约 20 ms，每次前向约 2.4 s，每步（CFG 两次前向）约 4.9 s。统计量 AllReduce 每次只有 L 个 fp32，每步合计只有几十 ms。
+
 ### 3.4 计算时间（A6000 按实效 100 TFLOPS、A100 按实效 200 TFLOPS 估算）
 
 | 配置 | 单次前向 | 单卡单条视频（40 步 × CFG 两次前向）：A100 | 同左：A6000 |
@@ -97,9 +99,14 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 
 ### 3.5 由此得到的预期
 
-- 2 卡 BF16 下，CFG2 大概率最快，显存问题交给 FSDP2 或 INT8 解决。TP2 的通信在关键路径上，在 PCIe 和 33 帧下约 1.5×。
+- 2 卡 BF16 下，CFG2 大概率最快，显存问题交给 FSDP2 或 INT8 解决。TP2 的通信在关键路径上。按第 3.3 节实测的 7 GB/s 粗估（33 帧，每步）：
+  - 单卡：计算约 9～10 s，其中 Linear 5.3 s、注意力 2.8 s，其余逐元素算子在 A6000 上尚未实测。
+  - TP2：计算减半，约 5.5 s，但逐元素算子不切分；再加上约 4.9 s 通信，合计约 10 s，和单卡差不多，甚至更慢。
+  - CFG2：约 2×；INT8 + CFG2：约 2.4×。
+  - 所以在这台机器上，TP 的价值主要是显存：双专家 BF16 每卡 28.6 GB，不需要 FSDP 或 offload。要让 TP2 有加速，只能压缩通信（M4）。
 - INT8 W8A8：实测 33 帧端到端 1.17×（torchao + compile），见第 3.2 节的实测说明。把量化开销全部融合进 GEMM（M6）最多到约 1.25×。A100 上 SAGE 的单核只比 CUDNN 快 1.25×，远低于表中假设的 1.7×；叠加后推算约 1.27×（M7，无需改代码，runbook 第 6 节）。
 - TP × INT8：INT8 只缩短计算、不缩短通信。单卡只有 1.17×，TP2 上叠加 INT8 预计只剩约 1.1×。
+- A6000 单层实测（`output/a6000/20261027-140300/int8_linear.json`）：torchao + compile 是 BF16 的 1.42～1.62×，cuBLAS INT8 TN 是 1.77～1.85×，都比 A100（1.32～1.41× / 1.49～1.72×）高。另外，INT8 让一张 48 GB 的 A6000 也能放下双专家：A100 上实测常驻 38.0 GiB、峰值 42.3 GiB。
 
 ## 4. 实现内容
 
@@ -347,7 +354,7 @@ Wan VAE 在时间维压缩 4 倍、空间维压缩 8 倍，patch 为 1×2×2，�
 - **固定参数**：
   - 采样：40 步、guidance 4.0 / 3.0、flow_shift 12、Wan 默认 scheduler。
   - seed：固定一组 seed。
-  - 注意力：在 Ampere 上，xDiT 没指定后端时默认用 `CUDNN`（`xfuser/core/distributed/runtime_state.py:96-103`）。M0 先在 Wan 的形状上（B=1、H=40 或 TP2 下的 20、D=128、L=14040 / 32760、bf16）对比 `CUDNN`、`SDPA_FLASH`，以及装了 flash-attn 时的 `FLASH`，选最快的 dense 后端作为基线，此后所有实验固定使用。注意力越快，Linear 的时间占比越高，INT8 的加速比也会越大，所以报告里必须写明基线用的是哪个后端。
+  - 注意力：阶段 2 起统一用 `SDPA_FLASH`，它在两种卡上都是最快的 dense 后端：A100 上 188 vs CUDNN 173 TFLOPS，A6000 上 117 vs 112 TFLOPS。阶段 1 用的是 CUDNN，不重跑。在 Ampere 上，xDiT 没指定后端时默认用 `CUDNN`（`xfuser/core/distributed/runtime_state.py:96-103`）。M0 先在 Wan 的形状上（B=1、H=40 或 TP2 下的 20、D=128、L=14040 / 32760、bf16）对比 `CUDNN`、`SDPA_FLASH`，以及装了 flash-attn 时的 `FLASH`，选最快的 dense 后端作为基线，此后所有实验固定使用。注意力越快，Linear 的时间占比越高，INT8 的加速比也会越大，所以报告里必须写明基线用的是哪个后端。
 - **冒烟与预热**：不单独做。环境配好后只做一次小模型冒烟（`env_setup.md` 第 8.4 节）；之后每个阶段的第一组正式运行就是冒烟。计时取多步的中位数，冷启动的影响由此消化，不跑预热。
 - **速度**：报告按专家分开的单步 DiT 时间中位数。只测速的 case 用 1 条 prompt、10 步、跑 1 次。40 步的端到端时间优先直接取完整运行的结果，没有时再推算：非 DiT 部分 + 高噪声步数 × 高噪声单步时间 + 低噪声步数 × 低噪声单步时间（40 步时约 26 / 14 步）。生成流水线时间不包含模型加载和视频编码落盘。同卡出现其他进程的运行（工具会标记）作废重跑。
 - **画质**：10 条 prompt（取自 VBench 的 prompt 集，写在 `benchmarks/wan22/configs/phase1.yaml` 里），480p / 33 帧，完整 40 步，每条 1 个 seed。A100 上 BF16 单条约 3.4 分钟。

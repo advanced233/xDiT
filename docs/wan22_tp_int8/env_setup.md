@@ -323,6 +323,32 @@ EOF
 torchrun --nproc_per_node 2 --master_port "$PORT" "$XDIT_WORK/scripts/nccl_bw.py"
 ```
 
+带宽偏低时（A6000 服务器实测约 7 GB/s），再用同样两张卡花约 5 分钟查一下原因：
+
+```bash
+# PCIe 链路的代数和宽度（只读，有负载时 current 才准；不支持的字段删掉即可）
+nvidia-smi --query-gpu=index,pcie.link.gen.current,pcie.link.gen.max,pcie.link.width.current,pcie.link.width.max --format=csv
+# NCCL 实际走的传输方式：日志里找 "via P2P/..." 或 "via SHM"
+NCCL_DEBUG=INFO torchrun --nproc_per_node 2 --master_port "$PORT" "$XDIT_WORK/scripts/nccl_bw.py" 2>&1 | grep -E "via|busbw"
+# 关掉 P2P、改走主机内存，对比带宽
+NCCL_P2P_DISABLE=1 torchrun --nproc_per_node 2 --master_port "$PORT" "$XDIT_WORK/scripts/nccl_bw.py"
+# 裸拷贝带宽：卡间 P2P，以及卡和锁页内存之间
+python - <<'EOF'
+import time, torch
+def bw(src, dst, n=1 << 30):
+    make = lambda dev: torch.empty(n, dtype=torch.uint8).pin_memory() if dev == "cpu" else torch.empty(n, dtype=torch.uint8, device=dev)
+    x, y = make(src), make(dst)
+    for _ in range(3):
+        y.copy_(x, non_blocking=True)
+    torch.cuda.synchronize(); start = time.perf_counter()
+    for _ in range(10):
+        y.copy_(x, non_blocking=True)
+    torch.cuda.synchronize(); print(f"{src} -> {dst}: {10 * n / (time.perf_counter() - start) / 1e9:.1f} GB/s")
+for src, dst in [("cuda:0", "cuda:1"), ("cuda:1", "cuda:0"), ("cpu", "cuda:0"), ("cuda:0", "cpu")]:
+    bw(src, dst)
+EOF
+```
+
 **8.3 仓库测试**（遵循 `.github/skills/testing/SKILL.md`）
 
 ```bash
