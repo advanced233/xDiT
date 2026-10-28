@@ -9,8 +9,80 @@
       "status": "PENDING"
     },
     "x8": {
-      "status": "PENDING",
-      "reason": "optional GPU 0/2 PHB"
+      "status": "COMPLETED",
+      "pair": [
+        0,
+        2
+      ],
+      "started": "2026-10-28T11:04:27.142869+08:00",
+      "returncode": 0,
+      "ended": "2026-10-28T11:04:42.019721+08:00",
+      "reason": ""
     }
+  },
+  "last_publish": {
+    "time": "2026-10-28T11:04:26.879942+08:00",
+    "returncode": 0
+  },
+  "last_probe": {
+    "time": "2026-10-28T11:04:27.141856+08:00",
+    "gpus": [
+      {
+        "index": 0,
+        "memory_mib": 132,
+        "width": 16,
+        "compute_present": false,
+        "free": true
+      },
+      {
+        "index": 1,
+        "memory_mib": 42884,
+        "width": 16,
+        "compute_present": true,
+        "free": false
+      },
+      {
+        "index": 2,
+        "memory_mib": 18,
+        "width": 8,
+        "compute_present": false,
+        "free": true
+      },
+      {
+        "index": 3,
+        "memory_mib": 48029,
+        "width": 16,
+        "compute_present": true,
+        "free": false
+      },
+      {
+        "index": 4,
+        "memory_mib": 47389,
+        "width": 16,
+        "compute_present": true,
+        "free": false
+      },
+      {
+        "index": 5,
+        "memory_mib": 47389,
+        "width": 16,
+        "compute_present": true,
+        "free": false
+      },
+      {
+        "index": 6,
+        "memory_mib": 44097,
+        "width": 16,
+        "compute_present": true,
+        "free": false
+      },
+      {
+        "index": 7,
+        "memory_mib": 48029,
+        "width": 16,
+        "compute_present": true,
+        "free": false
+      }
+    ]
   }
 }

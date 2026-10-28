@@ -1,0 +1,91 @@
+${HOST}:475659:475659 [0] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+${HOST}:475659:475659 [0] NCCL INFO Bootstrap: Using ens37f1:${IP}<0>
+${HOST}:475659:475659 [0] NCCL INFO cudaDriverVersion 13000
+${HOST}:475659:475659 [0] NCCL INFO NCCL version 2.29.3+cuda12.9
+${HOST}:475659:475659 [0] NCCL INFO NCCL git version stable dcf2a2fbe
+${HOST}:475659:475659 [0] NCCL INFO Comm config Blocking set to 1
+${HOST}:475659:475659 [0] NCCL INFO Comm config Comm name set to default_pg:0
+${HOST}:475661:475661 [1] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+${HOST}:475661:475661 [1] NCCL INFO cudaDriverVersion 13000
+${HOST}:475661:475661 [1] NCCL INFO Bootstrap: Using ens37f1:${IP}<0>
+${HOST}:475661:475661 [1] NCCL INFO NCCL version 2.29.3+cuda12.9
+${HOST}:475661:475661 [1] NCCL INFO NCCL git version stable dcf2a2fbe
+${HOST}:475661:475661 [1] NCCL INFO Comm config Blocking set to 1
+${HOST}:475661:475661 [1] NCCL INFO Comm config Comm name set to default_pg:0
+${HOST}:475659:475659 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so
+${HOST}:475659:475659 [0] NCCL INFO NET/IB : No device found.
+${HOST}:475659:475659 [0] NCCL INFO NET/IB : Using [RO]; OOB ens37f1:${IP}<0>
+${HOST}:475659:475659 [0] NCCL INFO Failed to initialize NET plugin IB
+${HOST}:475659:475659 [0] NCCL INFO NET/Socket : Using [0]ens37f1:${IP}<0> [1]br-7ec788724978:${IP}<0> [2]br-176cdd8bfdd1:${IP}<0> [3]br-51536f47f73f:${IP}<0> [4]br-39b99cd2a81f:${IP}<0> [5]veth3636bb1:${IPV6}<0> [6]vethfc5fcd9:${IPV6}<0> [7]veth1931965:${IPV6}<0> [8]vethd96ce2e:${IPV6}<0> [9]vethafdc234:${IPV6}<0> [10]vethda4a7ec:${IPV6}<0> [11]veth0c1b106:${IPV6}<0> [12]veth8f3edcd:${IPV6}<0> [13]vethde8fa5c:${IPV6}<0> [14]veth9f038ec:${IPV6}<0> [15]vetha6b1eaf:${IPV6}<0>
+${HOST}:475659:475659 [0] NCCL INFO Initialized NET plugin Socket
+${HOST}:475659:475659 [0] NCCL INFO Assigned NET plugin Socket to comm
+${HOST}:475659:475659 [0] NCCL INFO Using network Socket
+${HOST}:475661:475661 [1] NCCL INFO NET/Plugin: Could not find: libnccl-net.so
+${HOST}:475661:475661 [1] NCCL INFO NET/IB : No device found.
+${HOST}:475661:475661 [1] NCCL INFO NET/IB : Using [RO]; OOB ens37f1:${IP}<0>
+${HOST}:475661:475661 [1] NCCL INFO Failed to initialize NET plugin IB
+${HOST}:475661:475661 [1] NCCL INFO NET/Socket : Using [0]ens37f1:${IP}<0> [1]br-7ec788724978:${IP}<0> [2]br-176cdd8bfdd1:${IP}<0> [3]br-51536f47f73f:${IP}<0> [4]br-39b99cd2a81f:${IP}<0> [5]veth3636bb1:${IPV6}<0> [6]vethfc5fcd9:${IPV6}<0> [7]veth1931965:${IPV6}<0> [8]vethd96ce2e:${IPV6}<0> [9]vethafdc234:${IPV6}<0> [10]vethda4a7ec:${IPV6}<0> [11]veth0c1b106:${IPV6}<0> [12]veth8f3edcd:${IPV6}<0> [13]vethde8fa5c:${IPV6}<0> [14]veth9f038ec:${IPV6}<0> [15]vetha6b1eaf:${IPV6}<0>
+${HOST}:475661:475661 [1] NCCL INFO Initialized NET plugin Socket
+${HOST}:475661:475661 [1] NCCL INFO Assigned NET plugin Socket to comm
+${HOST}:475661:475661 [1] NCCL INFO Using network Socket
+${HOST}:475659:475659 [0] NCCL INFO [Rank 0] ncclCommInitRankConfig comm 0x56341da29d20 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 27000 commId 0x5e1616980761a733 - Init START
+${HOST}:475661:475661 [1] NCCL INFO [Rank 1] ncclCommInitRankConfig comm 0x55f761060820 rank 1 nranks 2 cudaDev 1 nvmlDev 2 busId 49000 commId 0x5e1616980761a733 - Init START
+${HOST}:475659:475659 [0] NCCL INFO RAS client listening socket at ${IP}<28028>
+${HOST}:475661:475661 [1] NCCL INFO RAS client listening socket at ${IP}<28028>
+${HOST}:475659:475659 [0] NCCL INFO Bootstrap timings total 0.011285 (create 0.000060, send 0.000259, recv 0.005415, ring 0.004826, delay 0.000001)
+${HOST}:475661:475661 [1] NCCL INFO Bootstrap timings total 0.006086 (create 0.000058, send 0.000260, recv 0.000354, ring 0.000053, delay 0.000001)
+${HOST}:475659:475659 [0] NCCL INFO NCCL_P2P_LEVEL set by environment to PHB
+${HOST}:475661:475661 [1] NCCL INFO NCCL_P2P_LEVEL set by environment to PHB
+${HOST}:475659:475659 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is 0-47,96-143. (GPU affinity = 0-47,96-143 ; CPU affinity = 0-191).
+${HOST}:475661:475661 [1] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 2 is 0-47,96-143. (GPU affinity = 0-47,96-143 ; CPU affinity = 0-191).
+${HOST}:475661:475661 [1] NCCL INFO NVLS multicast support is not available on dev 1 (NVLS_NCHANNELS 0)
+${HOST}:475659:475659 [0] NCCL INFO NVLS multicast support is not available on dev 0 (NVLS_NCHANNELS 0)
+${HOST}:475659:475659 [0] NCCL INFO comm 0x56341da29d20 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+${HOST}:475661:475661 [1] NCCL INFO comm 0x55f761060820 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+${HOST}:475659:475659 [0] NCCL INFO Channel 00/02 : 0 1
+${HOST}:475659:475659 [0] NCCL INFO Channel 01/02 : 0 1
+${HOST}:475659:475659 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+${HOST}:475661:475661 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+${HOST}:475659:475659 [0] NCCL INFO P2P Chunksize set to 131072
+${HOST}:475661:475661 [1] NCCL INFO P2P Chunksize set to 131072
+${HOST}:475659:475659 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+${HOST}:475661:475661 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+${HOST}:475659:475659 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+${HOST}:475661:475661 [1] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+${HOST}:475659:476882 [0] NCCL INFO [Proxy Service] Device 0 CPU core 32
+${HOST}:475661:476881 [0] NCCL INFO [Proxy Service] Device 1 CPU core 36
+${HOST}:475659:476884 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 130
+${HOST}:475661:476883 [0] NCCL INFO [Proxy Service UDS] Device 1 CPU core 131
+${HOST}:475659:475659 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+${HOST}:475661:475661 [1] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+${HOST}:475661:475661 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+${HOST}:475661:475661 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+${HOST}:475659:475659 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+${HOST}:475659:475659 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+${HOST}:475659:475659 [0] NCCL INFO CC Off, workFifoBytes 1048576
+${HOST}:475659:475659 [0] NCCL INFO ncclCommInitRankConfig comm 0x56341da29d20 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 27000 commId 0x5e1616980761a733 - Init COMPLETE
+${HOST}:475661:475661 [1] NCCL INFO ncclCommInitRankConfig comm 0x55f761060820 rank 1 nranks 2 cudaDev 1 nvmlDev 2 busId 49000 commId 0x5e1616980761a733 - Init COMPLETE
+${HOST}:475659:475659 [0] NCCL INFO Init timings - ncclCommInitRankConfig: rank 0 nranks 2 total 0.34 (kernels 0.15, alloc 0.14, bootstrap 0.01, allgathers 0.00, topo 0.02, graphs 0.00, connections 0.00, rest 0.01)
+${HOST}:475661:475661 [1] NCCL INFO Init timings - ncclCommInitRankConfig: rank 1 nranks 2 total 0.33 (kernels 0.15, alloc 0.14, bootstrap 0.01, allgathers 0.00, topo 0.02, graphs 0.00, connections 0.00, rest 0.00)
+${HOST}:475659:475659 [0] NCCL INFO Symmetric VA size=48GB
+${HOST}:475661:475661 [1] NCCL INFO Symmetric VA size=48GB
+${HOST}:475659:475659 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[2] via P2P/CUMEM
+${HOST}:475661:475661 [1] NCCL INFO Channel 00/0 : 1[2] -> 0[0] via P2P/CUMEM
+${HOST}:475659:475659 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[2] via P2P/CUMEM
+${HOST}:475661:475661 [1] NCCL INFO Channel 01/0 : 1[2] -> 0[0] via P2P/CUMEM
+${HOST}:475659:475659 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+${HOST}:475661:475661 [1] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+all_reduce 64 MiB: 7.48 ms, busbw 9.0 GB/s
+${HOST}:475661:475661 [1] NCCL INFO Channel 00/1 : 1[2] -> 0[0] via P2P/CUMEM
+${HOST}:475659:475659 [0] NCCL INFO Channel 00/1 : 0[0] -> 1[2] via P2P/CUMEM
+${HOST}:475661:475661 [1] NCCL INFO Channel 01/1 : 1[2] -> 0[0] via P2P/CUMEM
+${HOST}:475659:475659 [0] NCCL INFO Channel 01/1 : 0[0] -> 1[2] via P2P/CUMEM
+all_to_all 64 MiB: 3.46 ms, busbw 9.7 GB/s
+all_reduce 256 MiB: 29.23 ms, busbw 9.2 GB/s
+all_to_all 256 MiB: 13.71 ms, busbw 9.8 GB/s
+all_reduce 1024 MiB: 115.28 ms, busbw 9.3 GB/s
+all_to_all 1024 MiB: 54.71 ms, busbw 9.8 GB/s
+${HOST}:475661:475661 [1] NCCL INFO comm 0x55f761060820 rank 1 nranks 2 cudaDev 1 busId 49000 - Destroy COMPLETE
+${HOST}:475659:475659 [0] NCCL INFO comm 0x56341da29d20 rank 0 nranks 2 cudaDev 0 busId 27000 - Destroy COMPLETE
+${HOST}:475659:475659 [0] NCCL INFO ENV/Plugin: Closing env plugin ncclEnvDefault
+${HOST}:475661:475661 [1] NCCL INFO ENV/Plugin: Closing env plugin ncclEnvDefault

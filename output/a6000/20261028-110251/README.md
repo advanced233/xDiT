@@ -16,8 +16,27 @@
 
 ### x8
 
-状态：PENDING；物理 GPU：未选择；说明：optional GPU 0/2 PHB
+状态：COMPLETED；物理 GPU：[0, 2]；说明：
 
+- nccl-phb: COMPLETED, rc=0, 12.64s; 
+
+nccl-phb.log（完整日志保存在对应 logs/ 目录）
+```text
+${HOST}:475659:475659 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[2] via P2P/CUMEM
+${HOST}:475661:475661 [1] NCCL INFO Channel 00/0 : 1[2] -> 0[0] via P2P/CUMEM
+${HOST}:475659:475659 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[2] via P2P/CUMEM
+${HOST}:475661:475661 [1] NCCL INFO Channel 01/0 : 1[2] -> 0[0] via P2P/CUMEM
+all_reduce 64 MiB: 7.48 ms, busbw 9.0 GB/s
+${HOST}:475661:475661 [1] NCCL INFO Channel 00/1 : 1[2] -> 0[0] via P2P/CUMEM
+${HOST}:475659:475659 [0] NCCL INFO Channel 00/1 : 0[0] -> 1[2] via P2P/CUMEM
+${HOST}:475661:475661 [1] NCCL INFO Channel 01/1 : 1[2] -> 0[0] via P2P/CUMEM
+${HOST}:475659:475659 [0] NCCL INFO Channel 01/1 : 0[0] -> 1[2] via P2P/CUMEM
+all_to_all 64 MiB: 3.46 ms, busbw 9.7 GB/s
+all_reduce 256 MiB: 29.23 ms, busbw 9.2 GB/s
+all_to_all 256 MiB: 13.71 ms, busbw 9.8 GB/s
+all_reduce 1024 MiB: 115.28 ms, busbw 9.3 GB/s
+all_to_all 1024 MiB: 54.71 ms, busbw 9.8 GB/s
+```
 
 ## 方法和限制
 
