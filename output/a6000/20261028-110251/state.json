@@ -2,11 +2,12 @@
   "source_commit": "7d97a9f6f44e80c10762121a56e346c460d8314e",
   "started": "2026-10-28T11:04:14.364326+08:00",
   "deadline": "2026-10-29T11:04:14.364326+08:00",
-  "phase": "WAITING",
+  "phase": "FINISHED",
   "pid": 492186,
   "tasks": {
     "x16": {
-      "status": "PENDING"
+      "status": "未完成",
+      "reason": "Within the 24-hour wait window no eligible pair was admitted; optional x8 does not replace the x16 task."
     },
     "x8": {
       "status": "COMPLETED",
@@ -21,50 +22,50 @@
     }
   },
   "last_publish": {
-    "time": "2026-10-28T11:04:56.207434+08:00",
+    "time": "2026-10-28T11:05:55.961011+08:00",
     "returncode": 0
   },
   "last_probe": {
-    "time": "2026-10-28T11:04:56.479440+08:00",
+    "time": "2026-10-29T10:51:37.382193+08:00",
     "gpus": [
       {
         "index": 0,
-        "memory_mib": 132,
+        "memory_mib": 32735,
         "width": 16,
-        "compute_present": false,
-        "free": true
+        "compute_present": true,
+        "free": false
       },
       {
         "index": 1,
-        "memory_mib": 42884,
+        "memory_mib": 34320,
         "width": 16,
         "compute_present": true,
         "free": false
       },
       {
         "index": 2,
-        "memory_mib": 18,
+        "memory_mib": 43435,
         "width": 8,
-        "compute_present": false,
-        "free": true
-      },
-      {
-        "index": 3,
-        "memory_mib": 48029,
-        "width": 16,
         "compute_present": true,
         "free": false
       },
       {
+        "index": 3,
+        "memory_mib": 74,
+        "width": 16,
+        "compute_present": false,
+        "free": true
+      },
+      {
         "index": 4,
-        "memory_mib": 47389,
+        "memory_mib": 43661,
         "width": 16,
         "compute_present": true,
         "free": false
       },
       {
         "index": 5,
-        "memory_mib": 47389,
+        "memory_mib": 43317,
         "width": 16,
         "compute_present": true,
         "free": false
@@ -86,5 +87,6 @@
     ]
   },
   "interval_seconds": 900,
-  "wait_seconds": 86400
+  "wait_seconds": 86400,
+  "finished": "2026-10-29T11:04:14.564260+08:00"
 }
